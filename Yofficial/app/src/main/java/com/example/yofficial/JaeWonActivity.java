@@ -27,7 +27,8 @@ public class JaeWonActivity extends YouTubeBaseActivity {
     YouTubePlayerView mYouTubePlayerView;
     Button btnPlay;
     YouTubePlayer.OnInitializedListener mOnInitializedListener;
-
+    YouTubePlayer.PlayerStateChangeListener mPlayerStateChangelistener;
+    YouTubePlayer player;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +42,15 @@ public class JaeWonActivity extends YouTubeBaseActivity {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 Log.d(TAG, "onClick : Done initializing");
+                youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+                youTubePlayer.setPlayerStateChangeListener(mPlayerStateChangelistener);
+                player = youTubePlayer;
+
                 youTubePlayer.loadVideo("wEdoqb2CuYc");
+
+
+
+
             }
 
             @Override
@@ -54,9 +63,44 @@ public class JaeWonActivity extends YouTubeBaseActivity {
             public void onClick(View view) {
                 Log.d(TAG, "Onclick : Initializing YouTube Player.");
                 mYouTubePlayerView.initialize(YouTubeConfig.getApiKey(), mOnInitializedListener);
-
             }
         });
+
+        mPlayerStateChangelistener = new YouTubePlayer.PlayerStateChangeListener() {
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onLoaded(String s) {
+                player.play();
+            }
+
+            @Override
+            public void onAdStarted() {
+
+            }
+
+            @Override
+            public void onVideoStarted() {
+                Log.d(TAG, "Video Started");
+                showMessage("Video Started");
+                player.seekToMillis(100 * 1000);
+
+
+            }
+
+            @Override
+            public void onVideoEnded() {
+
+            }
+
+            @Override
+            public void onError(YouTubePlayer.ErrorReason errorReason) {
+
+            }
+        };
     }
 
 
@@ -65,15 +109,9 @@ public class JaeWonActivity extends YouTubeBaseActivity {
         finish();
     }
 
-    public void onVideoBtnClicked(View v)  {
-        Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG).show();
-
+    private void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
-
-
-
-
-
-
-
 }
+
+
