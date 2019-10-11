@@ -23,22 +23,26 @@ import java.io.IOException;
 
 public class JaeWonActivity extends YouTubeBaseActivity {
 
-    private static final String TAG = "JaeWonActivity";
+    private static final String TAG = "JaeWonActivity!";
+    int[] start_time = {60, 120, 180, 240, 300};
+    int[] end_time = {65, 125, 185, 245, 305};
+    int state = 0;
 
 
     YouTubePlayerView mYouTubePlayerView;
-    Button btnPlay;
     YouTubePlayer.OnInitializedListener mOnInitializedListener;
-    YouTubePlayer.PlayerStateChangeListener mPlayerStateChangelistener;
+    YouTubePlayer.PlayerStateChangeListener mPlayerStateChangeListener;
+    YouTubePlayer.PlaybackEventListener mPlayBackEventListener;
     YouTubePlayer player;
 
-    int count = 0;
+    Button btnPlay;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreate : Starting.");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jaewon);
+
         btnPlay = (Button)findViewById(R.id.btnPlay);
         mYouTubePlayerView = (YouTubePlayerView)findViewById(R.id.youtubePlay);
 
@@ -47,16 +51,10 @@ public class JaeWonActivity extends YouTubeBaseActivity {
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 Log.d(TAG, "onClick : Done initializing");
                 //youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
-                youTubePlayer.setPlayerStateChangeListener(mPlayerStateChangelistener);
+                youTubePlayer.setPlayerStateChangeListener(mPlayerStateChangeListener);
+                youTubePlayer.setPlaybackEventListener(mPlayBackEventListener);
                 player = youTubePlayer;
-
                 youTubePlayer.loadVideo("wEdoqb2CuYc");
-
-
-
-
-
-
             }
 
             @Override
@@ -64,6 +62,7 @@ public class JaeWonActivity extends YouTubeBaseActivity {
                 Log.d(TAG, "onClick : Fail to initializing");
             }
         };
+
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,7 +71,7 @@ public class JaeWonActivity extends YouTubeBaseActivity {
             }
         });
 
-        mPlayerStateChangelistener = new YouTubePlayer.PlayerStateChangeListener() {
+        mPlayerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
             @Override
             public void onLoading() {
 
@@ -80,7 +79,6 @@ public class JaeWonActivity extends YouTubeBaseActivity {
 
             @Override
             public void onLoaded(String s) {
-                player.play();
             }
 
             @Override
@@ -91,53 +89,97 @@ public class JaeWonActivity extends YouTubeBaseActivity {
             @Override
             public void onVideoStarted() {
                 Log.d(TAG, "Video Started");
-                showMessage("Video Started");
-                player.seekToMillis(100 * 1000);
-
-                final Handler handler = new Handler();
-
-                Thread t = new Thread(new Runnable() {
-                   Runnable stop = new Runnable(){
-                       @Override
-                       public void run() {
-                           player.pause();
-                       }
-                   };
-
-
-                   @Override
-                   public void run() {
-                       try {
-                           while(player.getCurrentTimeMillis() < 110 * 1000){
-                               Log.d(TAG, ""+ player.getCurrentTimeMillis());
-                               Thread.sleep(1000);
-                           }
-                       } catch (InterruptedException e) {
-                           e.printStackTrace();
-                       }
-                       handler.post(stop);
-                       Log.d(TAG, "Stopped at time : "+player.getCurrentTimeMillis());
-                   }
-               });
-
-                t.start();
+                player.seekToMillis(start_time[state] * 1000);
             }
-
-
-
-
-
-
             @Override
             public void onVideoEnded() {
-
             }
-
             @Override
             public void onError(YouTubePlayer.ErrorReason errorReason) {
 
             }
         };
+
+        mPlayBackEventListener = new YouTubePlayer.PlaybackEventListener() {
+            @Override
+            public void onPlaying() {
+
+            }
+
+            @Override
+            public void onPaused() {
+
+            }
+
+            @Override
+            public void onStopped() {
+
+            }
+
+            @Override
+            public void onBuffering(boolean b) {
+
+            }
+
+            @Override
+            public void onSeekTo(int i) {
+                Log.d(TAG, "Seek to "+ start_time[state] + "s");
+                player.play();
+
+                final Handler handler = new Handler();
+                Thread t = new Thread(new Runnable() {
+                    Runnable stop = new Runnable(){
+                        @Override
+                        public void run() {
+                            player.pause();
+                        }
+                    };
+                    Runnable finish = new Runnable() {
+                        @Override
+                        public void run() {
+                           Toast.makeText(getApplicationContext(), "Finished", Toast.LENGTH_LONG).show();
+                           finish();
+                        }
+                    };
+
+                    Runnable searchNext = new Runnable() {
+                        @Override
+                        public void run() {
+                            player.seekToMillis(start_time[state] * 1000);
+
+                        }
+                    };
+
+                    @Override
+                    public void run() {
+                        try {
+                            while(player.getCurrentTimeMillis() < end_time[state] * 1000){
+                                //Log.d(TAG, ""+ player.getCurrentTimeMillis());
+                                Thread.sleep(100);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        handler.post(stop);
+                        Log.d(TAG, "Stopped at time : "+player.getCurrentTimeMillis());
+                        state += 1;
+                        Log.d(TAG, "State = " + state);
+                        if(state == 5){
+                            handler.post(finish);
+                        }
+                        else {
+                            handler.post(searchNext);
+                        }
+
+
+
+                    }
+                });
+
+                t.start();
+            }
+        };
+
     }
 
 
