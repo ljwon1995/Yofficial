@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -30,6 +32,8 @@ public class JaeWonActivity extends YouTubeBaseActivity {
     YouTubePlayer.PlayerStateChangeListener mPlayerStateChangelistener;
     YouTubePlayer player;
 
+    int count = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreate : Starting.");
@@ -42,11 +46,13 @@ public class JaeWonActivity extends YouTubeBaseActivity {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 Log.d(TAG, "onClick : Done initializing");
-                youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+                //youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
                 youTubePlayer.setPlayerStateChangeListener(mPlayerStateChangelistener);
                 player = youTubePlayer;
 
                 youTubePlayer.loadVideo("wEdoqb2CuYc");
+
+
 
 
 
@@ -88,8 +94,39 @@ public class JaeWonActivity extends YouTubeBaseActivity {
                 showMessage("Video Started");
                 player.seekToMillis(100 * 1000);
 
+                final Handler handler = new Handler();
 
+                Thread t = new Thread(new Runnable() {
+                   Runnable stop = new Runnable(){
+                       @Override
+                       public void run() {
+                           player.pause();
+                       }
+                   };
+
+
+                   @Override
+                   public void run() {
+                       try {
+                           while(player.getCurrentTimeMillis() < 110 * 1000){
+                               Log.d(TAG, ""+ player.getCurrentTimeMillis());
+                               Thread.sleep(1000);
+                           }
+                       } catch (InterruptedException e) {
+                           e.printStackTrace();
+                       }
+                       handler.post(stop);
+                       Log.d(TAG, "Stopped at time : "+player.getCurrentTimeMillis());
+                   }
+               });
+
+                t.start();
             }
+
+
+
+
+
 
             @Override
             public void onVideoEnded() {
