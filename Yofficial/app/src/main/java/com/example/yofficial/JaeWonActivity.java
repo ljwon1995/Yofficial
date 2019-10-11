@@ -50,7 +50,7 @@ public class JaeWonActivity extends YouTubeBaseActivity {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 Log.d(TAG, "onClick : Done initializing");
-                //youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+                youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
                 youTubePlayer.setPlayerStateChangeListener(mPlayerStateChangeListener);
                 youTubePlayer.setPlaybackEventListener(mPlayBackEventListener);
                 player = youTubePlayer;
