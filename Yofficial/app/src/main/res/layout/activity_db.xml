@@ -9,8 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="243dp"
+            android:layout_height="59dp"
+            android:text="HelloWorld!!!"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Button
-            android:id="@+id/backbutton2"
+            android:id="@+id/db_backbutton"
             android:layout_width="361dp"
             android:layout_height="39dp"
             android:onClick="onBackButtonClicked"
@@ -21,27 +31,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.976" />
-
-        <Button
-            android:id="@+id/youtubeTestBtn"
-            android:layout_width="160dp"
-            android:layout_height="48dp"
-            android:text="YouTubeTest"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.294" />
-
-        <Button
-            android:id="@+id/dbTestBtn"
-            android:layout_width="160dp"
-            android:layout_height="48dp"
-            android:text="DBTest"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

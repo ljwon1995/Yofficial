@@ -22,6 +22,8 @@
         <activity android:name=".HyunWooActivity"></activity>
         <activity android:name=".JaeWonActivity"></activity>
         <activity android:name=".JoonHongActivity"></activity>
+        <activity android:name=".YouTubeActivity"></activity>
+        <activity android:name=".DBActivity"></activity>
 
     </application>
 
