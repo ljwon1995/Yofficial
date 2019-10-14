@@ -3,6 +3,7 @@ package com.example.yofficial;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +16,8 @@ import java.net.URL;
 
 public class DBActivity extends Activity {
 
+
+    private static final String TAG = "DBActivity!";
     TextView txtView;
     phpDown task;
 
@@ -36,12 +39,23 @@ public class DBActivity extends Activity {
             try{
                 // 연결 url 설정
                 URL url = new URL(urls[0]);
+                Log.d(TAG, "URL = " + urls[0]);
                 // 커넥션 객체 생성
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 // 연결되었으면.
+                Log.d(TAG, "conn = " + conn);
                 if(conn != null){
                     conn.setConnectTimeout(10000);
                     conn.setUseCaches(false);
+                    Log.d(TAG, "SetUseCaches done");
+                    int response;
+                    Log.d(TAG, "?");
+                    Log.d(TAG, "HTTP_OK = "+HttpURLConnection.HTTP_OK);
+                    response = conn.getResponseCode();
+                    Log.d(TAG, "!");
+
+                    Log.d(TAG, "response = " + response);
+
                     // 연결되었음 코드가 리턴되면.
                     if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
                         BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
@@ -54,20 +68,23 @@ public class DBActivity extends Activity {
                         }
                         br.close();
                     }
+                    Log.d(TAG, "*****");
                     conn.disconnect();
                 }
             } catch(Exception ex){
                 ex.printStackTrace();
+                Log.d(TAG, "@" + ex.getMessage());
+
             }
             return jsonHtml.toString();
 
         }
 
-        /*
+
         protected void onPostExecute(String str){
             txtView.setText(str);
         }
-        */
+
         /*
         protected void onPostExecute(String str){
             String id;
