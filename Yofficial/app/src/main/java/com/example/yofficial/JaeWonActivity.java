@@ -20,6 +20,8 @@ public class JaeWonActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jaewon);
 
+
+
         Button youtubeTestBtn = (Button)findViewById(R.id.youtubeTestBtn);
         Button dbTestBtn = (Button)findViewById(R.id.dbTestBtn);
 
