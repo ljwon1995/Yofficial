@@ -1,27 +1,24 @@
 package com.example.yofficial;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class DBActivity extends Activity {
 
 
     private static final String TAG = "DBActivity!";
+    private static final String INSERT = "1";
+    private static final String SELECT = "2";
     TextView txtView;
-    phpDown task;
     String result;
     SendDataToPHP sender;
+    String IPAdress = "http:/172.30.1.42:8080/GetValue.php";
+
 
 
     @Override
@@ -30,19 +27,18 @@ public class DBActivity extends Activity {
         setContentView(R.layout.activity_db);
         txtView = (TextView)findViewById(R.id.textView);
 
-        /*
-        task = new phpDown(){
+
+        sender = new SendDataToPHP(){
             @Override
             protected void onPostExecute(String str) {
                 super.onPostExecute(str);
-                result = str;
                 Log.d(TAG, "Result = " + str);
-                txtView.setText(str);
+                result = str;
+                txtView.setText(result);
             }
         };
-        task.execute("http://10.210.61.234:8080/PHP_connection.php");//도메인을 실행하게되면 php가 실행되서 데이터전달이 일어난다.
-
-         */
+        sender.makeQuery(SELECT, "select * from person");
+        sender.execute(IPAdress);
 
         sender = new SendDataToPHP(){
             @Override
@@ -54,7 +50,80 @@ public class DBActivity extends Activity {
             }
         };
 
-        sender.execute("http:/172.30.1.42:8080/GetValue.php");
+
+        sender.makeQuery(INSERT, "insert into person values('jaewon')");
+        sender.execute(IPAdress);
+
+        sender = new SendDataToPHP(){
+            @Override
+            protected void onPostExecute(String str) {
+                super.onPostExecute(str);
+                Log.d(TAG, "Result = " + str);
+                result = str;
+                txtView.setText(result);
+            }
+        };
+
+        sender.makeQuery(SELECT, "select * from person");
+        sender.execute(IPAdress);
+
+
+        sender = new SendDataToPHP(){
+            @Override
+            protected void onPostExecute(String str) {
+                super.onPostExecute(str);
+                Log.d(TAG, "Result = " + str);
+                result = str;
+                txtView.setText(result);
+            }
+        };
+
+
+        sender.makeQuery(INSERT, "insert into person values('yoom')");
+        sender.execute(IPAdress);
+
+        sender = new SendDataToPHP(){
+            @Override
+            protected void onPostExecute(String str) {
+                super.onPostExecute(str);
+                Log.d(TAG, "Result = " + str);
+                result = str;
+                txtView.setText(result);
+            }
+        };
+
+        sender.makeQuery(SELECT, "select * from person");
+        sender.execute(IPAdress);
+
+
+
+
+        sender = new SendDataToPHP(){
+            @Override
+            protected void onPostExecute(String str) {
+                super.onPostExecute(str);
+                Log.d(TAG, "Result = " + str);
+                result = str;
+                txtView.setText(result);
+            }
+        };
+
+
+        sender.makeQuery(INSERT, "insert into person values('hyunwoo')");
+        sender.execute(IPAdress);
+
+        sender = new SendDataToPHP(){
+            @Override
+            protected void onPostExecute(String str) {
+                super.onPostExecute(str);
+                Log.d(TAG, "Result = " + str);
+                result = str;
+                txtView.setText(result);
+            }
+        };
+
+        sender.makeQuery(SELECT, "select * from person");
+        sender.execute(IPAdress);
 
 
     }
