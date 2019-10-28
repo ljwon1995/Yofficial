@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="data_mainIng">
+        <item>주재료</item>
+        <item>소고기</item>
+        <item>닭고기</item>
+        <item>돼지고기</item>
+        <item>생선</item>
+        <item>야채</item>
+        <item>해물류</item>
+        <item>육류</item>
+        <item>쌀</item>
+        <item>밀가루</item>
+        <item>과일</item>
+        <item>달걀,유제품</item>
+    </string-array>
+
+    <string-array name="data_type">
+        <item>타입</item>
+        <item>튀김</item>
+        <item>삶기</item>
+        <item>굽기</item>
+        <item>볶음</item>
+        <item>끊이기</item>
+        <item>조림</item>
+        <item>비빔</item>
+        <item>찜</item>
+        <item>회</item>
+    </string-array>
+
+    <string-array name="data_feature">
+        <item>특징</item>
+        <item>담백</item>
+        <item>매콤</item>
+        <item>달콤</item>
+        <item>얼큰</item>
+        <item>시원</item>
+        <item>고소</item>
+    </string-array>
+
+
+
+</resources>
