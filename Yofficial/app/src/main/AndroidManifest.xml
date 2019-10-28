@@ -26,6 +26,9 @@
         <activity android:name=".JoonHongActivity"></activity>
         <activity android:name=".YouTubeActivity"></activity>
         <activity android:name=".DBActivity"></activity>
+        <activity android:name=".VideoList"></activity>
+        <activity android:name=".CreateRecipeActivity"></activity>
+
 
     </application>
 

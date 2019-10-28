@@ -1,4 +1,4 @@
-package com.example.viewpaper;
+package com.example.yofficial;
 
 public class RecipeInfo {
     private String recipeTitle;
