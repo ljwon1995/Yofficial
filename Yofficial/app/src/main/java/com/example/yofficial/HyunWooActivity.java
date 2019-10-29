@@ -42,7 +42,7 @@ public class HyunWooActivity extends AppCompatActivity {
         youtubeUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=QIa7abUkBP4"));
+                Intent intent = new Intent(getApplicationContext(), YouTubeActivity.class);
                 startActivity(intent);
             }
         });

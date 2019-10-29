@@ -12,8 +12,8 @@ public class DBActivity extends Activity {
 
 
     private static final String TAG = "DBActivity!";
-    private static final String INSERT = "1";
-    private static final String SELECT = "2";
+
+
     TextView txtView;
     String result;
     SendDataToPHP sender;
@@ -37,95 +37,8 @@ public class DBActivity extends Activity {
                 txtView.setText(result);
             }
         };
-        sender.makeQuery(SELECT, "select * from person");
+        sender.makeQuery(SendDataToPHP.SELECT, "select * from person");
         sender.execute(IPAdress);
-
-        sender = new SendDataToPHP(){
-            @Override
-            protected void onPostExecute(String str) {
-                super.onPostExecute(str);
-                Log.d(TAG, "Result = " + str);
-                result = str;
-                txtView.setText(result);
-            }
-        };
-
-
-        sender.makeQuery(INSERT, "insert into person values('jaewon')");
-        sender.execute(IPAdress);
-
-        sender = new SendDataToPHP(){
-            @Override
-            protected void onPostExecute(String str) {
-                super.onPostExecute(str);
-                Log.d(TAG, "Result = " + str);
-                result = str;
-                txtView.setText(result);
-            }
-        };
-
-        sender.makeQuery(SELECT, "select * from person");
-        sender.execute(IPAdress);
-
-
-        sender = new SendDataToPHP(){
-            @Override
-            protected void onPostExecute(String str) {
-                super.onPostExecute(str);
-                Log.d(TAG, "Result = " + str);
-                result = str;
-                txtView.setText(result);
-            }
-        };
-
-
-        sender.makeQuery(INSERT, "insert into person values('yoom')");
-        sender.execute(IPAdress);
-
-        sender = new SendDataToPHP(){
-            @Override
-            protected void onPostExecute(String str) {
-                super.onPostExecute(str);
-                Log.d(TAG, "Result = " + str);
-                result = str;
-                txtView.setText(result);
-            }
-        };
-
-        sender.makeQuery(SELECT, "select * from person");
-        sender.execute(IPAdress);
-
-
-
-
-        sender = new SendDataToPHP(){
-            @Override
-            protected void onPostExecute(String str) {
-                super.onPostExecute(str);
-                Log.d(TAG, "Result = " + str);
-                result = str;
-                txtView.setText(result);
-            }
-        };
-
-
-        sender.makeQuery(INSERT, "insert into person values('hyunwoo')");
-        sender.execute(IPAdress);
-
-        sender = new SendDataToPHP(){
-            @Override
-            protected void onPostExecute(String str) {
-                super.onPostExecute(str);
-                Log.d(TAG, "Result = " + str);
-                result = str;
-                txtView.setText(result);
-            }
-        };
-
-        sender.makeQuery(SELECT, "select * from person");
-        sender.execute(IPAdress);
-
-
     }
 
 

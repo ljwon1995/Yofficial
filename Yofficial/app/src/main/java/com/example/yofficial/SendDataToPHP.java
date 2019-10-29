@@ -13,11 +13,11 @@ import java.net.URL;
 class SendDataToPHP extends AsyncTask<String, Integer,String> {
     private static final String TAG = "SendDataToPHP!";
     String postData;
-
+    static final String INSERT = "1";
+    static final String SELECT = "2";
 
     void makeQuery(String category, String query){
         StringBuilder s = new StringBuilder();
-
         s.append("category=");
         s.append(category);
         s.append("&query=");
