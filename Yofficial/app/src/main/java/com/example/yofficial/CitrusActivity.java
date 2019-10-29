@@ -25,8 +25,8 @@ public class CitrusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_citrus);
 
-        reInfo.setRecipeTitle("씨트러스 웰링턴");
-        reInfo.setRecipeSubTitle("귤의 도원향");
+        reInfo.setRecipeTitle("Cuisse de grenouille");
+        reInfo.setRecipeSubTitle("귤의 변신");
         reInfo.setIntroRecipe("프리미엄 귤 요리");
         reInfo.setServings("1인분");
         reInfo.setDifficulty("다이아몬드");
