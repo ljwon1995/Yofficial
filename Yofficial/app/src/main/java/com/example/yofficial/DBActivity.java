@@ -25,7 +25,7 @@ public class DBActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db);
-        txtView = (TextView)findViewById(R.id.textView);
+        txtView = (TextView)findViewById(R.id.UpText);
 
 
         sender = new SendDataToPHP(){

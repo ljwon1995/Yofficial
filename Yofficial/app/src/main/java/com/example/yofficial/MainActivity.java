@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hyunButtonClicked(View v){
-        Intent intent = new Intent(getApplicationContext(), HyunWooActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CitrusActivity.class);
         startActivity(intent);
     }
 }

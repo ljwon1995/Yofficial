@@ -80,13 +80,7 @@ public class HyunWooActivity extends AppCompatActivity {
         servings.setImageResource(R.drawable.servings);
         level.setImageResource(R.drawable.level);
         duration.setImageResource(R.drawable.duration);
-        youtubeUrl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=QIa7abUkBP4"));
-                startActivity(intent);
-            }
-        });
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
