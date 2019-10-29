@@ -31,7 +31,7 @@
                     android:adjustViewBounds="true"/>
 
                 <ImageView
-                    android:id="@+id/yicon"
+                    android:id="@+id/yoficon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@id/citrus_image"
@@ -40,7 +40,7 @@
                     android:adjustViewBounds="true"/>
 
                 <TextView
-                    android:id="@+id/sub_title"
+                    android:id="@+id/citrus_sub_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/citrus_image"
@@ -50,7 +50,7 @@
                     android:padding="20dp"
                     />
                 <TextView
-                    android:id="@+id/title"
+                    android:id="@+id/citrus_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/citrus_image"
@@ -63,7 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/introRecipe"
+                android:id="@+id/introCitrusRecipe"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center"
                 android:textColor="#00000F"
@@ -83,7 +83,7 @@
                     android:layout_weight = "1"
                     >
                     <ImageView
-                        android:id="@+id/servings"
+                        android:id="@+id/citrus_servings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxWidth="55dp"
@@ -92,7 +92,7 @@
                         android:scaleType="fitCenter"
                         android:adjustViewBounds="true"/>
                     <ImageView
-                        android:id="@+id/level"
+                        android:id="@+id/citrus_level"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxWidth="55dp"
@@ -101,7 +101,7 @@
                         android:scaleType="fitCenter"
                         android:adjustViewBounds="true"/>
                     <ImageView
-                        android:id="@+id/duration"
+                        android:id="@+id/citrus_duration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxWidth="50dp"
@@ -119,20 +119,20 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/serveNum"
+                        android:id="@+id/citrus_serveNum"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginRight="10dp"
                         android:textSize="13dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/difficulty"
+                        android:id="@+id/citrus_difficulty"
                         android:layout_gravity="center_horizontal"
                         android:textSize="13dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/duraTime"
+                        android:id="@+id/citrus_duraTime"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="10dp"
                         android:textSize="13dp" />
@@ -160,7 +160,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ingredientList"
+                android:id="@+id/citrus_ingredientList"
                 android:padding="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -176,7 +176,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/seasoningList"
+                android:id="@+id/citrus_seasoningList"
                 android:padding="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -216,14 +216,14 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/start_citrus"
                     android:scaleType="center"
-                    android:id="@+id/youtubeUrl"
+                    android:id="@+id/citrus_youtubeUrl"
                     />
                 <TextView
                     android:id="@+id/startImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignRight="@id/youtubeUrl"
-                    android:layout_alignBottom="@id/youtubeUrl"
+                    android:layout_alignRight="@id/citrus_youtubeUrl"
+                    android:layout_alignBottom="@id/citrus_youtubeUrl"
                     android:paddingBottom="10dp"
                     android:text="시작하려면 여기를 클릭하세요."
                     android:textColor="	#FFFFFF"
