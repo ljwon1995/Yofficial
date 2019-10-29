@@ -10,6 +10,7 @@
     <ListView
         android:id="@+id/listview1"
         android:layout_width="399dp"
+        asdf
         android:layout_height="604dp"
         android:background="#FFFFFF"
         android:divider="#999999"

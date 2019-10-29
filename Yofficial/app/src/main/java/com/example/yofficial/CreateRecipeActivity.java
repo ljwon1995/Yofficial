@@ -4,11 +4,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +27,15 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 0;
     private ImageView getImage;
+    private int timeIdCount = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
+
+        //사진 받아오기
         getImage = (ImageView)findViewById(R.id.user_image);
 
         getImage.setOnClickListener(new View.OnClickListener(){
@@ -41,7 +49,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         });
 
 
-
+        // 카테고리 스피너 선언부
         Spinner mainIngSpinner = (Spinner)findViewById(R.id.main_ing);
         ArrayAdapter mainIngAdapter = ArrayAdapter.createFromResource(this, R.array.data_mainIng, android.R.layout.simple_spinner_item);
         mainIngAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -57,6 +65,19 @@ public class CreateRecipeActivity extends AppCompatActivity {
         featureAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         featureSpinner.setAdapter(featureAdapter);
 
+
+        //시간 태깅 스피너 선언부
+        Spinner  s_hour1= (Spinner)findViewById(R.id.s_hour1);
+        ArrayAdapter s_hour1Adapter = ArrayAdapter.createFromResource(this, R.array.data_hour, android.R.layout.simple_spinner_item);
+        s_hour1.setAdapter(s_hour1Adapter);
+        Spinner  s_minute1= (Spinner)findViewById(R.id.s_minute1);
+        ArrayAdapter s_minute1Adapter = ArrayAdapter.createFromResource(this, R.array.data_minute, android.R.layout.simple_spinner_item);
+        s_minute1.setAdapter(s_minute1Adapter);
+        Spinner  s_second1= (Spinner)findViewById(R.id.s_second1);
+        ArrayAdapter s_second1Adapter = ArrayAdapter.createFromResource(this, R.array.data_second, android.R.layout.simple_spinner_item);
+        s_second1.setAdapter(s_second1Adapter);
+
+        // 인분, 난이도, 소요시간 다중 선택 부
         final TextView servingSelB = (TextView) findViewById(R.id.servingSel);
         final TextView diffiSelB = (TextView) findViewById(R.id.diffiSel);
         final TextView duraSelB = (TextView) findViewById(R.id.duraSel);
@@ -129,8 +150,26 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 }).create().show();
             }
         });
+
+        //시간 태깅 입력 추가
+        TableLayout timeTable = (TableLayout)findViewById(R.id.timeTable);
+        timeTable.setStretchAllColumns(true);
+        TableRow tr1 = new TableRow(this);
+        tr1.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
+
+
+        Button insert = (Button)findViewById(R.id.insertTimeButton);
+        insert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
+
+    //사진 받아오기 관련
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
