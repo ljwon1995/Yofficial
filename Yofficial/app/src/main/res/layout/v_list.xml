@@ -9,9 +9,11 @@
 
     <ListView
         android:id="@+id/listview1"
-        android:layout_width="399dp"
-        asdf
-        android:layout_height="604dp"
+
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
         android:background="#FFFFFF"
         android:divider="#999999"
         android:dividerHeight="1dp"
