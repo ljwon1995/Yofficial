@@ -80,7 +80,7 @@ public class HyunWooActivity extends AppCompatActivity {
         servings.setImageResource(R.drawable.servings);
         level.setImageResource(R.drawable.level);
         duration.setImageResource(R.drawable.duration);
-       
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

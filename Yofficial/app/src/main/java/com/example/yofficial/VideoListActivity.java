@@ -39,7 +39,7 @@ public class VideoListActivity extends AppCompatActivity {
 
         list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.ab), "3분만에 만드는 맛있는 수제햄버거", "\n맥도날드", "\n24212 views"));
         list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.aa), "delicious gyudon", "\n홍길동", "\n84213 views"));
-        list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.citrus_image), "맛있게 귤 까먹는 법", "\n이재원", "\n11views"));
+        list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.citrus_image), "씨트러스 웰링턴", "\n이재원", "\n11views"));
 
         adapter = new VideoAdapter(this, list);
         listview.setAdapter(adapter);
@@ -52,6 +52,13 @@ public class VideoListActivity extends AppCompatActivity {
                     Intent intent = new Intent(
                             getApplicationContext(), // 현재 화면의 제어권자
                             HyunWooActivity.class); // 다음 넘어갈 클래스 지정
+                    //intent.putExtra();
+                    startActivity(intent); // 다음 화면으로 넘어간다
+                }
+                if("씨트러스 웰링턴" == list.get(position). getV_title()){
+                    Intent intent = new Intent(
+                            getApplicationContext(), // 현재 화면의 제어권자
+                            CitrusActivity.class); // 다음 넘어갈 클래스 지정
                     //intent.putExtra();
                     startActivity(intent); // 다음 화면으로 넘어간다
                 }
