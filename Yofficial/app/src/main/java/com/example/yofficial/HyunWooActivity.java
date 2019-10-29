@@ -23,7 +23,7 @@ public class HyunWooActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hyunwoo);
+        setContentView(R.layout.activity_citrus);
 
         refo.setRecipeTitle("차슈 덮밥");
         refo.setRecipeSubTitle("덮밥은 진리다");
