@@ -4,17 +4,17 @@ package com.example.yofficial;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CitrusActivity extends AppCompatActivity {
     RecipeInfo reInfo = new RecipeInfo();
-    String[] dbIng = {"귤", "그리고 귤"};
+    String[] dbIng = {"귤", "그리고귤"};
     String[] ingredients;
     String[] dbSsn = {"손맛", "스킬"};
     String[] seasonings;
@@ -37,14 +37,13 @@ public class CitrusActivity extends AppCompatActivity {
         for (int i = 0; i < ingredients.length; i++) {
             ingredients[i] = dbIng[i];
         }
-        reInfo.setIngredient(ingredients);
 
+        reInfo.setIngredient(ingredients);
         seasonings = new String[dbSsn.length];
         for (int i = 0; i < seasonings.length; i++) {
             seasonings[i] = dbSsn[i];
         }
         reInfo.setSeasoning(seasonings);
-
 
         //db정보가 있는 RecipeInfo클래스에서 정보 받아오기
         TextView citrusTitle = (TextView)findViewById(R.id.citrus_title);
@@ -65,37 +64,36 @@ public class CitrusActivity extends AppCompatActivity {
         citrus_seasoningList.setText(reInfo.getSeasoning());
 
         //뷰, 버튼들의 선언부
-        ImageView imageView = (ImageView)findViewById(R.id.citrus_image);
+        ImageView citrus_imageView = (ImageView)findViewById(R.id.citrus_image);
         ImageView yoficonView = (ImageView)findViewById(R.id.yoficon);
         ImageView citrus_servings = (ImageView)findViewById(R.id.citrus_servings);
         ImageView citrus_level = (ImageView)findViewById(R.id.citrus_level);
         ImageView citrus_duration = (ImageView)findViewById(R.id.citrus_duration);
         ImageView citrus_youtubeUrl = (ImageView) findViewById(R.id.citrus_youtubeUrl);
-        Button button = (Button) findViewById(R.id.create);
-
+        Button citrus_button = (Button) findViewById(R.id.citrus_create);
 
         // drawable에 있는 이미지를 지정합니다.
-        imageView.setImageResource(R.drawable.citrus_image);
+        citrus_imageView.setImageResource(R.drawable.citrus_image);
         yoficonView.setImageResource(R.drawable.yicon);
         citrus_servings.setImageResource(R.drawable.servings);
         citrus_level.setImageResource(R.drawable.level);
         citrus_duration.setImageResource(R.drawable.duration);
+
         citrus_youtubeUrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=QIa7abUkBP4"));
+                Intent intent = new Intent(getApplicationContext(), YouTubeActivity.class);
                 startActivity(intent);
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),CreateRecipeActivity.class);
-                startActivity(intent);
-            }
-        });
-
+//        citrus_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(),CreateRecipeActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 }
