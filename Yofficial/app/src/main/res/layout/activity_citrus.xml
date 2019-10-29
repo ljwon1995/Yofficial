@@ -214,7 +214,7 @@
                     android:maxWidth="1000dp"
                     android:maxHeight="300dp"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/start_citrus"
+                    android:src="@drawable/servings"
                     android:scaleType="center"
                     android:id="@+id/citrus_youtubeUrl"
                     />
