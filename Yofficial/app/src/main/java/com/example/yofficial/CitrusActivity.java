@@ -70,7 +70,6 @@ public class CitrusActivity extends AppCompatActivity {
         ImageView citrus_level = (ImageView)findViewById(R.id.citrus_level);
         ImageView citrus_duration = (ImageView)findViewById(R.id.citrus_duration);
         ImageView citrus_youtubeUrl = (ImageView) findViewById(R.id.citrus_youtubeUrl);
-        Button citrus_button = (Button) findViewById(R.id.citrus_create);
 
         // drawable에 있는 이미지를 지정합니다.
         citrus_imageView.setImageResource(R.drawable.citrus_image);

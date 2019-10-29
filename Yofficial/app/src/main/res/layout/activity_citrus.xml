@@ -211,10 +211,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
-                    android:maxWidth="1000dp"
-                    android:maxHeight="300dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/servings"
+                    android:layout_marginBottom="15dp"
+                    android:src="@drawable/start_citrus"
                     android:scaleType="center"
                     android:id="@+id/citrus_youtubeUrl"
                     />
@@ -229,15 +227,9 @@
                     android:textColor="	#FFFFFF"
                     android:textSize="15dp"
                     />
+
             </RelativeLayout>
 
-
-            <Button
-                android:id="@+id/citrus_create"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="creat Button" />
 
         </LinearLayout>
 
