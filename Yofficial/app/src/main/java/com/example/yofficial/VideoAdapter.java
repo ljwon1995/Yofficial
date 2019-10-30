@@ -92,7 +92,7 @@ public class VideoAdapter extends BaseAdapter {
             videoList.addAll(listview);
         } else {
             for (VideoItem potion : listview) {
-                if (potion.getV_title().contains(charText)) {
+                if (potion.getV_title().toLowerCase(Locale.getDefault()).contains(charText)) {
                     videoList.add(potion);
                 }
             }
