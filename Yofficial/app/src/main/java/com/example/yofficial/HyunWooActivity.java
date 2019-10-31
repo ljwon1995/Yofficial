@@ -16,7 +16,7 @@ public class HyunWooActivity extends AppCompatActivity {
     RecipeInfo refo = new RecipeInfo();
     String[] dbIng = {"소고기/200g", "양파/반개", "마늘/5개", "청양고추/1개", "피망/1개"};
     String[] ingredients;
-    String[] dbSsn = {"올리고당/스푼", "간장/2스푼", "고춧가루/2스푼", "물/2-3스푼"};
+    String[] dbSsn = {"올리고당/스푼", "간장/2스푼", "고춧가루/3스푼", "물/2-3스푼"};
     String[] seasonings;
     String[] dbStartTime = {"2/30/20","0/22/34","0/20/01"};
 
