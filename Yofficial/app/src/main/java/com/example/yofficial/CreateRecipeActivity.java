@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,12 +29,71 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 0;
     private ImageView getImage;
-    private int timeIdCount = 3;
+    private int timeIdCount = 0;
+
+    //재료 테이블 받아오기
+    TableRow tr[] = new TableRow[100];
+    EditText ingName[] = new EditText[100];
+    EditText ingFigures[] = new EditText[100];
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        final TableLayout ingTable = findViewById(R.id.ingTable);
+        TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.weight = 1f;
+
+        for (int i = 0; i < ingName.length; i++) {
+            ingName[i] = new EditText(this);
+            ingName[i].setLayoutParams(params);
+            ingName[i].setBackground(null);
+            ingName[i].setHint("예시) 돼지고기");
+            ingName[i].setHintTextColor(Color.parseColor("#4075757E"));
+            ingName[i].setTextSize(15);
+        }
+
+        for (int i = 0; i < ingFigures.length; i++) {
+            ingFigures[i] = new EditText(this);
+            ingFigures[i].setLayoutParams(params);
+            ingFigures[i].setBackground(null);
+            ingFigures[i].setHint("예시) 200g");
+            ingFigures[i].setHintTextColor(Color.parseColor("#4075757E"));
+            ingFigures[i].setTextSize(15);
+        }
+
+
+        for (int i = 0; i < tr.length; i++) {
+            tr[i] = new TableRow(this);
+        }
+
+        //재료 테이블 추가 삭제
+        Button insertIngBtn = findViewById(R.id.insertIng);
+        insertIngBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tr[timeIdCount].addView(ingName[timeIdCount]);
+                tr[timeIdCount].addView(ingFigures[timeIdCount]);
+                ingTable.addView(tr[timeIdCount]);
+                timeIdCount++;
+            }
+        });
+        Button removeIngBtn = findViewById(R.id.removeIng);
+        removeIngBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (timeIdCount > 0) {
+                    ingTable.removeView(tr[timeIdCount - 1]);
+                    tr[timeIdCount - 1].removeView(ingName[timeIdCount - 1]);
+                    tr[timeIdCount - 1].removeView(ingFigures[timeIdCount - 1]);
+                    timeIdCount--;
+                }
+            }
+        });
 
 
         //사진 받아오기
