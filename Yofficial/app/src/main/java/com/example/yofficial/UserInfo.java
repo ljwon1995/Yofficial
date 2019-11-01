@@ -1,11 +1,15 @@
 package com.example.yofficial;
 
+import java.util.ArrayList;
+
 public class UserInfo {
     private String id;
     private String pw;
     private String status;
     private int level;
     private float exp;
+
+
 
     public String getId() {
         return id;
