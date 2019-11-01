@@ -16,6 +16,8 @@ public class RecipeInfo {
     private String youtubeUrl;
     private String[] startTime;
     private String[] endTime;
+    private String imgsrc;
+    private String[] stepDescrib;
 
 
 

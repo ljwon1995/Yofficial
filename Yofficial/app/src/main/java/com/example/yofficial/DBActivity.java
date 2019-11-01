@@ -26,7 +26,7 @@ public class DBActivity extends Activity {
 
     EditText txtView;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("User");
+    DatabaseReference myRef = database.getReference();
     UserInfo usr;
 
 
@@ -37,23 +37,30 @@ public class DBActivity extends Activity {
         setContentView(R.layout.activity_db);
         txtView = findViewById(R.id.UpText);
 
-        Log.d(TAG, "IN");
+
         usr = new UserInfo();
         usr.setId("ljwon1995");
         usr.setPw("asdf");
         usr.setStatus("Chef");
-        usr.setLevel(4);
+        usr.setLevel(400);
         usr.setExp(30);
-        myRef.setValue(usr);
-        Log.d(TAG, "Set!");
+
+
+        myRef.child("users").child(usr.getId()).setValue(usr);
+
+
+
+
+
+
 
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "Changed");
-                String value = dataSnapshot.getValue(String.class);
-                Log.d(TAG, value);
+                UserInfo value = dataSnapshot.getValue(UserInfo.class);
+                Log.d(TAG, value.printUser());
             }
 
             @Override

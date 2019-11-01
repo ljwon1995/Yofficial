@@ -1,6 +1,5 @@
 package com.example.yofficial;
 
-import java.util.ArrayList;
 
 public class UserInfo {
     private String id;
@@ -49,5 +48,12 @@ public class UserInfo {
 
     public void setExp(float exp) {
         this.exp = exp;
+    }
+
+    public String printUser(){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(id).append(pw).append(status).append(level).append(exp);
+        return sb.toString();
     }
 }
