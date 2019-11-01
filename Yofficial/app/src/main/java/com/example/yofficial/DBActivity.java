@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 public class DBActivity extends Activity {
 
@@ -16,6 +19,9 @@ public class DBActivity extends Activity {
 
 
     EditText txtView;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("User");
+    UserInfo usr;
 
 
 
@@ -24,6 +30,17 @@ public class DBActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db);
         txtView = findViewById(R.id.UpText);
+
+        usr = new UserInfo();
+        usr.setId("ljwon1995");
+        usr.setPw("asdf");
+        usr.setStatus("Chef");
+        usr.setLevel(4);
+        usr.setExp(30);
+
+        myRef.setValue(usr);
+
+
 
     }
 
