@@ -22,9 +22,11 @@ public class DBActivity extends Activity {
 
 
     private static final String TAG = "DBActivity!";
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();;
+    private DatabaseReference myRef = database.getReference();
 
+    DBAccess da = new DBAccess(this);
 
-    EditText txtView;
     UserInfo usr;
 
 
@@ -33,23 +35,31 @@ public class DBActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db);
-        txtView = findViewById(R.id.UpText);
-
 
         usr = new UserInfo();
-        usr.setId("ljwon1995");
+        usr.setId("3457may1");
         usr.setPw("asdf");
-        usr.setStatus("Chef");
-        usr.setLevel(400);
+        usr.setStatus("Cook");
+        usr.setLevel(30);
         usr.setExp(30);
 
+        da.addUser(usr);
 
+        usr.setId("3457may2");
+        usr.setPw("asdf");
+        usr.setStatus("Cook");
+        usr.setLevel(30);
+        usr.setExp(30);
 
+        da.addUser(usr);
 
+        usr.setId("3457may3");
+        usr.setPw("asdf");
+        usr.setStatus("Cook");
+        usr.setLevel(30);
+        usr.setExp(30);
 
-
-
-
+        da.addUser(usr);
 
 
 
