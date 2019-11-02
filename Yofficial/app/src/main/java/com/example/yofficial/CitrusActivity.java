@@ -38,12 +38,12 @@ public class CitrusActivity extends AppCompatActivity {
             ingredients[i] = dbIng[i];
         }
 
-        reInfo.setIngredient(ingredients);
+        //reInfo.setIngredient(ingredients);
         seasonings = new String[dbSsn.length];
         for (int i = 0; i < seasonings.length; i++) {
             seasonings[i] = dbSsn[i];
         }
-        reInfo.setSeasoning(seasonings);
+        //reInfo.setSeasoning(seasonings);
 
         //db정보가 있는 RecipeInfo클래스에서 정보 받아오기
         TextView citrusTitle = (TextView)findViewById(R.id.citrus_title);
@@ -59,9 +59,9 @@ public class CitrusActivity extends AppCompatActivity {
         TextView citrus_duraTime = (TextView)findViewById(R.id.citrus_duraTime);
         citrus_duraTime.setText(reInfo.getDuraTime());
         TextView citrus_ingredientList = (TextView)findViewById(R.id.citrus_ingredientList);
-        citrus_ingredientList.setText(reInfo.getIngredient());
+        //citrus_ingredientList.setText(reInfo.getIngredient());
         TextView citrus_seasoningList = (TextView)findViewById(R.id.citrus_seasoningList);
-        citrus_seasoningList.setText(reInfo.getSeasoning());
+        //citrus_seasoningList.setText(reInfo.getSeasoning());
 
         //뷰, 버튼들의 선언부
         ImageView citrus_imageView = (ImageView)findViewById(R.id.citrus_image);

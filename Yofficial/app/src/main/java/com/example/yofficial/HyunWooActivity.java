@@ -32,6 +32,8 @@ public class HyunWooActivity extends AppCompatActivity {
         refo.setDifficulty("다이아몬드");
         refo.setDuraTime("2시간 이상");
 
+
+        /*
         //db에서 쏴 준 정보 임시 문자열 테이블에 저장, 나중에 db연동 시 수정
         ingredients = new String[dbIng.length];
         for (int i = 0; i < ingredients.length; i++) {
@@ -44,6 +46,8 @@ public class HyunWooActivity extends AppCompatActivity {
             seasonings[i] = dbSsn[i];
         }
         refo.setSeasoning(seasonings);
+
+         */
 
 
         //db정보가 있는 RecipeInfo클래스에서 정보 받아오기
@@ -60,9 +64,9 @@ public class HyunWooActivity extends AppCompatActivity {
         TextView duraTime = (TextView)findViewById(R.id.duraTime);
         duraTime.setText(refo.getDuraTime());
         TextView ingredientList = (TextView)findViewById(R.id.ingredientList);
-        ingredientList.setText(refo.getIngredient());
+        //ingredientList.setText(refo.getIngredient());
         TextView seasoningList = (TextView)findViewById(R.id.seasoningList);
-        seasoningList.setText(refo.getSeasoning());
+        //seasoningList.setText(refo.getSeasoning());
 
         //뷰, 버튼들의 선언부
         ImageView imageView = (ImageView)findViewById(R.id.imageview);
