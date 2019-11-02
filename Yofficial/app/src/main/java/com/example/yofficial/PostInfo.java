@@ -1,4 +1,6 @@
-public class Post {
+package com.example.yofficial;
+
+public class PostInfo {
 
     private String userId;
     private String recipeId;

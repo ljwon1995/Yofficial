@@ -25,8 +25,6 @@ public class DBActivity extends Activity {
 
 
     EditText txtView;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference();
     UserInfo usr;
 
 
@@ -46,28 +44,9 @@ public class DBActivity extends Activity {
         usr.setExp(30);
 
 
-        myRef.child("users").child(usr.getId()).setValue(usr);
 
 
 
-
-
-
-
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "Changed");
-                UserInfo value = dataSnapshot.getValue(UserInfo.class);
-                Log.d(TAG, value.printUser());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
 
 
@@ -78,8 +57,7 @@ public class DBActivity extends Activity {
 
 
     public void onBackButtonClicked(View v){
-        usr.setExp(40);
-        myRef.setValue(usr);
+
     }
 
 }
