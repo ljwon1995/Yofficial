@@ -21,6 +21,7 @@ public class DBAccess {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         ac = activity;
+
     }
 
     void addUser(UserInfo usr){
@@ -38,6 +39,37 @@ public class DBAccess {
                     }
                 });
 
+
+    }
+
+    void deleteUser(UserInfo usr){
+        myRef.child("users").child(usr.getId()).removeValue().addOnSuccessListener(ac, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
+                ac.finish();
+            }
+        }).addOnFailureListener(ac, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ac.getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    void deleteUser(String userId){
+        myRef.child("users").child(userId).removeValue().addOnSuccessListener(ac, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
+                ac.finish();
+            }
+        }).addOnFailureListener(ac, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ac.getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

@@ -22,9 +22,6 @@ public class DBActivity extends Activity {
 
 
     private static final String TAG = "DBActivity!";
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();;
-    private DatabaseReference myRef = database.getReference();
-
     DBAccess da = new DBAccess(this);
 
     UserInfo usr;
@@ -36,6 +33,7 @@ public class DBActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db);
 
+
         usr = new UserInfo();
         usr.setId("3457may1");
         usr.setPw("asdf");
@@ -44,23 +42,7 @@ public class DBActivity extends Activity {
         usr.setExp(30);
 
         da.addUser(usr);
-
-        usr.setId("3457may2");
-        usr.setPw("asdf");
-        usr.setStatus("Cook");
-        usr.setLevel(30);
-        usr.setExp(30);
-
-        da.addUser(usr);
-
-        usr.setId("3457may3");
-        usr.setPw("asdf");
-        usr.setStatus("Cook");
-        usr.setLevel(30);
-        usr.setExp(30);
-
-        da.addUser(usr);
-
+        da.deleteUser("ljwon19951");
 
 
     }
