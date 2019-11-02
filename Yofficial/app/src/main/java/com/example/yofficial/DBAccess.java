@@ -35,7 +35,7 @@ public class DBAccess {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ac.getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ac.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -52,7 +52,7 @@ public class DBAccess {
         }).addOnFailureListener(ac, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ac.getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ac.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -67,10 +67,25 @@ public class DBAccess {
         }).addOnFailureListener(ac, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ac.getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ac.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+
+    void addRecipe(RecipeInfo recipe){
+        myRef.child("recipes").push().setValue(recipe).addOnSuccessListener(ac, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
+                ac.finish();
+            }
+        }).addOnFailureListener(ac, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ac.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
