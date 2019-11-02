@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,7 +20,7 @@ import java.util.List;
 public class RefregActivity extends AppCompatActivity {
 
     private List<String> list;          // 데이터를 넣은 리스트변수
-    private ListView listView;          // 검색을 보여줄 리스트변수
+    private ListView listview;          // 검색을 보여줄 리스트변수
     private EditText editSearch;        // 검색어를 입력할 Input 창
     private Refreg_SearchAdapter adapter;      // 리스트뷰에 연결할 아답터
     private ArrayList<String> arraylist;
@@ -29,7 +32,7 @@ public class RefregActivity extends AppCompatActivity {
         setContentView(R.layout.activity_refreg);
 
         editSearch = (EditText) findViewById(R.id.editSearch);
-        listView = (ListView) findViewById(R.id.listView);
+        listview = (ListView) findViewById(R.id.listView);
 
         // 리스트를 생성한다.
         list = new ArrayList<String>();
@@ -45,7 +48,7 @@ public class RefregActivity extends AppCompatActivity {
         adapter = new Refreg_SearchAdapter(list, this);
 
         // 리스트뷰에 아답터를 연결한다.
-        listView.setAdapter(adapter);
+        listview.setAdapter(adapter);
 
         // input창에 검색어를 입력시 "addTextChangedListener" 이벤트 리스너를 정의한다.
         editSearch.addTextChangedListener(new TextWatcher() {
@@ -68,6 +71,15 @@ public class RefregActivity extends AppCompatActivity {
         });
 
 
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // 리스트 목록 눌렀을때 해당 재료 이름 반영
+                TextView input= (TextView)findViewById(R.id.ingredient_input);
+
+                Toast.makeText(RefregActivity.this ,list.get(position),Toast.LENGTH_LONG).show();
+                input.setText(list.get(position));
+            }
+        });
     }
 
     // 검색을 수행하는 메소드
@@ -116,9 +128,15 @@ public class RefregActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
     public void mOnPopupClick(View v){
         Intent intent = new Intent(this, Refreg_PopupActivity.class);
         intent.putExtra("data", "Test Popup");
         startActivityForResult(intent, 1);
     }
+
+
 }
