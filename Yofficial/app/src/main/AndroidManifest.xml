@@ -29,6 +29,8 @@
         <activity android:name=".VideoListActivity"></activity>
         <activity android:name=".CreateRecipeActivity"></activity>
         <activity android:name=".CitrusActivity"></activity>
+        <activity android:name=".RefregActivity"></activity>
+        <activity android:name=".Refreg_PopupActivity" android:theme="@android:style/Theme.Dialog" />
 
 
     </application>

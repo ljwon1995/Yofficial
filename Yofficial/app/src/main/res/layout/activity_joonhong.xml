@@ -57,17 +57,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageButton2"
+        app:layout_constraintStart_toEndOf="@+id/refregButton"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/plate" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/refregButton"
         android:layout_width="58dp"
         android:layout_height="71dp"
         android:background="#75757E"
         android:scaleType="centerCrop"
+        android:onClick="onButton3Clicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.164"
@@ -86,7 +87,7 @@
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+        app:layout_constraintTop_toBottomOf="@+id/refregButton"
         app:layout_constraintVertical_bias="0.5"
         app:srcCompat="@drawable/delivery" />
 
@@ -96,7 +97,7 @@
         android:layout_height="61dp"
         android:background="#75757E"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
+        app:layout_constraintBottom_toTopOf="@+id/refregButton"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
