@@ -18,13 +18,11 @@ public class Refreg_SearchAdapter extends BaseAdapter {
     private ViewHolder viewHolder;
 
     public Refreg_SearchAdapter(List<String> list, Context context){
-
-
-
         this.list = list;
         this.context = context;
         this.inflate = LayoutInflater.from(context);
     }
+
     @Override
     public int getCount() {
         return list.size();
@@ -39,6 +37,7 @@ public class Refreg_SearchAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return 0;
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
@@ -58,6 +57,7 @@ public class Refreg_SearchAdapter extends BaseAdapter {
 
         return convertView;
     }
+
 
     class ViewHolder{
         public TextView label;

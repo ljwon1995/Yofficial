@@ -32,7 +32,7 @@
             android:id="@+id/ingredient_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="선택된 재료\n" />
 
         <Button
             android:id="@+id/refrigerator_search"

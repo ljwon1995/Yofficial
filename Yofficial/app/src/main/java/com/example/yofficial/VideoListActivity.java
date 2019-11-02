@@ -156,6 +156,8 @@ public class VideoListActivity extends AppCompatActivity {
         return true;
     }
 
+
+    // 상단 탭 메뉴
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int curId = item.getItemId();

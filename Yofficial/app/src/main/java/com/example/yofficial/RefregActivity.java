@@ -20,6 +20,7 @@ import java.util.List;
 public class RefregActivity extends AppCompatActivity {
 
     private List<String> list;          // 데이터를 넣은 리스트변수
+    private List<String> select_list;   // 재료선택 데이터 리스트
     private ListView listview;          // 검색을 보여줄 리스트변수
     private EditText editSearch;        // 검색어를 입력할 Input 창
     private Refreg_SearchAdapter adapter;      // 리스트뷰에 연결할 아답터
@@ -36,6 +37,7 @@ public class RefregActivity extends AppCompatActivity {
 
         // 리스트를 생성한다.
         list = new ArrayList<String>();
+        select_list = new ArrayList<String>();
 
         // 검색에 사용할 데이터을 미리 저장한다.
         settingList();
@@ -70,17 +72,20 @@ public class RefregActivity extends AppCompatActivity {
             }
         });
 
-
+        // 리스트 목록 눌렀을때 해당 재료 이름 반영
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // 리스트 목록 눌렀을때 해당 재료 이름 반영
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView input= (TextView)findViewById(R.id.ingredient_input);
 
                 Toast.makeText(RefregActivity.this ,list.get(position),Toast.LENGTH_LONG).show();
-                input.setText(list.get(position));
+                select_list.add(list.get(position));
+                input.append(list.get(position));
+                input.append(", ");
             }
         });
     }
+
 
     // 검색을 수행하는 메소드
     public void search(String charText) {
@@ -110,6 +115,7 @@ public class RefregActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+
     // 검색에 사용될 데이터를 리스트에 추가한다.
     private void settingList(){
         list.add("돼지고기 목살");
@@ -125,18 +131,13 @@ public class RefregActivity extends AppCompatActivity {
         list.add("쪽마늘");
         list.add("대파");
         list.add("쪽파");
-
     }
 
 
-
-
-
+    // 팝업창을 띄워준다 (추천된 요리를 보여줄 팝업창)
     public void mOnPopupClick(View v){
         Intent intent = new Intent(this, Refreg_PopupActivity.class);
         intent.putExtra("data", "Test Popup");
         startActivityForResult(intent, 1);
     }
-
-
 }
