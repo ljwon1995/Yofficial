@@ -20,7 +20,7 @@ import java.util.List;
 public class RefregActivity extends AppCompatActivity {
 
     private List<String> list;          // 데이터를 넣은 리스트변수
-    private List<String> select_list;   // 재료선택 데이터 리스트
+    private ArrayList<String> select_list = new ArrayList<String>();   // 재료선택 데이터 리스트
     private ListView listview;          // 검색을 보여줄 리스트변수
     private EditText editSearch;        // 검색어를 입력할 Input 창
     private Refreg_SearchAdapter adapter;      // 리스트뷰에 연결할 아답터
@@ -32,12 +32,12 @@ public class RefregActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refreg);
 
-        editSearch = (EditText) findViewById(R.id.editSearch);
-        listview = (ListView) findViewById(R.id.listView);
+        editSearch = (EditText) findViewById(R.id.refreg_editSearch);
+        listview = (ListView) findViewById(R.id.refreg_listView);
 
         // 리스트를 생성한다.
         list = new ArrayList<String>();
-        select_list = new ArrayList<String>();
+        //select_list = new ArrayList<String>();
 
         // 검색에 사용할 데이터을 미리 저장한다.
         settingList();
@@ -76,12 +76,27 @@ public class RefregActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView input= (TextView)findViewById(R.id.ingredient_input);
+                TextView input= (TextView)findViewById(R.id.refreg_ingredient_input);
 
-                Toast.makeText(RefregActivity.this ,list.get(position),Toast.LENGTH_LONG).show();
-                select_list.add(list.get(position));
-                input.append(list.get(position));
-                input.append(", ");
+                if(select_list.contains(list.get(position))){
+
+                    select_list.remove(list.get(position));
+
+                    input.setText("선택된 재료(동일재료를 누르면 삭제됩니다!)\n" );
+                    for(Object object : select_list) {
+                        String element = (String) object;
+                        input.append("[" + element + "] ");
+                    }
+                }
+                else{
+                    input.setText("선택된 재료(동일재료를 누르면 삭제됩니다!)\n" );
+
+                    select_list.add(list.get(position));
+                    for(Object object : select_list) {
+                        String element = (String) object;
+                        input.append("[" + element + "] ");
+                    }
+                }
             }
         });
     }
@@ -137,7 +152,7 @@ public class RefregActivity extends AppCompatActivity {
     // 팝업창을 띄워준다 (추천된 요리를 보여줄 팝업창)
     public void mOnPopupClick(View v){
         Intent intent = new Intent(this, Refreg_PopupActivity.class);
-        intent.putExtra("data", "Test Popup");
+        intent.putStringArrayListExtra("ArrayList", select_list);
         startActivityForResult(intent, 1);
     }
 }

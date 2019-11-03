@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".RefregActivity">
 
     <LinearLayout
@@ -11,15 +12,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <EditText
-            android:id="@+id/editSearch"
+            android:id="@+id/refreg_editSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:privateImeOptions="defaultInputmode=korean"
-            android:hint="검색어를 입력하세요."/>
+            android:hint="찾으실 재료를 입력하세요."/>
 
 
         <ListView
-            android:id="@+id/listView"
+            android:id="@+id/refreg_listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="#999999"
@@ -28,17 +29,32 @@
 
         </ListView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#747474" />
+
         <TextView
-            android:id="@+id/ingredient_input"
+            android:id="@+id/refreg_ingredient_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="선택된 재료\n" />
+            android:background="#eeeeee"
+            android:text="선택된 재료(동일재료를 누르면 삭제됩니다!)\n"
+            android:textColor="#8F4403"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#747474" />
 
         <Button
             android:id="@+id/refrigerator_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="16dp"
             android:onClick="mOnPopupClick"
+            android:background="#00000000"
+            android:textColor="#ff7a00"
             android:text="냉장고를 부탁해!" />
     </LinearLayout>
 

@@ -6,12 +6,22 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Refreg_PopupActivity extends Activity {
 
     TextView txtText;
+    List<VideoItem> list;
+    ListView listview;
+    VideoAdapter adapter;
 
 
     @Override
@@ -22,12 +32,49 @@ public class Refreg_PopupActivity extends Activity {
         setContentView(R.layout.activity_refreg_popup);
 
         //UI 객체생성
-        txtText = (TextView)findViewById(R.id.txtText);
+        txtText = (TextView)findViewById(R.id.pop_input_text);
 
         //데이터 가져오기
         Intent intent = getIntent();
-        String data = intent.getStringExtra("data");
-        txtText.setText(data);
+        ArrayList<String> ReceiveArr = intent.getStringArrayListExtra("ArrayList"); //어레이 리스트 받아옴 (선택된 재료들)
+
+        txtText.setText("선택된 재료\n" );
+        for(int i=0;i<ReceiveArr.size();i++){ // 어레이리스트 출력
+            txtText.append("[" + ReceiveArr.get(i) + "] ");
+        }
+
+
+        // 팝업내 리스트뷰
+        listview = (ListView) findViewById(R.id.pop_listView);
+        list = new ArrayList<VideoItem>();
+
+
+        list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.ab), "3분만에 만드는 맛있는 수제햄버거", "\n맥도날드", "\n24212 views"));
+        list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.aa), "delicious gyudon", "\n홍길동", "\n84213 views"));
+        list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.citrus_image), "Cuisse de grenouille", "\n이재원", "\n11views"));
+
+        adapter = new VideoAdapter(this, list);
+        listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if("delicious gyudon" == list.get(position). getV_title()){
+                    Intent intent = new Intent(
+                            getApplicationContext(), // 현재 화면의 제어권자
+                            HyunWooActivity.class); // 다음 넘어갈 클래스 지정
+                    //intent.putExtra();
+                    startActivity(intent); // 다음 화면으로 넘어간다
+                }
+                if("Cuisse de grenouille" == list.get(position). getV_title()){
+                    Intent intent = new Intent(
+                            getApplicationContext(), // 현재 화면의 제어권자
+                            CitrusActivity.class); // 다음 넘어갈 클래스 지정
+                    //intent.putExtra();
+                    startActivity(intent); // 다음 화면으로 넘어간다
+                }
+            }
+        });
     }
 
 

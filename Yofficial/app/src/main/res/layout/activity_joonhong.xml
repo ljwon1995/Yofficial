@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#75757E"
+    android:background="#FF9E27"
     tools:context=".JoonHongActivity">
 
     <ImageView
@@ -66,7 +66,7 @@
         android:id="@+id/refregButton"
         android:layout_width="58dp"
         android:layout_height="71dp"
-        android:background="#75757E"
+        android:background="#FF9E27"
         android:scaleType="centerCrop"
         android:onClick="onButton3Clicked"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,7 +81,7 @@
         android:id="@+id/imageButton5"
         android:layout_width="71dp"
         android:layout_height="72dp"
-        android:background="#75757E"
+        android:background="#FF9E27"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
@@ -95,7 +95,7 @@
         android:id="@+id/imageButton6"
         android:layout_width="65dp"
         android:layout_height="61dp"
-        android:background="#75757E"
+        android:background="#FF9E27"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/refregButton"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
