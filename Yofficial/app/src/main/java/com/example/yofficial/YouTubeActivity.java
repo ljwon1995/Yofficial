@@ -16,7 +16,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-
+//이전, 다시, 멈춰, 재생, 다
 public class YouTubeActivity extends YouTubeBaseActivity {
 
     private static final int NOTHING = -1;
@@ -27,14 +27,15 @@ public class YouTubeActivity extends YouTubeBaseActivity {
     private static final int ENDED = 4;
 
     private static final String TAG = "YouTubeActivity!";
+
     int[] start_time = {4, 25, 39, 57};
     int[] end_time = {20,38, 56, 70};
-
+    int totalStep = 4;
     String[] desc = {"1. 귤을 까 주세요", "2. 귤을 반으로 쪼개주세요", "3. 귤을 또 반으로 쪼개주세요.", "4. 맛있게 보이게 디피 해주세요."};
 
 
 
-    int state = 0;
+    int step = 0;
     String videoId = "B2TeCM7TrXQ";
 
     int videoState = -1;
@@ -50,6 +51,9 @@ public class YouTubeActivity extends YouTubeBaseActivity {
 
     Button btnPlay;
     Button btnPause;
+    Button btnNext;
+    Button btnPrev;
+    Button btnReplay;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,20 +61,30 @@ public class YouTubeActivity extends YouTubeBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_youtube);
 
-        btnPlay = (Button)findViewById(R.id.btnPlay);
-        mYouTubePlayerView = (YouTubePlayerView)findViewById(R.id.youtubePlay);
+        //find button from layout
+        btnPlay = findViewById(R.id.btnPlay);
         btnPause = findViewById(R.id.pause);
+        btnNext = findViewById(R.id.btnNext);
+        btnPrev = findViewById(R.id.btnPrev);
+        btnReplay = findViewById(R.id.btnReplay);
+
+        //find youtube view from layout
+        mYouTubePlayerView = findViewById(R.id.youtubePlay);
+
+        //find textview from layout
         tv = findViewById(R.id.description);
 
+
+        //when video is initialized this method will be called.
         mOnInitializedListener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 Log.d(TAG, "onClick : Done initializing");
                 player = youTubePlayer;
-                youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
-                youTubePlayer.setPlayerStateChangeListener(mPlayerStateChangeListener);
-                youTubePlayer.setPlaybackEventListener(mPlayBackEventListener);
-                youTubePlayer.loadVideo(videoId);
+                player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+                player.setPlayerStateChangeListener(mPlayerStateChangeListener);
+                player.setPlaybackEventListener(mPlayBackEventListener);
+                player.loadVideo(videoId);
                 videoState = LOADING;
                 Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + LOADING);
             }
@@ -81,6 +95,9 @@ public class YouTubeActivity extends YouTubeBaseActivity {
             }
         };
 
+
+
+        //when play button clicked
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,6 +127,33 @@ public class YouTubeActivity extends YouTubeBaseActivity {
             }
         });
 
+        btnReplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player.seekToMillis(start_time[step] * 1000);
+            }
+        });
+
+        btnPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(step > 0) {
+                    step -= 1;
+                }
+                player.seekToMillis(start_time[step] * 1000);
+            }
+        });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(step < totalStep-1) {
+                    step += 1;
+                }
+                player.seekToMillis(start_time[step] * 1000);
+            }
+        });
+
         mPlayerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
             @Override
             public void onLoading() {
@@ -133,7 +177,7 @@ public class YouTubeActivity extends YouTubeBaseActivity {
                 Log.d(TAG, "Video Started");
                 videoState = PLAYING;
                 Log.d(TAG, "VideoStateChanged = " + videoState+ " must be " + PLAYING);
-                player.seekToMillis(start_time[state] * 1000);
+                player.seekToMillis(start_time[step] * 1000);
 
             }
             @Override
@@ -171,11 +215,11 @@ public class YouTubeActivity extends YouTubeBaseActivity {
 
             @Override
             public void onSeekTo(int i) {
-                Log.d(TAG, "Seek to "+ start_time[state] + "s");
+                Log.d(TAG, "Seek to "+ start_time[step] + "s");
                 player.play();
                 videoState = PLAYING;
                 Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PLAYING);
-                tv.setText(desc[state]);
+                tv.setText(desc[step]);
 
                 final Handler handler = new Handler();
                 Thread t = new Thread(new Runnable() {
@@ -200,7 +244,7 @@ public class YouTubeActivity extends YouTubeBaseActivity {
                     Runnable searchNext = new Runnable() {
                         @Override
                         public void run() {
-                            player.seekToMillis(start_time[state] * 1000);
+                            player.seekToMillis(start_time[step] * 1000);
 
                         }
                     };
@@ -208,7 +252,7 @@ public class YouTubeActivity extends YouTubeBaseActivity {
                     @Override
                     public void run() {
                         try {
-                            while(player.getCurrentTimeMillis() < end_time[state] * 1000){
+                            while(player.getCurrentTimeMillis() < end_time[step] * 1000){
                                 //Log.d(TAG, ""+ player.getCurrentTimeMillis());
                                 Thread.sleep(100);
                             }
@@ -217,9 +261,9 @@ public class YouTubeActivity extends YouTubeBaseActivity {
                         }
                         handler.post(stop);
                         Log.d(TAG, "Stopped at time : "+player.getCurrentTimeMillis());
-                        state += 1;
-                        Log.d(TAG, "State = " + state);
-                        if(state == 4){
+                        step += 1;
+                        Log.d(TAG, "State = " + step);
+                        if(step == totalStep){
                             handler.post(finish);
                         }
                         else {

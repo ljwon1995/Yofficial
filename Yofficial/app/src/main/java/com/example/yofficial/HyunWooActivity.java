@@ -25,7 +25,7 @@ public class HyunWooActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hyunwoo);
 
-        refo.setRecipeTitle("차슈 덮밥");
+        refo.setRecipeTitle("asdf");
         refo.setRecipeSubTitle("덮밥은 진리다");
         refo.setIntroRecipe("누구나 쉽게! 맛있는 차슈덮밥");
         refo.setServings("6인분 이상");
