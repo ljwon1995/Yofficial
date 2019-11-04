@@ -3,7 +3,11 @@
     package="com.example.yofficial">
 
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.hardware.sensor.proximity"/>
 
     <application
         android:allowBackup="true"
@@ -30,6 +34,7 @@
         <activity android:name=".CreateRecipeActivity"></activity>
         <activity android:name=".CitrusActivity"></activity>
         <activity android:name=".RefregActivity"></activity>
+        <activity android:name=".VoiceRecogActivity"></activity>
         <activity android:name=".Refreg_PopupActivity" android:theme="@android:style/Theme.Dialog" />
 
 
