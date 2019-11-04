@@ -26,6 +26,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class CreateRecipeActivity extends AppCompatActivity {
@@ -34,7 +38,6 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private ImageView getImage;
     private int timeIdCount = 0; // 재료 추가 테이블 count
     private int ssnIdCount = 0;  // 양념 추가 테이블 count
-
     private int stageIdCount = 0; // 태깅 단계 추가 테이블 count
 
     //재료 테이블 받아오기
@@ -54,20 +57,55 @@ public class CreateRecipeActivity extends AppCompatActivity {
     TextView endTime[] = new TextView[100];
     EditText stageEdit[][] = new EditText[100][6];
 
+    //재료 테이블 입력 ArrayList 이름과 양
+    ArrayList<String> ingredientName = new ArrayList<String>();
+    ArrayList<String> ingredientAmount = new ArrayList<String>();
 
+    //양념 테이블 입력 ArrayList 이름과 양
+    ArrayList<String> seasoningName = new ArrayList<String>();
+    ArrayList<String> seasoningAmount = new ArrayList<String>();
 
-
+    // 영상 url 및 시간 태깅 받는 arrayList
+    ArrayList<String> stepDescrib = new ArrayList<String>();
+    ArrayList<String> startTimeList = new ArrayList<String>();
+    ArrayList<String> endTimeList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
+        final EditText titleEdit = findViewById(R.id.titleEdit);
+        final EditText subTitleEdit = findViewById(R.id.subTitleEdit);
+        final EditText introEdit = findViewById(R.id.titleEdit);
+        final EditText ing1 = findViewById(R.id.ing1);
+        final EditText ing2 = findViewById(R.id.ing2);
+        final EditText ing3 = findViewById(R.id.ing3);
+        final EditText volume1 = findViewById(R.id.volume1);
+        final EditText volume2 = findViewById(R.id.volume2);
+        final EditText volume3 = findViewById(R.id.volume3);
+        final EditText ssn1 = findViewById(R.id.ssn1);
+        final EditText ssn2 = findViewById(R.id.ssn2);
+        final EditText ssn3 = findViewById(R.id.ssn3);
+        final EditText vol1 = findViewById(R.id.vol1);
+        final EditText vol2 = findViewById(R.id.vol2);
+        final EditText vol3 = findViewById(R.id.vol3);
+        final EditText youtubeUrl = findViewById(R.id.yUrl);
+        final EditText stepDescrib1 = findViewById(R.id.stepDescrib1);
+        final EditText s_hour1 = findViewById(R.id.s_hour1);
+        final EditText s_minute1 = findViewById(R.id.s_minute1);
+        final EditText s_second1 = findViewById(R.id.s_second1);
+        final EditText e_hour1 = findViewById(R.id.e_hour1);
+        final EditText e_minute1 = findViewById(R.id.e_minute1);
+        final EditText e_second1 = findViewById(R.id.e_second1);
+
+
+
         final TableLayout ingTable = findViewById(R.id.ingTable);
         final TableLayout ssnTable = findViewById(R.id.ssnTable);
         final TableLayout stageTable = findViewById(R.id.stageTable);
         TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams stage_params = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams stage_params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.weight = 1f;
         stage_params.weight= 1f;
 
@@ -128,7 +166,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
             stageDescr[i].setHintTextColor(Color.parseColor("#4075757E"));
             stageDescr[i].setTextSize(15);
 
-            int int_temp = i + 4;
+            int int_temp = i + 2;
             String string_temp = Integer.toString(int_temp);
             string_temp += "단계 영상설명 ex) 물을 끊입니다.";
             stageDescr[i].setHint(string_temp);
@@ -245,7 +283,13 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 if (stageIdCount > 0) {
                     stageTable.removeView(tr2[stageIdCount - 1][1]);
                     stageTable.removeView(tr2[stageIdCount - 1][0]);
+                    tr2[stageIdCount - 1][1].removeView(stageEdit[stageIdCount - 1][5]);
+                    tr2[stageIdCount - 1][1].removeView(stageEdit[stageIdCount - 1][4]);
+                    tr2[stageIdCount - 1][1].removeView(stageEdit[stageIdCount - 1][3]);
                     tr2[stageIdCount - 1][1].removeView(endTime[stageIdCount - 1]);
+                    tr2[stageIdCount - 1][0].removeView(stageEdit[stageIdCount - 1][2]);
+                    tr2[stageIdCount - 1][0].removeView(stageEdit[stageIdCount - 1][1]);
+                    tr2[stageIdCount - 1][0].removeView(stageEdit[stageIdCount - 1][0]);
                     tr2[stageIdCount - 1][0].removeView(startTime[stageIdCount - 1]);
                     stageTable.removeView(stageDescr[stageIdCount - 1]);
                     stageIdCount--;
@@ -269,17 +313,17 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
 
         // 카테고리 스피너 선언부
-        Spinner mainIngSpinner = (Spinner)findViewById(R.id.main_ing);
+        final Spinner mainIngSpinner = (Spinner)findViewById(R.id.main_ing);
         ArrayAdapter mainIngAdapter = ArrayAdapter.createFromResource(this, R.array.data_mainIng, android.R.layout.simple_spinner_item);
         mainIngAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mainIngSpinner.setAdapter(mainIngAdapter);
 
-        Spinner typeSpinner = (Spinner)findViewById(R.id.type);
+        final Spinner typeSpinner = (Spinner)findViewById(R.id.type);
         ArrayAdapter typeAdapter = ArrayAdapter.createFromResource(this, R.array.data_type, android.R.layout.simple_spinner_item);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(typeAdapter);
 
-        Spinner featureSpinner = (Spinner)findViewById(R.id.feature);
+        final Spinner featureSpinner = (Spinner)findViewById(R.id.feature);
         ArrayAdapter featureAdapter = ArrayAdapter.createFromResource(this, R.array.data_feature, android.R.layout.simple_spinner_item);
         featureAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         featureSpinner.setAdapter(featureAdapter);
@@ -360,7 +404,100 @@ public class CreateRecipeActivity extends AppCompatActivity {
             }
         });
 
+        final RecipeInfo recipeInfo = new RecipeInfo();
 
+
+        Button createButton = findViewById(R.id.createButton);
+        createButton.setOnClickListener(new View.OnClickListener() { // 레시피 정보 액티비티에 입력받은 값 전달
+            @Override
+            public void onClick(View v) {
+                recipeInfo.setRecipeTitle(titleEdit.getText().toString()); // 제목 전달
+                recipeInfo.setRecipeSubTitle(subTitleEdit.getText().toString()); // 부제목 전달
+                recipeInfo.setIntroRecipe(introEdit.getText().toString()); //요리 설명 전달
+                recipeInfo.setMainIngredient(mainIngSpinner.getSelectedItem().toString()); // 카테고리 중 주재료 부분 전달
+                recipeInfo.setType(typeSpinner.getSelectedItem().toString()); // 카테고리 중 타입 부분 전달
+                recipeInfo.setFeature(featureSpinner.getSelectedItem().toString()); // 카테고리 중 특징 부분 전달
+                recipeInfo.setServings(servingSelB.getText().toString()); // 인분 수 전달
+                recipeInfo.setDifficulty(diffiSelB.getText().toString()); // 난이도 전달
+                recipeInfo.setDuraTime(duraSelB.getText().toString()); // 소요시간 전달
+
+                // 재료 입력 전달 부분
+                ingredientName.add(ing1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료 이름 부분
+                ingredientName.add(ing2.getText().toString());
+                ingredientName.add(ing3.getText().toString());
+                ingredientAmount.add(volume1.getText().toString()); // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료의 양 부분
+                ingredientAmount.add(volume2.getText().toString());
+                ingredientAmount.add(volume3.getText().toString());
+
+                // 추가 버튼으로 만들어진 동적 테이블 행에 들어간 값 arraylist에 입력
+                for (int i = 0; i < timeIdCount; i++) {
+                    EditText tempName = (EditText)tr[i].getChildAt(0);
+                    ingredientName.add(tempName.getText().toString());
+
+                    EditText tempAmount = (EditText)tr[i].getChildAt(1);
+                    ingredientAmount.add(tempAmount.getText().toString());
+                }
+
+                recipeInfo.setIngredientName(ingredientName); // 들어가는 재료 이름 전달
+                recipeInfo.setIngredientAmount(ingredientAmount); // 들어가는 재료의 양 전달
+
+                // 양념 입력 전달 부분
+                seasoningName.add(ssn1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 양념 이름 부분
+                seasoningName.add(ssn2.getText().toString());
+                seasoningName.add(ssn3.getText().toString());
+                seasoningAmount.add(vol1.getText().toString()); // xml의 view를 통해 입력 받은 값 arraylist에 입력, 양념의 양 부분
+                seasoningAmount.add(vol2.getText().toString());
+                seasoningAmount.add(vol3.getText().toString());
+
+                // 추가 버튼으로 만들어진 동적 테이블 행에 들어간 값 arraylist에 입력
+                for (int i = 0; i < ssnIdCount; i++) {
+                    EditText tempName = (EditText)tr1[i].getChildAt(0);
+                    seasoningName.add(tempName.getText().toString());
+
+                    EditText tempAmount = (EditText)tr1[i].getChildAt(1);
+                    seasoningAmount.add(tempAmount.getText().toString());
+                }
+
+
+                recipeInfo.setIngredientName(seasoningName); // 들어가는 양념 이름 전달
+                recipeInfo.setIngredientAmount(seasoningAmount); // 들어가는 양념의 양 전달
+
+                recipeInfo.setYoutubeUrl(youtubeUrl.getText().toString()); // 실행할 영상 url 전달
+
+                // 단계별 설명 및 시간 태깅 전달 부분
+                stepDescrib.add(stepDescrib1.getText().toString());
+                startTimeList.add(s_hour1.getText().toString() + ":" + s_minute1.getText().toString() + ":" + s_second1.getText().toString());
+                endTimeList.add(e_hour1.getText().toString() + ":" + e_minute1.getText().toString() + ":" + e_second1.getText().toString());
+
+                for (int i = 0; i < stageIdCount; i++) {
+                    EditText tempStepDescrib = (EditText) stageTable.getChildAt(3 * (i + 1));
+                    stepDescrib.add(tempStepDescrib.getText().toString());
+
+                    EditText tempStartHour = (EditText) tr2[i][0].getChildAt(1);
+                    EditText tempStartMinute = (EditText) tr2[i][0].getChildAt(2);
+                    EditText tempStartSecond = (EditText) tr2[i][0].getChildAt(3);
+                    startTimeList.add(tempStartHour.getText().toString() + ":" + tempStartMinute.getText().toString() + ":" + tempStartSecond.getText().toString());
+
+                    EditText tempEndHour = (EditText) tr2[i][1].getChildAt(1);
+                    EditText tempEndMinute = (EditText) tr2[i][1].getChildAt(2);
+                    EditText tempEndSecond = (EditText) tr2[i][1].getChildAt(3);
+                    endTimeList.add(tempEndHour.getText().toString() + ":" + tempEndMinute.getText().toString() + ":" + tempEndSecond.getText().toString());
+
+                }
+                for (int i = 0; i < stepDescrib.size(); i++) {
+                    System.out.println(stepDescrib.get(i));
+                    System.out.println(startTimeList.get(i));
+                    System.out.println(endTimeList.get(i));
+                }
+
+                recipeInfo.setStepDescrib(stepDescrib); //단계별 설명 전달
+                recipeInfo.setStartTime(startTimeList); // 단계별 시작 시간 전달
+                recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
+
+
+
+            }
+        });
     }
 
 

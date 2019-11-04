@@ -53,13 +53,13 @@ public class DBActivity extends Activity {
         ing.put("소고기", "200g");
         ing.put("빵", "100g");
 
-        recipe.setIngredient(ing);
+        //recipe.setIngredient(ing);
 
 
         HashMap<String, String> sea = new HashMap<>();
         sea.put("갈릭디핑소", "50g");
         sea.put("토마토소스", "100g");
-        recipe.setSeasoning(sea);
+       // recipe.setSeasoning(sea);
         recipe.setYoutubeUrl("xmlss");
 
         ArrayList<String> st = new ArrayList<>();

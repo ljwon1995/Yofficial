@@ -15,8 +15,10 @@ public class RecipeInfo {
     private String mainIngredient;
     private String type;
     private String feature;
-    private HashMap<String, String> ingredient;
-    private HashMap<String, String> seasoning;
+    private ArrayList<String> ingredientName;
+    private ArrayList<String> ingredientAmount;
+    private ArrayList<String> seasoningName;
+    private ArrayList<String> seasoningAmount;
     private String youtubeUrl;
     private ArrayList<String> startTime;
     private ArrayList<String> endTime;
@@ -104,20 +106,36 @@ public class RecipeInfo {
         this.feature = feature;
     }
 
-    public HashMap<String, String> getIngredient() {
-        return ingredient;
+    public ArrayList<String> getIngredientName() {
+        return ingredientName;
     }
 
-    public void setIngredient(HashMap<String, String> ingredient) {
-        this.ingredient = ingredient;
+    public void setIngredientName(ArrayList<String> ingredientName) {
+        this.ingredientName = ingredientName;
     }
 
-    public HashMap<String, String> getSeasoning() {
-        return seasoning;
+    public ArrayList<String> getIngredientAmount() {
+        return ingredientAmount;
     }
 
-    public void setSeasoning(HashMap<String, String> seasoning) {
-        this.seasoning = seasoning;
+    public void setIngredientAmount(ArrayList<String> ingredientAmount) {
+        this.ingredientAmount = ingredientAmount;
+    }
+
+    public ArrayList<String > getSeasoningName() {
+        return seasoningName;
+    }
+
+    public void setSeasoningName(ArrayList<String> seasoningName) {
+        this.seasoningName = seasoningName;
+    }
+
+    public ArrayList<String > getSeasoningAmount() {
+        return seasoningAmount;
+    }
+
+    public void setSeasoningAmount(ArrayList<String> seasoningAmount) {
+        this.seasoningAmount = seasoningAmount;
     }
 
     public String getYoutubeUrl() {
