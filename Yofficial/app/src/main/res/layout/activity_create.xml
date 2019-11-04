@@ -388,6 +388,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/ssnTable"
                 android:stretchColumns="0.1.2.3">
 
                 <TableRow
@@ -473,14 +474,35 @@
                         />
 
                 </TableRow>
+            </TableLayout>
 
-                <Button
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:id="@+id/insertSsn"
-                    android:text="양념 추가"
-                    android:textSize="15dp"
-                    />
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_weight="1"
+                        android:id="@+id/insertSsn"
+                        android:text="양념 추가"
+                        android:textSize="15dp"
+                        />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_weight="1"
+                        android:layout_toRightOf="@+id/insertSsn"
+                        android:id="@+id/removeSsn"
+                        android:text="양념 삭제"
+                        android:textSize="15dp"
+                        />
+                </TableRow>
+
             </TableLayout>
 
             <TextView
@@ -518,58 +540,88 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/timeTable">
+                android:id="@+id/stageTable">
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:hint="1단계. 영상 설명 ex) 물을 끊입니다."
+                    android:hint="1단계 영상 설명 ex) 물을 끊입니다."
                     android:textColorHint="#4075757E"
                     android:textSize="15dp"
                     android:background="@null"
                     />
                 <TableRow
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/s_time1"
-                    android:paddingLeft="7dp">
+                    android:paddingLeft="7dp"
+                    android:paddingTop="10dp"
+                    android:layout_weight = "1">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
                         android:text="시작 시간"
                         android:textColor="#000000"
-                        android:layout_weight="2"/>
+                        android:layout_weight="1"/>
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/s_hour1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        />
+                        android:background="@drawable/edittext_teduri"
+                        android:gravity="right"
+                        android:inputType="number"
+                        android:maxLength="2" />
 
-
-                    <Spinner
-                        android:id="@+id/s_minute1"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
+
+                    <EditText
+                        android:id="@+id/s_minute1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_teduri"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
                         android:layout_weight="2" />
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
 
-                    ﻿<Spinner
-                    android:id="@+id/s_second1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_weight="2" />
+                    ﻿
+                    ﻿<EditText
+                        android:id="@+id/s_second1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_teduri"
+                        android:layout_marginRight="10dp"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
+                        android:layout_weight="2" />
                 </TableRow>
                 <TableRow
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/e_time1"
-                    android:paddingLeft="7dp">
+                    android:paddingLeft="7dp"
+                    android:paddingTop="10dp"
+                    android:layout_weight = "1">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -577,29 +629,55 @@
                         android:textColor="#000000"
                         android:layout_weight="1"/>
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/e_hour1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:layout_weight="2"
-                        />
+                        android:background="@drawable/edittext_teduri"
+                        android:gravity="right"
+                        android:inputType="number"
+                        android:maxLength="2" />
 
-
-                    <Spinner
-                        android:id="@+id/e_minute1"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
+
+                    <EditText
+                        android:id="@+id/e_minute1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_teduri"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
                         android:layout_weight="2" />
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
+
                     ﻿
-                    ﻿<Spinner
-                    android:id="@+id/e_second1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_weight="2" />
+                    ﻿<EditText
+                        android:id="@+id/e_second1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_teduri"
+                        android:layout_marginRight="10dp"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
+                        android:layout_weight="2" />
                 </TableRow>
 
                 <EditText
@@ -612,10 +690,11 @@
                     android:background="@null"
                     />
                 <TableRow
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/s_time2"
                     android:paddingLeft="7dp"
+                    android:paddingTop="10dp"
                     android:layout_weight = "1">
                     <TextView
                         android:layout_width="wrap_content"
@@ -624,34 +703,62 @@
                         android:textColor="#000000"
                         android:layout_weight="1"/>
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/s_hour2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1"
-                        />
+                        android:layout_weight="2"
+                        android:background="@drawable/edittext_teduri"
+                        android:gravity="right"
+                        android:inputType="number"
+                        android:maxLength="2" />
 
-                    <Spinner
-                        android:id="@+id/s_minute2"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
+
+                    <EditText
+                        android:id="@+id/s_minute2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_teduri"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
+                        android:layout_weight="2" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
 
                     ﻿
-                    ﻿<Spinner
-                    android:id="@+id/s_second2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_weight="1" />
+                    ﻿<EditText
+                        android:id="@+id/s_second2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_teduri"
+                        android:layout_marginRight="10dp"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
+                        android:layout_weight="2" />
                 </TableRow>
                 <TableRow
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/e_time2"
                     android:paddingLeft="7dp"
+                    android:paddingTop="10dp"
                     android:layout_weight = "1">
                     <TextView
                         android:layout_width="wrap_content"
@@ -660,27 +767,55 @@
                         android:textColor="#000000"
                         android:layout_weight="1"/>
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/e_hour2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
+                        android:layout_weight="2"
+                        android:background="@drawable/edittext_teduri"
+                        android:gravity="right"
+                        android:inputType="number"
+                        android:maxLength="2" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        />
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/e_minute2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1" />
+                        android:background="@drawable/edittext_teduri"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
+                        android:layout_weight="2" />
 
-                    ﻿<Spinner
-                    android:id="@+id/e_second2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_weight="1" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
+
+                    ﻿
+                    ﻿<EditText
+                        android:id="@+id/e_second2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_teduri"
+                        android:layout_marginRight="10dp"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
+                        android:layout_weight="2" />
                 </TableRow>
                 <EditText
                     android:layout_width="match_parent"
@@ -692,10 +827,11 @@
                     android:background="@null"
                     />
                 <TableRow
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/s_time3"
                     android:paddingLeft="7dp"
+                    android:paddingTop="10dp"
                     android:layout_weight = "1">
                     <TextView
                         android:layout_width="wrap_content"
@@ -704,34 +840,62 @@
                         android:textColor="#000000"
                         android:layout_weight="1"/>
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/s_hour3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
+                        android:layout_weight="2"
+                        android:background="@drawable/edittext_teduri"
+                        android:gravity="right"
+                        android:inputType="number"
+                        android:maxLength="2" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        />
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/s_minute3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1" />
+                        android:background="@drawable/edittext_teduri"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
+                        android:layout_weight="2" />
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
 
-                    ﻿<Spinner
-                    android:id="@+id/s_second3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_weight="1" />
+                    ﻿
+                    ﻿<EditText
+                        android:id="@+id/s_second3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_teduri"
+                        android:layout_marginRight="10dp"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
+                        android:layout_weight="2" />
                 </TableRow>
                 <TableRow
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/e_time3"
                     android:paddingLeft="7dp"
+                    android:paddingTop="10dp"
                     android:layout_weight = "1">
                     <TextView
                         android:layout_width="wrap_content"
@@ -740,38 +904,89 @@
                         android:textColor="#000000"
                         android:layout_weight="1"/>
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/e_hour3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1" />
+                        android:layout_weight="2"
+                        android:background="@drawable/edittext_teduri"
+                        android:gravity="right"
+                        android:inputType="number"
+                        android:maxLength="2" />
 
-                    <Spinner
-                        android:id="@+id/e_minute3"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
+
+                    <EditText
+                        android:id="@+id/e_minute3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_teduri"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
+                        android:layout_weight="2" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="12dp"
+                        android:text=":"
+                        android:textSize="15dp"
+                        android:textColor="#000000"/>
 
                     ﻿
-                    ﻿<Spinner
-                    android:id="@+id/e_second3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_weight="1" />
+                    ﻿<EditText
+                        android:id="@+id/e_second3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_teduri"
+                        android:layout_marginRight="10dp"
+                        android:inputType="number"
+                        android:gravity="right"
+                        android:maxLength="2"
+                        android:layout_weight="2" />
                 </TableRow>
 
 
             </TableLayout>
 
-            <Button
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/insertTimeButton"
-                android:text="단계 추가"
-                />
+                android:layout_height="wrap_content">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_weight="1"
+                        android:id="@+id/insertStage"
+                        android:text="단계 추가"
+                        android:textSize="15dp"
+                        />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_weight="1"
+                        android:layout_toRightOf="@+id/insertIng"
+                        android:id="@+id/removeStage"
+                        android:text="단계 삭제"
+                        android:textSize="15dp"
+                        />
+                </TableRow>
+
+            </TableLayout>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
