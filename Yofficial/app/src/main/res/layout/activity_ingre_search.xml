@@ -20,10 +20,10 @@
         android:dividerHeight="1dp"></ListView>
 
     <Button
-        android:id="@+id/refrigerator_search"
+        android:id="@+id/ingre_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="mOnPopupClick"
-        android:text="냉장고를 부탁해!" />
+        android:text="선택" />
 
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -70,6 +71,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
     ArrayList<String> startTimeList = new ArrayList<String>();
     ArrayList<String> endTimeList = new ArrayList<String>();
 
+    EditText testSearchButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +108,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
         final TableLayout ssnTable = findViewById(R.id.ssnTable);
         final TableLayout stageTable = findViewById(R.id.stageTable);
         TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams stage_params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams stage_params = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams trParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         params.weight = 1f;
         stage_params.weight= 1f;
 
@@ -193,7 +197,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 stageEdit[i][j].setLayoutParams(stage_params);
                 stageEdit[i][j].setBackgroundResource(R.drawable.edittext_teduri);
                 stageEdit[i][j].setTextSize(15);
-
+                stageEdit[i][j].setGravity(Gravity.RIGHT);
                 InputFilter[] FilterArray = new InputFilter[1];
                 FilterArray[0] = new InputFilter.LengthFilter(2);
                 stageEdit[i][j].setFilters(FilterArray);
@@ -204,6 +208,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         for (int i = 0; i < tr2.length; i++) {
             for (int j = 0; j < tr2[i].length; j++) {
                 tr2[i][j] = new TableRow(this);
+                tr2[i][j].setLayoutParams(trParams);
             }
         }
 
@@ -307,7 +312,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, REQUEST_CODE);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -499,12 +504,12 @@ public class CreateRecipeActivity extends AppCompatActivity {
             }
         });
 
-        TextView testSearchButton = findViewById(R.id.testSearchButton);
+        testSearchButton = findViewById(R.id.testSearchButton);
         testSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), IngreSearchActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(CreateRecipeActivity.this, IngreSearchActivity.class);
+                startActivityForResult(intent, 1111);
             }
         });
     }
@@ -516,8 +521,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQUEST_CODE)
-        {
+        if(requestCode == 1) {
             if(resultCode == RESULT_OK)
             {
                 try{
@@ -535,6 +539,13 @@ public class CreateRecipeActivity extends AppCompatActivity {
             else if(resultCode == RESULT_CANCELED)
             {
                 Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        if (requestCode == 1111) {
+            if (resultCode == 1234) {
+                String temp = data.getStringExtra("result");
+                testSearchButton.setText(temp);
             }
         }
     }
