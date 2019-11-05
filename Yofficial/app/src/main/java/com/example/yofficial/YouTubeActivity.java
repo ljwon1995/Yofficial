@@ -32,8 +32,8 @@ import com.google.android.youtube.player.YouTubePlayerView;
 import java.util.ArrayList;
 
 
-//버튼에 있는 것들 다시 함수로 옮길 것.
-//로딩중엔 음성인식 안되게
+
+//로딩중엔 음성인식 안되
 public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventListener {
 
 
@@ -50,7 +50,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
     private static final String TAG = "YouTubeActivity!";
 
     int[] start_time = {4, 25, 39, 57};
-    int[] end_time = {20,38, 56, 70};
+    int[] end_time = {20,38, 56, 59};
     int totalStep = 4;
     String[] desc = {"1. 귤을 까 주세요", "2. 귤을 반으로 쪼개주세요", "3. 귤을 또 반으로 쪼개주세요.", "4. 맛있게 보이게 디피 해주세요."};
 
@@ -157,21 +157,13 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
 
 
+
+
         //when play button clicked
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(videoState == NOTHING){
-                    Log.d(TAG, "Onclick : Initializing YouTube Player.");
-                    mYouTubePlayerView.initialize(YouTubeConfig.getApiKey(), mOnInitializedListener);
-                }
-
-                if(videoState == PAUSED){
-                    player.play();
-                    videoState = PLAYING;
-                    Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PLAYING);
-                }
+                play();
             }
         });
 
@@ -179,38 +171,28 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
             @Override
             public void onClick(View view){
-                if(videoState == PLAYING) {
-                    player.pause();
-                    videoState = PAUSED;
-                    Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PAUSED);
-                }
+                pause();
             }
         });
 
         btnReplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                player.seekToMillis(start_time[step] * 1000);
+                replay();
             }
         });
 
         btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(step > 0) {
-                    step -= 1;
-                }
-                player.seekToMillis(start_time[step] * 1000);
+                prev();
             }
         });
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(step < totalStep-1) {
-                    step += 1;
-                }
-                player.seekToMillis(start_time[step] * 1000);
+                next();
             }
         });
 
@@ -259,8 +241,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
             @Override
             public void onPaused() {
-                //videoState = PAUSED;
-                //Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PAUSED);
+                //Log.d(TAG, "PAUSE!!");
             }
 
             @Override
@@ -286,8 +267,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                     Runnable stop = new Runnable(){
                         @Override
                         public void run() {
-                            player.pause();
-                            videoState = PAUSED;
+                            pause();
                             Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PAUSED);
                         }
                     };
@@ -297,7 +277,6 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                             Toast.makeText(getApplicationContext(), "Finished", Toast.LENGTH_LONG).show();
                             videoState = ENDED;
                             Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + ENDED);
-                            //finish();
                         }
                     };
 
@@ -325,13 +304,20 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                         Log.d(TAG, "State = " + step);
                         if(step == totalStep){
                             handler.post(finish);
+                            Log.d(TAG, "All Video Finished");
                         }
                         else {
                             handler.post(searchNext);
                         }
+
+
                     }
                 });
                 t.start();
+                
+
+
+
             }
         };
 
@@ -521,14 +507,19 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
 
     void prev() {
-        if(step > 0) {
-            step -= 1;
+        if(videoState == PAUSED || videoState == PLAYING || videoState == ENDED) {
+            if (step > 0) {
+                step -= 1;
+            }
+            player.seekToMillis(start_time[step] * 1000);
         }
-        player.seekToMillis(start_time[step] * 1000);
     }
 
     void replay() {
-        player.seekToMillis(start_time[step] * 1000);
+
+        if(videoState == PAUSED || videoState == PLAYING || videoState == ENDED) {
+            player.seekToMillis(start_time[step] * 1000);
+        }
     }
 
     void pause() {
@@ -553,11 +544,12 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
     }
 
     void next() {
-        Log.d(TAG, "Enter into NEXT");
-        if(step < totalStep-1) {
-            step += 1;
+        if(videoState == PAUSED || videoState == PLAYING) {
+            if (step < totalStep - 1) {
+                step += 1;
+            }
+            player.seekToMillis(start_time[step] * 1000);
         }
-        player.seekToMillis(start_time[step] * 1000);
     }
     //junhong end
 
