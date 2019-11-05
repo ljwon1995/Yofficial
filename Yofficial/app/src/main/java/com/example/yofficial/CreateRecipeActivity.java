@@ -498,6 +498,15 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
             }
         });
+
+        TextView testSearchButton = findViewById(R.id.testSearchButton);
+        testSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), IngreSearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

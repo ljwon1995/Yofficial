@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:privateImeOptions="defaultInputmode=korean"
+        android:hint="검색어를 입력하세요."/>
+
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="#999999"
+        android:layout_weight="1"
+        android:dividerHeight="1dp"></ListView>
+
+    <Button
+        android:id="@+id/refrigerator_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="mOnPopupClick"
+        android:text="냉장고를 부탁해!" />
+
+</LinearLayout>
