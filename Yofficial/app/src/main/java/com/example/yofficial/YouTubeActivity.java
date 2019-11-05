@@ -33,8 +33,7 @@ import java.util.ArrayList;
 
 
 //버튼에 있는 것들 다시 함수로 옮길 것.
-//정지 상태에서 상태 인식했으면 음성 끝나도 정지,
-//재생 상태에서 상태 인식했으면 음성 끝나도 재생.
+//로딩중엔 음성인식 안되게
 public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventListener {
 
 
@@ -358,12 +357,16 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             if (event.values[0] == 0) {
-                    // 센서 가까워지면 음성인식 작동
-                    intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                    mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-                    mRecognizer.setRecognitionListener(listener);
-                    mRecognizer.startListening(intent);
+
+                savedVState = videoState;
+                if(videoState == PLAYING)
+                    pause();
+                // 센서 가까워지면 음성인식 작동
+                intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+                mRecognizer.setRecognitionListener(listener);
+                mRecognizer.startListening(intent);
             }
         }
     }
@@ -456,11 +459,12 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
             // 말을 하면 ArrayList에 단어를 넣고 textView에 단어를 이어줍니다.
             Log.d(TAG, "Enter to On Results");
             ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            int fail = 0;
             int resultNum = matches.size();
 
             for(int idx = 0; idx < resultNum; idx++){
 
-
+                Log.d(TAG, matches.get(idx));
                 if(matches.get(idx).contains("다음")){
                     next();
                     break;
@@ -485,7 +489,15 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                     play();
                     break;
                 }
+                else{
+                    fail++;
+                }
 
+            }
+            if(fail == resultNum){
+                if(savedVState == PLAYING){
+                    play();
+                }
             }
 
 
