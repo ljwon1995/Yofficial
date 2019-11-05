@@ -40,8 +40,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private int timeIdCount = 0; // 재료 추가 테이블 count
     private int ssnIdCount = 0;  // 양념 추가 테이블 count
     private int stageIdCount = 0; // 태깅 단계 추가 테이블 count
-
     private DBAccess dbAccess = new DBAccess(this);
+
+
     //재료 테이블 받아오기
     TableRow tr[] = new TableRow[100];
     EditText ingName[] = new EditText[100];
@@ -503,7 +504,6 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
 
                 dbAccess.addRecipe(recipeInfo);
-
 
             }
         });
