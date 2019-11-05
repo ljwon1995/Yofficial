@@ -50,7 +50,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
     private static final String TAG = "YouTubeActivity!";
 
     int[] start_time = {4, 25, 39, 57};
-    int[] end_time = {20,38, 56, 59};
+    int[] end_time = {20,38, 56, 70};
     int totalStep = 4;
     String[] desc = {"1. 귤을 까 주세요", "2. 귤을 반으로 쪼개주세요", "3. 귤을 또 반으로 쪼개주세요.", "4. 맛있게 보이게 디피 해주세요."};
 
@@ -298,6 +298,8 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
+
                         handler.post(stop);
                         Log.d(TAG, "Stopped at time : "+player.getCurrentTimeMillis());
                         step += 1;
@@ -314,10 +316,6 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                     }
                 });
                 t.start();
-                
-
-
-
             }
         };
 

@@ -41,6 +41,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private int ssnIdCount = 0;  // 양념 추가 테이블 count
     private int stageIdCount = 0; // 태깅 단계 추가 테이블 count
 
+    private DBAccess dbAccess = new DBAccess(this);
     //재료 테이블 받아오기
     TableRow tr[] = new TableRow[100];
     EditText ingName[] = new EditText[100];
@@ -464,8 +465,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 }
 
 
-                recipeInfo.setIngredientName(seasoningName); // 들어가는 양념 이름 전달
-                recipeInfo.setIngredientAmount(seasoningAmount); // 들어가는 양념의 양 전달
+                recipeInfo.setSeasoningName(seasoningName); // 들어가는 양념 이름 전달
+                recipeInfo.setSeasoningAmount(seasoningAmount); // 들어가는 양념의 양 전달
 
                 recipeInfo.setYoutubeUrl(youtubeUrl.getText().toString()); // 실행할 영상 url 전달
 
@@ -499,6 +500,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 recipeInfo.setStartTime(startTimeList); // 단계별 시작 시간 전달
                 recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
 
+
+
+                dbAccess.addRecipe(recipeInfo);
 
 
             }
