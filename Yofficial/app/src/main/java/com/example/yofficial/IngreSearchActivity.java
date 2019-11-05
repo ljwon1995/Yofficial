@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import java.util.ArrayList;
@@ -68,7 +69,13 @@ public class IngreSearchActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                editSearch.setText((String)list.get(position));
+            }
+        });
     }
 
     // 검색을 수행하는 메소드
@@ -124,8 +131,24 @@ public class IngreSearchActivity extends AppCompatActivity {
     }
 
     public void mOnPopupClick(View v){
-        Intent intent = new Intent(this, Ingre_PopupActivity.class);
-        intent.putExtra("data", "Test Popup");
-        startActivityForResult(intent, 1);
+        Intent intent = new Intent();
+        intent.putExtra("result", editSearch.getText().toString());
+        System.out.println(editSearch.getText().toString());
+        setResult(1234, intent);
+
+        finish();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==1){
+            if(resultCode==RESULT_OK){
+                //데이터 받기
+                String result = data.getStringExtra("result");
+                editSearch.setText(result);
+            }
+        }
+    }
+
+
 }
