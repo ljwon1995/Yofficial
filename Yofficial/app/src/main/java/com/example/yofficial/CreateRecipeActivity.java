@@ -81,7 +81,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
         final EditText titleEdit = findViewById(R.id.titleEdit);
         final EditText subTitleEdit = findViewById(R.id.subTitleEdit);
-        final EditText introEdit = findViewById(R.id.titleEdit);
+        final EditText introEdit = findViewById(R.id.introEdit);
         final EditText ing1 = findViewById(R.id.ing1);
         final EditText ing2 = findViewById(R.id.ing2);
         final EditText ing3 = findViewById(R.id.ing3);
