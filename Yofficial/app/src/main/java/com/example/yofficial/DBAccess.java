@@ -14,8 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 
@@ -85,9 +84,13 @@ public class DBAccess {
     }
 
     void addRecipe(RecipeInfo recipe){
+
         String recipeId = myRef.child("recipes").push().getKey();
+
         Log.d(TAG, recipeId);
+        recipe.setRecipeId(recipeId);
         myRef.child("recipes").child(recipeId).setValue(recipe);
+
 
         PostInfo postInfo = new PostInfo();
         postInfo.setRecipeId(recipeId);

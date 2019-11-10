@@ -427,6 +427,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 recipeInfo.setServings(servingSelB.getText().toString()); // 인분 수 전달
                 recipeInfo.setDifficulty(diffiSelB.getText().toString()); // 난이도 전달
                 recipeInfo.setDuraTime(duraSelB.getText().toString()); // 소요시간 전달
+                recipeInfo.setImgsrc("");
 
                 // 재료 입력 전달 부분
                 ingredientName.add(ing1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료 이름 부분

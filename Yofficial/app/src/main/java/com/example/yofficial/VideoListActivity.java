@@ -64,7 +64,7 @@ public class VideoListActivity extends AppCompatActivity {
                 PostInfo p = dataSnapshot.getValue(PostInfo.class);
                 Log.d("jun", p.getTitle());
                 pList.add(p);
-                list.add(new VideoItem(ContextCompat.getDrawable(c, R.drawable.ab), p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews()));
+                list.add(new VideoItem(ContextCompat.getDrawable(c, R.drawable.ab), p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews(), p.getRecipeId()));
                 Log.d("jun", "listAdded" + list.size());
                 adapter = new VideoAdapter(c, list);
                 listview.setAdapter(adapter);
@@ -91,30 +91,15 @@ public class VideoListActivity extends AppCompatActivity {
             }
         });
 
-        //list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.ab), "3분만에 만드는 맛있는 수제햄버거", "\n맥도날드", "\n24212 views"));
-        //list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.aa), "delicious gyudon", "\n홍길동", "\n84213 views"));
-        //list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.citrus_image), "Cuisse de grenouille", "\n이재원", "\n11views"));
-
-
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(VideoListActivity.this ,list.get(position). getV_title(),Toast.LENGTH_LONG).show();
-                if("delicious gyudon" == list.get(position). getV_title()){
-                    Intent intent = new Intent(
-                            getApplicationContext(), // 현재 화면의 제어권자
-                            HyunWooActivity.class); // 다음 넘어갈 클래스 지정
-                    //intent.putExtra();
-                    startActivity(intent); // 다음 화면으로 넘어간다
-                }
-                if("Cuisse de grenouille" == list.get(position). getV_title()){
-                    Intent intent = new Intent(
-                            getApplicationContext(), // 현재 화면의 제어권자
-                            CitrusActivity.class); // 다음 넘어갈 클래스 지정
-                    //intent.putExtra();
-                    startActivity(intent); // 다음 화면으로 넘어간다
-                }
+
+                Intent intent = new Intent(getApplicationContext(), HyunWooActivity.class);
+                intent.putExtra("id", list.get(position).getRecipe_id());
+                startActivity(intent); // 다음 화면으로 넘어간다
             }
         });
 
