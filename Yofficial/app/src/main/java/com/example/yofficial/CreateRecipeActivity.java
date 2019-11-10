@@ -108,7 +108,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         final TableLayout ssnTable = findViewById(R.id.ssnTable);
         final TableLayout stageTable = findViewById(R.id.stageTable);
         TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams stage_params = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams stage_params = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, 150);
         TableRow.LayoutParams trParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         params.weight = 1f;
         stage_params.weight= 1f;
