@@ -5,11 +5,19 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 
 public class DBAccess {
@@ -76,7 +84,6 @@ public class DBAccess {
         });
     }
 
-
     void addRecipe(RecipeInfo recipe){
         String recipeId = myRef.child("recipes").push().getKey();
         Log.d(TAG, recipeId);
@@ -88,7 +95,7 @@ public class DBAccess {
         postInfo.setUserId(userId);
         postInfo.setViews(0);
 
-        myRef.child("posts").setValue(postInfo).addOnSuccessListener(ac, new OnSuccessListener<Void>() {
+        myRef.child("posts").child(recipeId).setValue(postInfo).addOnSuccessListener(ac, new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
@@ -100,9 +107,55 @@ public class DBAccess {
                 Toast.makeText(ac.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+
+    void viewPosts(){
+
+
+        Log.d(TAG, "Enter view Posts");
+
+        ArrayList<PostInfo> postList = new ArrayList<>();
+
+        myRef.child("posts").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                PostInfo p = dataSnapshot.getValue(PostInfo.class);
+                postList.add(p);
+                Log.d(TAG, ""+ postList.size());
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
 
     }
+
+
+
+
 
 
 
