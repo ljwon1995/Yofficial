@@ -50,7 +50,7 @@ public class HyunWooActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "enterDataChange");
                 refo = dataSnapshot.getValue(RecipeInfo.class);
-                Log.d(TAG, refo.getRecipeTitle() + " " + refo.getRecipeId() + refo.get);
+                Log.d(TAG, refo.getRecipeTitle() + " " + refo.getRecipeId());
 
                 //db정보가 있는 RecipeInfo클래스에서 정보 받아오기
                 TextView recipeTitle = (TextView)findViewById(R.id.title);
