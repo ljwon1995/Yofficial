@@ -48,10 +48,11 @@ public class Refreg_PopupActivity extends Activity {
         listview = (ListView) findViewById(R.id.pop_listView);
         list = new ArrayList<VideoItem>();
 
-
+        /*
         list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.ab), "3분만에 만드는 맛있는 수제햄버거", "\n맥도날드", "\n24212 views"));
         list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.aa), "delicious gyudon", "\n홍길동", "\n84213 views"));
         list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.citrus_image), "Cuisse de grenouille", "\n이재원", "\n11views"));
+*/
 
         adapter = new VideoAdapter(this, list);
         listview.setAdapter(adapter);

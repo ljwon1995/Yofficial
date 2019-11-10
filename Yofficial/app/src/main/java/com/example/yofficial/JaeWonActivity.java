@@ -28,7 +28,7 @@ public class JaeWonActivity extends Activity{
         youtubeTestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), YouTubeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), CreateRecipeActivity.class);
                 startActivity(intent);
             }
         });

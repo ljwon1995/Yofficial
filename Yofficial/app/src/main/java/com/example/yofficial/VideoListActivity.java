@@ -1,7 +1,9 @@
 package com.example.yofficial;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,8 +14,16 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +32,13 @@ public class VideoListActivity extends AppCompatActivity {
     List<VideoItem> list;
     ListView listview;
     VideoAdapter adapter;
-    EditText editsearch;
     MenuItem mSearch;
+    Context c = this;
+
+
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private ArrayList<PostInfo> pList;
 
 
     @Override
@@ -37,31 +52,54 @@ public class VideoListActivity extends AppCompatActivity {
         list = new ArrayList<VideoItem>();
 
 
-        list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.ab), "3분만에 만드는 맛있는 수제햄버거", "\n맥도날드", "\n24212 views"));
-        list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.aa), "delicious gyudon", "\n홍길동", "\n84213 views"));
-        list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.citrus_image), "Cuisse de grenouille", "\n이재원", "\n11views"));
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        pList = new ArrayList<>();
 
-        adapter = new VideoAdapter(this, list);
-        listview.setAdapter(adapter);
+
+        myRef.child("posts").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d("jun", "ChildAdded");
+                PostInfo p = dataSnapshot.getValue(PostInfo.class);
+                Log.d("jun", p.getTitle());
+                pList.add(p);
+                list.add(new VideoItem(ContextCompat.getDrawable(c, R.drawable.ab), p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews(), p.getRecipeId()));
+                Log.d("jun", "listAdded" + list.size());
+                adapter = new VideoAdapter(c, list);
+                listview.setAdapter(adapter);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(VideoListActivity.this ,list.get(position). getV_title(),Toast.LENGTH_LONG).show();
-                if("delicious gyudon" == list.get(position). getV_title()){
-                    Intent intent = new Intent(
-                            getApplicationContext(), // 현재 화면의 제어권자
-                            HyunWooActivity.class); // 다음 넘어갈 클래스 지정
-                    //intent.putExtra();
-                    startActivity(intent); // 다음 화면으로 넘어간다
-                }
-                if("Cuisse de grenouille" == list.get(position). getV_title()){
-                    Intent intent = new Intent(
-                            getApplicationContext(), // 현재 화면의 제어권자
-                            CitrusActivity.class); // 다음 넘어갈 클래스 지정
-                    //intent.putExtra();
-                    startActivity(intent); // 다음 화면으로 넘어간다
-                }
+
+                Intent intent = new Intent(getApplicationContext(), HyunWooActivity.class);
+                intent.putExtra("id", list.get(position).getRecipe_id());
+                startActivity(intent); // 다음 화면으로 넘어간다
             }
         });
 

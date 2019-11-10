@@ -40,6 +40,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private int timeIdCount = 0; // 재료 추가 테이블 count
     private int ssnIdCount = 0;  // 양념 추가 테이블 count
     private int stageIdCount = 0; // 태깅 단계 추가 테이블 count
+    private DBAccess dbAccess = new DBAccess(this);
+
 
     //재료 테이블 받아오기
     TableRow tr[] = new TableRow[100];
@@ -80,7 +82,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
         final EditText titleEdit = findViewById(R.id.titleEdit);
         final EditText subTitleEdit = findViewById(R.id.subTitleEdit);
-        final EditText introEdit = findViewById(R.id.titleEdit);
+        final EditText introEdit = findViewById(R.id.introEdit);
         final EditText ing1 = findViewById(R.id.ing1);
         final EditText ing2 = findViewById(R.id.ing2);
         final EditText ing3 = findViewById(R.id.ing3);
@@ -425,6 +427,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 recipeInfo.setServings(servingSelB.getText().toString()); // 인분 수 전달
                 recipeInfo.setDifficulty(diffiSelB.getText().toString()); // 난이도 전달
                 recipeInfo.setDuraTime(duraSelB.getText().toString()); // 소요시간 전달
+                recipeInfo.setImgsrc("");
 
                 // 재료 입력 전달 부분
                 ingredientName.add(ing1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료 이름 부분
@@ -464,8 +467,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 }
 
 
-                recipeInfo.setIngredientName(seasoningName); // 들어가는 양념 이름 전달
-                recipeInfo.setIngredientAmount(seasoningAmount); // 들어가는 양념의 양 전달
+                recipeInfo.setSeasoningName(seasoningName); // 들어가는 양념 이름 전달
+                recipeInfo.setSeasoningAmount(seasoningAmount); // 들어가는 양념의 양 전달
 
                 recipeInfo.setYoutubeUrl(youtubeUrl.getText().toString()); // 실행할 영상 url 전달
 
@@ -500,6 +503,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
 
 
+
+                dbAccess.addRecipe(recipeInfo);
 
             }
         });
