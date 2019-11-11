@@ -42,6 +42,7 @@ public class HyunWooActivity extends AppCompatActivity {
         Log.d("HyunWoo!", id);
 
 
+
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
@@ -116,6 +117,18 @@ public class HyunWooActivity extends AppCompatActivity {
                 servings.setImageResource(R.drawable.servings);
                 level.setImageResource(R.drawable.level);
                 duration.setImageResource(R.drawable.duration);
+
+                youtubeUrl.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), YouTubeActivity.class);
+                        intent.putExtra("url", refo.getYoutubeUrl());
+                        intent.putExtra("startTime", refo.getStartTime());
+                        intent.putExtra("endTime", refo.getEndTime());
+                        intent.putExtra("stepDesc", refo.getStepDescrib());
+                        startActivity(intent);
+                    }
+                });
 
             }
 

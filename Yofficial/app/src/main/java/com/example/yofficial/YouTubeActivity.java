@@ -49,16 +49,16 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
     private static final String TAG = "YouTubeActivity!";
 
-    int[] start_time = {4, 25, 39, 57};
-    int[] end_time = {20,38, 56, 70};
-    int totalStep = 4;
-    String[] desc = {"1. 귤을 까 주세요", "2. 귤을 반으로 쪼개주세요", "3. 귤을 또 반으로 쪼개주세요.", "4. 맛있게 보이게 디피 해주세요."};
-
+    int[] start_time;
+    int[] end_time;
+    int totalStep;
+    String videoId;
+    ArrayList<String> startTime;
+    ArrayList<String> endTime;
+    ArrayList<String> desc;
 
 
     int step = 0;
-    String videoId = "B2TeCM7TrXQ";
-
     int videoState = -1;
 
     TextView tv;
@@ -96,6 +96,30 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         //junhongstart
+        Bundle extras = getIntent().getExtras();
+        videoId = extras.getString("url");
+        Log.d(TAG, videoId);
+
+
+
+        startTime = (ArrayList<String>)extras.get("startTime");
+        endTime = (ArrayList<String>)extras.get("endTime");
+        desc = (ArrayList<String>) extras.get("stepDesc");
+
+        Log.d(TAG, startTime.get(0));
+        Log.d(TAG, endTime.get(0));
+        Log.d(TAG, desc.get(0));
+
+
+
+        /*
+        start_time =
+        end_time =
+        totalStep =
+        desc =
+        videoId =
+
+         */
 
         voiceTv = findViewById(R.id.voiceTextView);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -260,7 +284,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                 player.play();
                 videoState = PLAYING;
                 Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PLAYING);
-                tv.setText(desc[step]);
+                tv.setText(desc.get(step));
 
                 final Handler handler = new Handler();
                 Thread t = new Thread(new Runnable() {

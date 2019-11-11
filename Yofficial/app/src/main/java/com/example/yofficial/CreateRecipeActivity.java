@@ -35,6 +35,8 @@ import java.util.Map;
 
 public class CreateRecipeActivity extends AppCompatActivity {
 
+    private static final String TAG = "Create!";
+
     private static final int REQUEST_CODE = 0;
     private ImageView getImage;
     private int timeIdCount = 0; // 재료 추가 테이블 count
@@ -474,24 +476,134 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                 // 단계별 설명 및 시간 태깅 전달 부분
                 stepDescrib.add(stepDescrib1.getText().toString());
-                startTimeList.add(s_hour1.getText().toString() + ":" + s_minute1.getText().toString() + ":" + s_second1.getText().toString());
-                endTimeList.add(e_hour1.getText().toString() + ":" + e_minute1.getText().toString() + ":" + e_second1.getText().toString());
+
+
+                int stTime;
+                int edTime;
+
+                int h, m, s;
+
+                if(s_hour1.getText().toString().compareTo("") == 0){
+                    h = 0;
+                }
+                else{
+                    h = Integer.parseInt(s_hour1.getText().toString());
+                }
+
+                if(s_minute1.getText().toString().compareTo("") == 0){
+                    m = 0;
+                }
+                else{
+                    m = Integer.parseInt(s_minute1.getText().toString());
+                }
+
+                if(s_second1.getText().toString().compareTo("") == 0){
+                    s = 0;
+                }
+                else{
+                    s = Integer.parseInt(s_second1.getText().toString());
+                }
+
+                stTime = 3600 * h + 60 * m + s;
+
+                if(e_hour1.getText().toString().compareTo("") == 0){
+                    h = 0;
+                }
+                else{
+                    h = Integer.parseInt(e_hour1.getText().toString());
+                }
+
+                if(e_minute1.getText().toString().compareTo("") == 0){
+                    m = 0;
+                }
+                else{
+                    m = Integer.parseInt(e_minute1.getText().toString());
+                }
+
+                if(e_second1.getText().toString().compareTo("") == 0){
+                    s = 0;
+                }
+                else{
+                    s = Integer.parseInt(e_second1.getText().toString());
+                }
+
+                edTime = 3600 * h + 60 * m + s;
+
+                Log.d(TAG, ""+stTime+" " + edTime);
+
+                startTimeList.add(Integer.toString(stTime));
+                endTimeList.add(Integer.toString(edTime));
+
+
 
                 for (int i = 0; i < stageIdCount; i++) {
                     EditText tempStepDescrib = (EditText) stageTable.getChildAt(3 * (i + 1));
                     stepDescrib.add(tempStepDescrib.getText().toString());
 
+
+
                     EditText tempStartHour = (EditText) tr2[i][0].getChildAt(1);
                     EditText tempStartMinute = (EditText) tr2[i][0].getChildAt(2);
                     EditText tempStartSecond = (EditText) tr2[i][0].getChildAt(3);
-                    startTimeList.add(tempStartHour.getText().toString() + ":" + tempStartMinute.getText().toString() + ":" + tempStartSecond.getText().toString());
+
+
+                    if(tempStartHour.getText().toString().compareTo("") == 0){
+                        h = 0;
+                    }
+                    else{
+                        h = Integer.parseInt(tempStartHour.getText().toString());
+                    }
+
+                    if(tempStartMinute.getText().toString().compareTo("") == 0){
+                        m = 0;
+                    }
+                    else{
+                        m = Integer.parseInt(tempStartMinute.getText().toString());
+                    }
+
+                    if(tempStartSecond.getText().toString().compareTo("") == 0){
+                        s = 0;
+                    }
+                    else{
+                        s = Integer.parseInt(tempStartSecond.getText().toString());
+                    }
+
+                    stTime = 3600 * h + 60 * m + s;
+
+                    startTimeList.add(Integer.toString(stTime));
+
 
                     EditText tempEndHour = (EditText) tr2[i][1].getChildAt(1);
                     EditText tempEndMinute = (EditText) tr2[i][1].getChildAt(2);
                     EditText tempEndSecond = (EditText) tr2[i][1].getChildAt(3);
-                    endTimeList.add(tempEndHour.getText().toString() + ":" + tempEndMinute.getText().toString() + ":" + tempEndSecond.getText().toString());
+
+                    if(tempEndHour.getText().toString().compareTo("") == 0){
+                        h = 0;
+                    }
+                    else{
+                        h = Integer.parseInt(tempEndHour.getText().toString());
+                    }
+
+                    if(tempEndMinute.getText().toString().compareTo("") == 0){
+                        m = 0;
+                    }
+                    else{
+                        m = Integer.parseInt(tempEndMinute.getText().toString());
+                    }
+
+                    if(tempEndSecond.getText().toString().compareTo("") == 0){
+                        s = 0;
+                    }
+                    else{
+                        s = Integer.parseInt(tempEndSecond.getText().toString());
+                    }
+
+                    edTime = 3600 * h + 60 * m + s;
+
+                    endTimeList.add(Integer.toString(edTime));
 
                 }
+
                 for (int i = 0; i < stepDescrib.size(); i++) {
                     System.out.println(stepDescrib.get(i));
                     System.out.println(startTimeList.get(i));
