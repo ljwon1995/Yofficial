@@ -346,7 +346,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final String[] serNum = new String[]{"1인분","2인분","3인분","4인분","5인분","5인분이상"};
+                final String[] serNum = new String[]{"1인분","2인분","3인분","4인분","5인분","6인분이상"};
                 final int[] selectedIndex = {0};
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(CreateRecipeActivity.this);
@@ -514,7 +514,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateRecipeActivity.this, IngreSearchActivity.class);
-                startActivityForResult(intent, 1111);
+                startActivityForResult(intent, 1111); //1111로 코드 부여
             }
         });
     }
@@ -546,7 +546,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
             }
         }
-
+        // 재료 입력 리스트에서 받아오기
         if (requestCode == 1111) {
             if (resultCode == 1234) {
                 String temp = data.getStringExtra("result");
