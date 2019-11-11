@@ -8,9 +8,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,6 +52,7 @@ public class VideoListActivity extends AppCompatActivity {
         setContentView(R.layout.v_list);
 
         //editsearch = (EditText)findViewById(R.id.editSearch);
+
 
         listview = (ListView) findViewById(R.id.listview1);
         list = new ArrayList<VideoItem>();
@@ -141,10 +148,48 @@ public class VideoListActivity extends AppCompatActivity {
     }
 
 
+
     //메뉴 생성하는 onCreateOptionsMenu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+
+        // 메뉴 버튼 클릭 시 조건별 검색 스피너들 출력을 위한 동적 레이아웃
+
+        TableLayout table = findViewById(R.id.category_tableLayout);
+        TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
+        params.weight = 1;
+
+        TableRow tr1 = new TableRow(this);
+        TableRow tr2 = new TableRow(this);
+        tr1.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        tr2.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
+
+        Spinner spinnerServings = new Spinner(this);
+        spinnerServings.setLayoutParams(params);
+        ArrayAdapter servingsAdapter = ArrayAdapter.createFromResource(this, R.array.data_servings, android.R.layout.simple_spinner_item);
+        servingsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerServings.setAdapter(servingsAdapter);
+
+        Spinner spinner_mainIng = new Spinner(this);
+        spinner_mainIng.setLayoutParams(params);
+        ArrayAdapter mainIng_Adapter = ArrayAdapter.createFromResource(this, R.array.data_mainIng, android.R.layout.simple_spinner_item);
+        mainIng_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_mainIng.setAdapter(mainIng_Adapter);
+
+        Spinner spinner_type = new Spinner(this);
+        spinner_type.setLayoutParams(params);
+        ArrayAdapter typeAdapter = ArrayAdapter.createFromResource(this, R.array.data_type, android.R.layout.simple_spinner_item);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_type.setAdapter(typeAdapter);
+
+        Spinner spinner_feature = new Spinner(this);
+        spinner_feature.setLayoutParams(params);
+        ArrayAdapter featureAdapter = ArrayAdapter.createFromResource(this, R.array.data_feature, android.R.layout.simple_spinner_item);
+        featureAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_feature.setAdapter(featureAdapter);
 
         //search_menu.xml 등록
         MenuInflater inflater=getMenuInflater();
@@ -155,11 +200,23 @@ public class VideoListActivity extends AppCompatActivity {
         mSearch.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                tr1.addView(spinnerServings);
+                tr1.addView(spinner_mainIng);
+                tr2.addView(spinner_type);
+                tr2.addView(spinner_feature);
+                table.addView(tr1);
+                table.addView(tr2);
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
+                table.removeView(tr2);
+                table.removeView(tr1);
+                tr2.removeView(spinner_feature);
+                tr2.removeView(spinner_type);
+                tr1.removeView(spinner_mainIng);
+                tr1.removeView(spinnerServings);
                 return true;
             }
         });
