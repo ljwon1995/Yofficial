@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -179,7 +178,10 @@ public class VideoListActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 //   TextView text = (TextView)findViewById(R.id.txtresult);
                 //   text.setText(query + "를 검색합니다.");
+                Log.d("search", query);
+                //get all posts.
                 adapter.filter(query);
+
                 return true;
             }
 
