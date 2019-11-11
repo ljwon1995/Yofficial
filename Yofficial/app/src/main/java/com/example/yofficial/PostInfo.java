@@ -7,6 +7,7 @@ public class PostInfo {
     private String title;
     private int views;
 
+
     public String getUserId() {
         return userId;
     }
