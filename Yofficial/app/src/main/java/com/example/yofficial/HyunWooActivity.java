@@ -42,6 +42,7 @@ public class HyunWooActivity extends AppCompatActivity {
         Log.d("HyunWoo!", id);
 
 
+
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
@@ -66,9 +67,39 @@ public class HyunWooActivity extends AppCompatActivity {
                 TextView duraTime = (TextView)findViewById(R.id.duraTime);
                 duraTime.setText(refo.getDuraTime());
                 TextView ingredientList = (TextView)findViewById(R.id.ingredientList);
-                //ingredientList.setText(refo.getIngredient());
+
+                StringBuilder ingreds = new StringBuilder();
+                for(int i = 0; i < refo.getIngredientName().size(); i++){
+                    ingreds.append(refo.getIngredientName().get(i));
+                    ingreds.append(refo.getIngredientAmount().get(i));
+                    ingreds.append(",");
+                    Log.d(TAG, "cur SB = " + ingreds.toString());
+                }
+
+                ingredientList.setText(ingreds.toString());
+
+
+
+
+
+
                 TextView seasoningList = (TextView)findViewById(R.id.seasoningList);
-                //seasoningList.setText(refo.getSeasoning());
+
+                StringBuilder seasons = new StringBuilder();
+                for(int i = 0; i < refo.getSeasoningName().size(); i++){
+                    seasons.append(refo.getSeasoningName().get(i));
+                    seasons.append(refo.getSeasoningAmount().get(i));
+                    seasons.append(",");
+                    Log.d(TAG, "cur SB = " + ingreds.toString());
+                }
+
+                seasoningList.setText(seasons.toString());
+
+
+
+
+
+
 
                 //뷰, 버튼들의 선언부
                 ImageView imageView = (ImageView)findViewById(R.id.imageview);
@@ -86,6 +117,18 @@ public class HyunWooActivity extends AppCompatActivity {
                 servings.setImageResource(R.drawable.servings);
                 level.setImageResource(R.drawable.level);
                 duration.setImageResource(R.drawable.duration);
+
+                youtubeUrl.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), YouTubeActivity.class);
+                        intent.putExtra("url", refo.getYoutubeUrl());
+                        intent.putExtra("startTime", refo.getStartTime());
+                        intent.putExtra("endTime", refo.getEndTime());
+                        intent.putExtra("stepDesc", refo.getStepDescrib());
+                        startActivity(intent);
+                    }
+                });
 
             }
 

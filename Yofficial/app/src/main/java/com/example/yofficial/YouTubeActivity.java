@@ -49,16 +49,16 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
     private static final String TAG = "YouTubeActivity!";
 
-    int[] start_time = {4, 25, 39, 57};
-    int[] end_time = {20,38, 56, 70};
-    int totalStep = 4;
-    String[] desc = {"1. 귤을 까 주세요", "2. 귤을 반으로 쪼개주세요", "3. 귤을 또 반으로 쪼개주세요.", "4. 맛있게 보이게 디피 해주세요."};
-
+    ArrayList<Integer> start_time;
+    ArrayList<Integer> end_time;
+    int totalStep;
+    String videoId;
+    ArrayList<String> startTime;
+    ArrayList<String> endTime;
+    ArrayList<String> desc;
 
 
     int step = 0;
-    String videoId = "B2TeCM7TrXQ";
-
     int videoState = -1;
 
     TextView tv;
@@ -95,7 +95,40 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
+
+
+
         //junhongstart
+        Bundle extras = getIntent().getExtras();
+        videoId = extras.getString("url");
+        Log.d(TAG, videoId);
+
+
+
+
+        startTime = (ArrayList<String>)extras.get("startTime");
+        endTime = (ArrayList<String>)extras.get("endTime");
+        desc = (ArrayList<String>) extras.get("stepDesc");
+
+        Log.d(TAG, startTime.get(0));
+        Log.d(TAG, endTime.get(0));
+        Log.d(TAG, ""+desc.size());
+
+        start_time = new ArrayList<>();
+        end_time = new ArrayList<>();
+        totalStep = desc.size();
+        for(int i = 0; i < totalStep; i++){
+            start_time.add(Integer.parseInt(startTime.get(i)));
+            end_time.add(Integer.parseInt(endTime.get(i)));
+        }
+        Log.d(TAG, ""+desc.size());
+
+
+
+
+
+
+
 
         voiceTv = findViewById(R.id.voiceTextView);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -219,7 +252,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                 Log.d(TAG, "Video Started");
                 videoState = PLAYING;
                 Log.d(TAG, "VideoStateChanged = " + videoState+ " must be " + PLAYING);
-                player.seekToMillis(start_time[step] * 1000);
+                player.seekToMillis(start_time.get(step) * 1000);
 
             }
             @Override
@@ -256,11 +289,11 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
             @Override
             public void onSeekTo(int i) {
-                Log.d(TAG, "Seek to "+ start_time[step] + "s");
+
                 player.play();
                 videoState = PLAYING;
                 Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PLAYING);
-                tv.setText(desc[step]);
+                tv.setText(desc.get(step));
 
                 final Handler handler = new Handler();
                 Thread t = new Thread(new Runnable() {
@@ -283,7 +316,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                     Runnable searchNext = new Runnable() {
                         @Override
                         public void run() {
-                            player.seekToMillis(start_time[step] * 1000);
+                            player.seekToMillis(start_time.get(step) * 1000);
 
                         }
                     };
@@ -291,7 +324,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                     @Override
                     public void run() {
                         try {
-                            while(player.getCurrentTimeMillis() < end_time[step] * 1000){
+                            while(player.getCurrentTimeMillis() < end_time.get(step) * 1000){
                                 //Log.d(TAG, ""+ player.getCurrentTimeMillis());
                                 Thread.sleep(100);
                             }
@@ -509,14 +542,14 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
             if (step > 0) {
                 step -= 1;
             }
-            player.seekToMillis(start_time[step] * 1000);
+            player.seekToMillis(start_time.get(step) * 1000);
         }
     }
 
     void replay() {
 
         if(videoState == PAUSED || videoState == PLAYING || videoState == ENDED) {
-            player.seekToMillis(start_time[step] * 1000);
+            player.seekToMillis(start_time.get(step) * 1000);
         }
     }
 
@@ -546,7 +579,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
             if (step < totalStep - 1) {
                 step += 1;
             }
-            player.seekToMillis(start_time[step] * 1000);
+            player.seekToMillis(start_time.get(step) * 1000);
         }
     }
     //junhong end

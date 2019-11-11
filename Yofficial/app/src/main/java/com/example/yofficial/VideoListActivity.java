@@ -10,10 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -237,6 +235,8 @@ public class VideoListActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 //   TextView text = (TextView)findViewById(R.id.txtresult);
                 //   text.setText(query + "를 검색합니다.");
+                Log.d("search", query);
+                //get all posts.
                 adapter.filter(query);
 
                 return true;
