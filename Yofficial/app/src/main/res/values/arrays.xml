@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="data_servings">
+        <item>인원수</item>
+        <item>1인분</item>
+        <item>2인분</item>
+        <item>3인분</item>
+        <item>4인분</item>
+        <item>5인분</item>
+        <item>6인분이상</item>
+    </string-array>
     <string-array name="data_mainIng">
         <item>주재료</item>
         <item>소고기</item>
@@ -22,7 +31,7 @@
         <item>삶기</item>
         <item>굽기</item>
         <item>볶음</item>
-        <item>끊이기</item>
+        <item>끓이기</item>
         <item>조림</item>
         <item>비빔</item>
         <item>찜</item>

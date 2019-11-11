@@ -1,10 +1,12 @@
 package com.example.yofficial;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -22,10 +24,23 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,12 +50,19 @@ import java.util.Map;
 
 public class CreateRecipeActivity extends AppCompatActivity {
 
+    private static final String TAG = "Create!";
+
     private static final int REQUEST_CODE = 0;
     private ImageView getImage;
     private int timeIdCount = 0; // 재료 추가 테이블 count
     private int ssnIdCount = 0;  // 양념 추가 테이블 count
     private int stageIdCount = 0; // 태깅 단계 추가 테이블 count
-    private DBAccess dbAccess = new DBAccess(this);
+    private Bitmap img;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private Activity ac = this;
 
 
     //재료 테이블 받아오기
@@ -346,7 +368,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final String[] serNum = new String[]{"1인분","2인분","3인분","4인분","5인분","5인분이상"};
+                final String[] serNum = new String[]{"1인분","2인분","3인분","4인분","5인분","6인분이상"};
                 final int[] selectedIndex = {0};
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(CreateRecipeActivity.this);
@@ -427,7 +449,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 recipeInfo.setServings(servingSelB.getText().toString()); // 인분 수 전달
                 recipeInfo.setDifficulty(diffiSelB.getText().toString()); // 난이도 전달
                 recipeInfo.setDuraTime(duraSelB.getText().toString()); // 소요시간 전달
-                recipeInfo.setImgsrc("");
+
 
                 // 재료 입력 전달 부분
                 ingredientName.add(ing1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료 이름 부분
@@ -474,24 +496,134 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                 // 단계별 설명 및 시간 태깅 전달 부분
                 stepDescrib.add(stepDescrib1.getText().toString());
-                startTimeList.add(s_hour1.getText().toString() + ":" + s_minute1.getText().toString() + ":" + s_second1.getText().toString());
-                endTimeList.add(e_hour1.getText().toString() + ":" + e_minute1.getText().toString() + ":" + e_second1.getText().toString());
+
+
+                int stTime;
+                int edTime;
+
+                int h, m, s;
+
+                if(s_hour1.getText().toString().compareTo("") == 0){
+                    h = 0;
+                }
+                else{
+                    h = Integer.parseInt(s_hour1.getText().toString());
+                }
+
+                if(s_minute1.getText().toString().compareTo("") == 0){
+                    m = 0;
+                }
+                else{
+                    m = Integer.parseInt(s_minute1.getText().toString());
+                }
+
+                if(s_second1.getText().toString().compareTo("") == 0){
+                    s = 0;
+                }
+                else{
+                    s = Integer.parseInt(s_second1.getText().toString());
+                }
+
+                stTime = 3600 * h + 60 * m + s;
+
+                if(e_hour1.getText().toString().compareTo("") == 0){
+                    h = 0;
+                }
+                else{
+                    h = Integer.parseInt(e_hour1.getText().toString());
+                }
+
+                if(e_minute1.getText().toString().compareTo("") == 0){
+                    m = 0;
+                }
+                else{
+                    m = Integer.parseInt(e_minute1.getText().toString());
+                }
+
+                if(e_second1.getText().toString().compareTo("") == 0){
+                    s = 0;
+                }
+                else{
+                    s = Integer.parseInt(e_second1.getText().toString());
+                }
+
+                edTime = 3600 * h + 60 * m + s;
+
+                Log.d(TAG, ""+stTime+" " + edTime);
+
+                startTimeList.add(Integer.toString(stTime));
+                endTimeList.add(Integer.toString(edTime));
+
+
 
                 for (int i = 0; i < stageIdCount; i++) {
                     EditText tempStepDescrib = (EditText) stageTable.getChildAt(3 * (i + 1));
                     stepDescrib.add(tempStepDescrib.getText().toString());
 
+
+
                     EditText tempStartHour = (EditText) tr2[i][0].getChildAt(1);
                     EditText tempStartMinute = (EditText) tr2[i][0].getChildAt(2);
                     EditText tempStartSecond = (EditText) tr2[i][0].getChildAt(3);
-                    startTimeList.add(tempStartHour.getText().toString() + ":" + tempStartMinute.getText().toString() + ":" + tempStartSecond.getText().toString());
+
+
+                    if(tempStartHour.getText().toString().compareTo("") == 0){
+                        h = 0;
+                    }
+                    else{
+                        h = Integer.parseInt(tempStartHour.getText().toString());
+                    }
+
+                    if(tempStartMinute.getText().toString().compareTo("") == 0){
+                        m = 0;
+                    }
+                    else{
+                        m = Integer.parseInt(tempStartMinute.getText().toString());
+                    }
+
+                    if(tempStartSecond.getText().toString().compareTo("") == 0){
+                        s = 0;
+                    }
+                    else{
+                        s = Integer.parseInt(tempStartSecond.getText().toString());
+                    }
+
+                    stTime = 3600 * h + 60 * m + s;
+
+                    startTimeList.add(Integer.toString(stTime));
+
 
                     EditText tempEndHour = (EditText) tr2[i][1].getChildAt(1);
                     EditText tempEndMinute = (EditText) tr2[i][1].getChildAt(2);
                     EditText tempEndSecond = (EditText) tr2[i][1].getChildAt(3);
-                    endTimeList.add(tempEndHour.getText().toString() + ":" + tempEndMinute.getText().toString() + ":" + tempEndSecond.getText().toString());
+
+                    if(tempEndHour.getText().toString().compareTo("") == 0){
+                        h = 0;
+                    }
+                    else{
+                        h = Integer.parseInt(tempEndHour.getText().toString());
+                    }
+
+                    if(tempEndMinute.getText().toString().compareTo("") == 0){
+                        m = 0;
+                    }
+                    else{
+                        m = Integer.parseInt(tempEndMinute.getText().toString());
+                    }
+
+                    if(tempEndSecond.getText().toString().compareTo("") == 0){
+                        s = 0;
+                    }
+                    else{
+                        s = Integer.parseInt(tempEndSecond.getText().toString());
+                    }
+
+                    edTime = 3600 * h + 60 * m + s;
+
+                    endTimeList.add(Integer.toString(edTime));
 
                 }
+
                 for (int i = 0; i < stepDescrib.size(); i++) {
                     System.out.println(stepDescrib.get(i));
                     System.out.println(startTimeList.get(i));
@@ -503,9 +635,60 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
 
 
+                database = FirebaseDatabase.getInstance();
+                myRef = database.getReference();
 
-                dbAccess.addRecipe(recipeInfo);
+                String recipeId = myRef.child("recipes").push().getKey();
 
+                Log.d(TAG, recipeId);
+                recipeInfo.setRecipeId(recipeId);
+                myRef.child("recipes").child(recipeId).setValue(recipeInfo);
+
+
+                PostInfo postInfo = new PostInfo();
+                postInfo.setRecipeId(recipeId);
+                postInfo.setTitle(recipeInfo.getRecipeTitle());
+
+                String userId = "ljwon1995"; //need to be change!
+
+                postInfo.setUserId(userId);
+                postInfo.setViews(0);
+
+                myRef.child("posts").child(recipeId).setValue(postInfo).addOnSuccessListener(ac, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
+
+                    }
+                }).addOnFailureListener(ac, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ac.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                storage = FirebaseStorage.getInstance();
+                storageRef = storage.getReference().child("images/"+ recipeId +".jpg");
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                img.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+
+                Log.d(TAG, data.toString());
+
+                UploadTask uploadTask = storageRef.putBytes(data);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Failed");
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Log.d(TAG, "Succeeded");
+                        ac.finish();
+                    }
+                });
             }
         });
 
@@ -514,7 +697,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateRecipeActivity.this, IngreSearchActivity.class);
-                startActivityForResult(intent, 1111);
+                startActivityForResult(intent, 1111); //1111로 코드 부여
             }
         });
     }
@@ -532,10 +715,12 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 try{
                     InputStream in = getContentResolver().openInputStream(data.getData());
 
-                    Bitmap img = BitmapFactory.decodeStream(in);
+                    img = BitmapFactory.decodeStream(in);
                     in.close();
 
                     getImage.setImageBitmap(img);
+
+
                 }catch(Exception e)
                 {
 
@@ -546,7 +731,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
             }
         }
-
+        // 재료 입력 리스트에서 받아오기
         if (requestCode == 1111) {
             if (resultCode == 1234) {
                 String temp = data.getStringExtra("result");

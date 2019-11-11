@@ -1,7 +1,12 @@
 package com.example.yofficial;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,18 +19,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class HyunWooActivity extends AppCompatActivity {
     RecipeInfo refo;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private Context c = this;
+
     private static final String TAG = "HyunWoo!";
 
 
@@ -40,6 +54,7 @@ public class HyunWooActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String id = extras.getString("id");
         Log.d("HyunWoo!", id);
+
 
 
         database = FirebaseDatabase.getInstance();
@@ -111,11 +126,48 @@ public class HyunWooActivity extends AppCompatActivity {
 
 
                 // drawable에 있는 이미지를 지정합니다.
-                imageView.setImageResource(R.drawable.moon);
+                storage = FirebaseStorage.getInstance();
+                storageRef = storage.getReference().child("images/" + refo.getRecipeId() +".jpg");
+                storageRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Log.d(TAG, "Succeeded");
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        BitmapDrawable img = new BitmapDrawable(getResources(), bitmap);
+                        imageView.setImageDrawable(img);
+                    }
+
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Failed");
+                        Drawable img = ContextCompat.getDrawable(c, R.drawable.fail);
+                        imageView.setImageDrawable(img);
+                    }
+                });
+
+
+
+
+
+
+
                 yiconView.setImageResource(R.drawable.yicon);
                 servings.setImageResource(R.drawable.servings);
                 level.setImageResource(R.drawable.level);
                 duration.setImageResource(R.drawable.duration);
+
+                youtubeUrl.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), YouTubeActivity.class);
+                        intent.putExtra("url", refo.getYoutubeUrl());
+                        intent.putExtra("startTime", refo.getStartTime());
+                        intent.putExtra("endTime", refo.getEndTime());
+                        intent.putExtra("stepDesc", refo.getStepDescrib());
+                        startActivity(intent);
+                    }
+                });
 
             }
 

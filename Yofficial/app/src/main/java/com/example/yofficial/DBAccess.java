@@ -29,6 +29,7 @@ public class DBAccess {
     private String userId = "ljwon1995";
 
     DBAccess(Activity activity){
+
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         ac = activity;

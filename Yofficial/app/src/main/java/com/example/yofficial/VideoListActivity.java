@@ -2,16 +2,25 @@ package com.example.yofficial;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
+
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,11 +28,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +48,14 @@ public class VideoListActivity extends AppCompatActivity {
     MenuItem mSearch;
     Context c = this;
 
+    private final static String TAG = "VideoActivity!";
+
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private ArrayList<PostInfo> pList;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 
 
     @Override
@@ -47,6 +64,7 @@ public class VideoListActivity extends AppCompatActivity {
         setContentView(R.layout.v_list);
 
         //editsearch = (EditText)findViewById(R.id.editSearch);
+
 
         listview = (ListView) findViewById(R.id.listview1);
         list = new ArrayList<VideoItem>();
@@ -64,10 +82,37 @@ public class VideoListActivity extends AppCompatActivity {
                 PostInfo p = dataSnapshot.getValue(PostInfo.class);
                 Log.d("jun", p.getTitle());
                 pList.add(p);
-                list.add(new VideoItem(ContextCompat.getDrawable(c, R.drawable.ab), p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews(), p.getRecipeId()));
-                Log.d("jun", "listAdded" + list.size());
-                adapter = new VideoAdapter(c, list);
-                listview.setAdapter(adapter);
+
+
+                storage = FirebaseStorage.getInstance();
+                storageRef = storage.getReference().child("images/" + p.getRecipeId() +".jpg");
+                storageRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Log.d(TAG, "Succeeded");
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        BitmapDrawable img = new BitmapDrawable(getResources(), bitmap);
+                        list.add(new VideoItem(img, p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews(), p.getRecipeId()));
+                        Log.d("jun", "listAdded" + list.size());
+                        adapter = new VideoAdapter(c, list);
+                        listview.setAdapter(adapter);
+                    }
+
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Failed");
+                        Drawable img = ContextCompat.getDrawable(c, R.drawable.fail);
+                        list.add(new VideoItem(img, p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews(), p.getRecipeId()));
+                        Log.d("jun", "listAdded" + list.size());
+                        adapter = new VideoAdapter(c, list);
+                        listview.setAdapter(adapter);
+
+                    }
+                });
+
+
+
             }
 
             @Override
@@ -142,10 +187,48 @@ public class VideoListActivity extends AppCompatActivity {
     }
 
 
+
     //메뉴 생성하는 onCreateOptionsMenu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+
+        // 메뉴 버튼 클릭 시 조건별 검색 스피너들 출력을 위한 동적 레이아웃
+
+        TableLayout table = findViewById(R.id.category_tableLayout);
+        TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
+        params.weight = 1;
+
+        TableRow tr1 = new TableRow(this);
+        TableRow tr2 = new TableRow(this);
+        tr1.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        tr2.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
+
+        Spinner spinnerServings = new Spinner(this);
+        spinnerServings.setLayoutParams(params);
+        ArrayAdapter servingsAdapter = ArrayAdapter.createFromResource(this, R.array.data_servings, android.R.layout.simple_spinner_item);
+        servingsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerServings.setAdapter(servingsAdapter);
+
+        Spinner spinner_mainIng = new Spinner(this);
+        spinner_mainIng.setLayoutParams(params);
+        ArrayAdapter mainIng_Adapter = ArrayAdapter.createFromResource(this, R.array.data_mainIng, android.R.layout.simple_spinner_item);
+        mainIng_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_mainIng.setAdapter(mainIng_Adapter);
+
+        Spinner spinner_type = new Spinner(this);
+        spinner_type.setLayoutParams(params);
+        ArrayAdapter typeAdapter = ArrayAdapter.createFromResource(this, R.array.data_type, android.R.layout.simple_spinner_item);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_type.setAdapter(typeAdapter);
+
+        Spinner spinner_feature = new Spinner(this);
+        spinner_feature.setLayoutParams(params);
+        ArrayAdapter featureAdapter = ArrayAdapter.createFromResource(this, R.array.data_feature, android.R.layout.simple_spinner_item);
+        featureAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_feature.setAdapter(featureAdapter);
 
         //search_menu.xml 등록
         MenuInflater inflater=getMenuInflater();
@@ -156,11 +239,23 @@ public class VideoListActivity extends AppCompatActivity {
         mSearch.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                tr1.addView(spinnerServings);
+                tr1.addView(spinner_mainIng);
+                tr2.addView(spinner_type);
+                tr2.addView(spinner_feature);
+                table.addView(tr1);
+                table.addView(tr2);
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
+                table.removeView(tr2);
+                table.removeView(tr1);
+                tr2.removeView(spinner_feature);
+                tr2.removeView(spinner_type);
+                tr1.removeView(spinner_mainIng);
+                tr1.removeView(spinnerServings);
                 return true;
             }
         });
@@ -179,7 +274,10 @@ public class VideoListActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 //   TextView text = (TextView)findViewById(R.id.txtresult);
                 //   text.setText(query + "를 검색합니다.");
+                Log.d("search", query);
+                //get all posts.
                 adapter.filter(query);
+
                 return true;
             }
 

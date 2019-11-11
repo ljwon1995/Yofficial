@@ -22,7 +22,6 @@ public class RecipeInfo {
     private String youtubeUrl;
     private ArrayList<String> startTime;
     private ArrayList<String> endTime;
-    private String imgsrc;
     private ArrayList<String> stepDescrib;
 
 
@@ -160,14 +159,6 @@ public class RecipeInfo {
 
     public void setEndTime(ArrayList<String> endTime) {
         this.endTime = endTime;
-    }
-
-    public String getImgsrc() {
-        return imgsrc;
-    }
-
-    public void setImgsrc(String imgsrc) {
-        this.imgsrc = imgsrc;
     }
 
     public ArrayList<String> getStepDescrib() {
