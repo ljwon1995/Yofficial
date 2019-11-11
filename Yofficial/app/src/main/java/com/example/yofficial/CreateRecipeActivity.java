@@ -1,10 +1,12 @@
 package com.example.yofficial;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -22,10 +24,23 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +58,12 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private int ssnIdCount = 0;  // 양념 추가 테이블 count
     private int stageIdCount = 0; // 태깅 단계 추가 테이블 count
     private DBAccess dbAccess = new DBAccess(this);
+    private Bitmap img;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private Activity ac = this;
 
 
     //재료 테이블 받아오기
@@ -429,7 +450,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 recipeInfo.setServings(servingSelB.getText().toString()); // 인분 수 전달
                 recipeInfo.setDifficulty(diffiSelB.getText().toString()); // 난이도 전달
                 recipeInfo.setDuraTime(duraSelB.getText().toString()); // 소요시간 전달
-                recipeInfo.setImgsrc("");
+
 
                 // 재료 입력 전달 부분
                 ingredientName.add(ing1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료 이름 부분
@@ -614,10 +635,63 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 recipeInfo.setStartTime(startTimeList); // 단계별 시작 시간 전달
                 recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
 
+                //dbAccess.addRecipe(recipeInfo);
 
 
-                dbAccess.addRecipe(recipeInfo);
+                database = FirebaseDatabase.getInstance();
+                myRef = database.getReference();
 
+                String recipeId = myRef.child("recipes").push().getKey();
+
+                Log.d(TAG, recipeId);
+                recipeInfo.setRecipeId(recipeId);
+                myRef.child("recipes").child(recipeId).setValue(recipeInfo);
+
+
+                PostInfo postInfo = new PostInfo();
+                postInfo.setRecipeId(recipeId);
+                postInfo.setTitle(recipeInfo.getRecipeTitle());
+
+                String userId = "ljwon1995"; //need to be change!
+
+                postInfo.setUserId(userId);
+                postInfo.setViews(0);
+
+                myRef.child("posts").child(recipeId).setValue(postInfo).addOnSuccessListener(ac, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
+
+                    }
+                }).addOnFailureListener(ac, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ac.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                storage = FirebaseStorage.getInstance();
+                storageRef = storage.getReference().child("images/"+ recipeId +".jpg");
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                img.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+
+                Log.d(TAG, data.toString());
+
+                UploadTask uploadTask = storageRef.putBytes(data);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Failed");
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Log.d(TAG, "Succeeded");
+                        ac.finish();
+                    }
+                });
             }
         });
 
@@ -644,10 +718,12 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 try{
                     InputStream in = getContentResolver().openInputStream(data.getData());
 
-                    Bitmap img = BitmapFactory.decodeStream(in);
+                    img = BitmapFactory.decodeStream(in);
                     in.close();
 
                     getImage.setImageBitmap(img);
+
+
                 }catch(Exception e)
                 {
 
