@@ -92,10 +92,11 @@
         app:srcCompat="@drawable/delivery" />
 
     <ImageButton
-        android:id="@+id/imageButton6"
+        android:id="@+id/recommendButton"
         android:layout_width="65dp"
         android:layout_height="61dp"
         android:background="#FF9E27"
+        android:onClick="onButton4Clicked"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/refregButton"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
