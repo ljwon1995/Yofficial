@@ -2,6 +2,10 @@ package com.example.yofficial;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,11 +28,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +48,14 @@ public class VideoListActivity extends AppCompatActivity {
     MenuItem mSearch;
     Context c = this;
 
+    private final static String TAG = "VideoActivity!";
+
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private ArrayList<PostInfo> pList;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 
 
     @Override
@@ -70,10 +82,37 @@ public class VideoListActivity extends AppCompatActivity {
                 PostInfo p = dataSnapshot.getValue(PostInfo.class);
                 Log.d("jun", p.getTitle());
                 pList.add(p);
-                list.add(new VideoItem(ContextCompat.getDrawable(c, R.drawable.ab), p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews(), p.getRecipeId()));
-                Log.d("jun", "listAdded" + list.size());
-                adapter = new VideoAdapter(c, list);
-                listview.setAdapter(adapter);
+
+
+                storage = FirebaseStorage.getInstance();
+                storageRef = storage.getReference().child("images/" + p.getRecipeId() +".jpg");
+                storageRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Log.d(TAG, "Succeeded");
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        BitmapDrawable img = new BitmapDrawable(getResources(), bitmap);
+                        list.add(new VideoItem(img, p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews(), p.getRecipeId()));
+                        Log.d("jun", "listAdded" + list.size());
+                        adapter = new VideoAdapter(c, list);
+                        listview.setAdapter(adapter);
+                    }
+
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Failed");
+                        Drawable img = ContextCompat.getDrawable(c, R.drawable.fail);
+                        list.add(new VideoItem(img, p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews(), p.getRecipeId()));
+                        Log.d("jun", "listAdded" + list.size());
+                        adapter = new VideoAdapter(c, list);
+                        listview.setAdapter(adapter);
+
+                    }
+                });
+
+
+
             }
 
             @Override

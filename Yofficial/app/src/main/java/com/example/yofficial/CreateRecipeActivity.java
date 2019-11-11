@@ -57,7 +57,6 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private int timeIdCount = 0; // 재료 추가 테이블 count
     private int ssnIdCount = 0;  // 양념 추가 테이블 count
     private int stageIdCount = 0; // 태깅 단계 추가 테이블 count
-    private DBAccess dbAccess = new DBAccess(this);
     private Bitmap img;
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -634,8 +633,6 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 recipeInfo.setStepDescrib(stepDescrib); //단계별 설명 전달
                 recipeInfo.setStartTime(startTimeList); // 단계별 시작 시간 전달
                 recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
-
-                //dbAccess.addRecipe(recipeInfo);
 
 
                 database = FirebaseDatabase.getInstance();
