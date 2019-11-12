@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class RecommendActivity extends AppCompatActivity {
@@ -35,6 +37,8 @@ public class RecommendActivity extends AppCompatActivity {
 
         list.add(new RecommendData("비빔밥", 53, 68, 59, 78, 42, 43));
         list.add(new RecommendData("불고기", 85, 74, 30, 48, 37, 45));
+        list.add(new RecommendData("안동찜닭", 75, 74, 30, 48, 37, 45));
+        list.add(new RecommendData("돼지갈비", 75, 74, 30, 44, 37, 45));
 
         SeekBar sb_savory  = (SeekBar) findViewById(R.id.seekBar_savory);
         sb_savory.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -101,13 +105,34 @@ public class RecommendActivity extends AppCompatActivity {
 
     public void onButtonClicked(View view){
 
-        double a, b;
+        ArrayList<Double> arr = new ArrayList<>();
+        ArrayList<String> arr_s = new ArrayList<>();
+        int first = 0, twice = 0, third = 0;
         ArrayList<String> result_title = new ArrayList<>();
-        test = (TextView)findViewById(R.id.textView5);
-        a =  list.get(0).cos_similarity(user_savory, user_sweet, user_sour, user_spicy, user_salty);
-        b =  list.get(1).cos_similarity(user_savory, user_sweet, user_sour, user_spicy, user_salty);
-        test.setText(a + "\n" + b);
-        result_title.add(list.get(0).getFood_name());
+       // test = (TextView)findViewById(R.id.textView5);
+
+        for(int i = 0; i < list.size(); i++){
+             arr.add(list.get(i).cos_similarity(user_savory, user_sweet, user_sour, user_spicy, user_salty));
+        }
+        Collections.sort(arr);
+        Collections.reverse(arr);
+
+        for(int i = 0; i < list.size(); i++){
+
+            if(arr.get(0) == list.get(i).cos_similarity(user_savory, user_sweet, user_sour, user_spicy, user_salty)){
+                first = i;
+            }
+            else if(arr.get(1) == list.get(i).cos_similarity(user_savory, user_sweet, user_sour, user_spicy, user_salty)){
+                twice = i;
+            }
+            else if(arr.get(2) == list.get(i).cos_similarity(user_savory, user_sweet, user_sour, user_spicy, user_salty)){
+                third = i;
+            }
+        }
+
+        result_title.add(list.get(first).food_name);
+        result_title.add(list.get(twice).food_name);
+        result_title.add(list.get(third).food_name);
         Intent intent = new Intent(this, Recommend_PopupActivity.class);
         intent.putStringArrayListExtra("ArrayList", result_title);
         startActivityForResult(intent, 1);

@@ -36,7 +36,7 @@
         <activity android:name=".RefregActivity"></activity>
         <activity android:name=".Refreg_PopupActivity" android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".IngreSearchActivity"></activity>
-        <activity android:name=".Ingre_PopupActivity" android:theme="@android:style/Theme.Dialog"></activity>
+        <activity android:name=".eval_popup" android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name=".Ingre_SearchAdapter"></activity>
         <activity android:name=".SignUpActivity"></activity>
         <activity android:name=".LoginActivity"></activity>

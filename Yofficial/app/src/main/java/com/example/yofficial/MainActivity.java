@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hyunButtonClicked(View v){
-        Intent intent = new Intent(getApplicationContext(), Ingre_PopupActivity.class);
+        Intent intent = new Intent(getApplicationContext(), eval_popup.class);
         startActivity(intent);
     }
 }

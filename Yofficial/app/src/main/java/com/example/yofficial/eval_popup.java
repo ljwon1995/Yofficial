@@ -16,10 +16,9 @@ import android.widget.TextView;
 
 
 
-public class Ingre_PopupActivity extends Activity {
+public class eval_popup extends Activity {
 
     TextView rateText;
-    LinearLayout rate_linear;
     ImageView first;
     ImageView second;
     ImageView third;
