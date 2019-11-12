@@ -18,32 +18,35 @@
             android:gravity="center"
             android:text="오늘은 이런걸 드시는게 어떨까요?"
             android:textColor="#fff"
-            android:textSize="18sp" />
+            android:textSize="18dp" />
     </LinearLayout>
     <!-- //end 타이틀바 -->
 
     <!-- Notice -->
 
-    <Button
+    <TextView
         android:id="@+id/select1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onSelect1"
-        android:text="Button" />
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:textColor="#0F0F0F"/>
 
-    <Button
+    <TextView
         android:id="@+id/select2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onSelect2"
-        android:text="Button" />
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:textColor="#0F0F0F"/>
 
-    <Button
+    <TextView
         android:id="@+id/select3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onSelect3"
-        android:text="Button" />
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:textColor="#0F0F0F"/>
 
     <View
         android:layout_width="match_parent"

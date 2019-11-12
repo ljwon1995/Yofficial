@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Recommend_PopupActivity extends Activity {
-    TextView txtText;
+    TextView txtText1;
+    TextView txtText2;
+    TextView txtText3;
     List<String> list;
     ListView listview;
     ArrayAdapter<String> adapter;
@@ -28,23 +30,19 @@ public class Recommend_PopupActivity extends Activity {
         setContentView(R.layout.activity_recommend_pupup);
 
         //UI 객체생성
-        txtText = (TextView)findViewById(R.id.select1);
+        txtText1 = (TextView)findViewById(R.id.select1);
+        txtText2 = (TextView)findViewById(R.id.select2);
+        txtText3 = (TextView)findViewById(R.id.select3);
 
         //데이터 가져오기
         Intent intent = getIntent();
         ArrayList<String> ReceiveArr = intent.getStringArrayListExtra("ArrayList");
-        txtText.setText(ReceiveArr.get(0));
+        txtText1.setText(ReceiveArr.get(0));
+        txtText2.setText(ReceiveArr.get(1));
+        txtText3.setText(ReceiveArr.get(2));
     }
 
 
-    public void onSelect1(View view){
-        Intent intent = new Intent(
-                getApplicationContext(), // 현재 화면의 제어권자
-                VideoListActivity.class); // 다음 넘어갈 클래스 지정
-        //intent.putExtra();
-        startActivity(intent); // 다음 화면으로 넘어간다
-
-    }
 
     //확인 버튼 클릭
     public void mOnClose(View v){
