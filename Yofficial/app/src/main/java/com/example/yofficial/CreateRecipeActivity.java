@@ -81,6 +81,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
     TextView startTime[] = new TextView[100];
     TextView endTime[] = new TextView[100];
     EditText stageEdit[][] = new EditText[100][6];
+    TextView separator[][] = new TextView[100][4];
 
     //재료 테이블 입력 ArrayList 이름과 양
     ArrayList<String> ingredientName = new ArrayList<String>();
@@ -132,10 +133,12 @@ public class CreateRecipeActivity extends AppCompatActivity {
         final TableLayout ssnTable = findViewById(R.id.ssnTable);
         final TableLayout stageTable = findViewById(R.id.stageTable);
         TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams stage_params = new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, 150);
-        TableRow.LayoutParams trParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams stage_params = new TableRow.LayoutParams(0, 100);
+        TableRow.LayoutParams stage_last_params = new TableRow.LayoutParams(0, 100);
         params.weight = 1f;
-        stage_params.weight= 1f;
+        stage_params.weight= 2f;
+        stage_last_params.weight = 2f;
+        stage_last_params.rightMargin = 40;
 
 
         //재료 테이블 배열 초기화
@@ -203,23 +206,35 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
         for (int i = 0; i < startTime.length; i++) {
             startTime[i] = new TextView(this);
-            startTime[i].setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            TableRow.LayoutParams startParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            startParams.weight = 1;
+            startParams.leftMargin = 20;
+            startTime[i].setLayoutParams(startParams);
             startTime[i].setText("시작 시간");
             startTime[i].setTextColor(Color.parseColor("#000000"));
         }
 
         for (int i = 0; i < endTime.length; i++) {
             endTime[i] = new TextView(this);
-            endTime[i].setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            TableRow.LayoutParams endParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            endParams.leftMargin = 20;
+            endParams.weight = 1;
+            endTime[i].setLayoutParams(endParams);
+            //endTime[i].setPadding(20,0,0,0);
             endTime[i].setText("종료 시간");
             endTime[i].setTextColor(Color.parseColor("#000000"));
         }
+
 
         for (int i = 0; i < stageEdit.length; i++) {
             for (int j = 0; j < stageEdit[i].length; j++) {
                 stageEdit[i][j] = new EditText(this);
                 stageEdit[i][j].setLayoutParams(stage_params);
+                if (j == 5 || j == 2) {
+                    stageEdit[i][j].setLayoutParams(stage_last_params);
+                }
                 stageEdit[i][j].setBackgroundResource(R.drawable.edittext_teduri);
+                stageEdit[i][j].setPadding(20,0,0,0);
                 stageEdit[i][j].setTextSize(15);
                 stageEdit[i][j].setGravity(Gravity.RIGHT);
                 InputFilter[] FilterArray = new InputFilter[1];
@@ -229,10 +244,25 @@ public class CreateRecipeActivity extends AppCompatActivity {
             }
         }
 
+        for (int i = 0; i < separator.length; i++) {
+            for (int j = 0; j < separator[i].length; j++) {
+                separator[i][j] = new TextView(this);
+                TableRow.LayoutParams separatorParams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                separatorParams.weight = 1;
+                separator[i][j].setLayoutParams(separatorParams);
+                separator[i][j].setGravity(Gravity.CENTER);
+                separator[i][j].setText(":");
+                separator[i][j].setTextSize(15);
+            }
+        }
+
+
+
         for (int i = 0; i < tr2.length; i++) {
             for (int j = 0; j < tr2[i].length; j++) {
                 tr2[i][j] = new TableRow(this);
-                tr2[i][j].setLayoutParams(trParams);
+                tr2[i][j].setLayoutParams(params);
+                tr2[i][j].setPadding(0, 40, 0, 0);
             }
         }
 
@@ -293,11 +323,24 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 stageTable.addView(stageDescr[stageIdCount]);
                 tr2[stageIdCount][0].addView(startTime[stageIdCount]);
                 tr2[stageIdCount][0].addView(stageEdit[stageIdCount][0]);
+
+                tr2[stageIdCount][0].addView(separator[stageIdCount][0]); // 구분자
+
                 tr2[stageIdCount][0].addView(stageEdit[stageIdCount][1]);
+
+                tr2[stageIdCount][0].addView(separator[stageIdCount][1]); // 구분자
+
                 tr2[stageIdCount][0].addView(stageEdit[stageIdCount][2]);
+
                 tr2[stageIdCount][1].addView(endTime[stageIdCount]);
                 tr2[stageIdCount][1].addView(stageEdit[stageIdCount][3]);
+
+                tr2[stageIdCount][1].addView(separator[stageIdCount][2]); // 구분자
+
                 tr2[stageIdCount][1].addView(stageEdit[stageIdCount][4]);
+
+                tr2[stageIdCount][1].addView(separator[stageIdCount][3]); // 구분자
+
                 tr2[stageIdCount][1].addView(stageEdit[stageIdCount][5]);
                 stageTable.addView(tr2[stageIdCount][0]);
                 stageTable.addView(tr2[stageIdCount][1]);
@@ -313,11 +356,15 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     stageTable.removeView(tr2[stageIdCount - 1][1]);
                     stageTable.removeView(tr2[stageIdCount - 1][0]);
                     tr2[stageIdCount - 1][1].removeView(stageEdit[stageIdCount - 1][5]);
+                    tr2[stageIdCount - 1][1].removeView(separator[stageIdCount - 1][3]); // 구분자
                     tr2[stageIdCount - 1][1].removeView(stageEdit[stageIdCount - 1][4]);
+                    tr2[stageIdCount - 1][1].removeView(separator[stageIdCount - 1][2]); // 구분자
                     tr2[stageIdCount - 1][1].removeView(stageEdit[stageIdCount - 1][3]);
                     tr2[stageIdCount - 1][1].removeView(endTime[stageIdCount - 1]);
                     tr2[stageIdCount - 1][0].removeView(stageEdit[stageIdCount - 1][2]);
+                    tr2[stageIdCount - 1][0].removeView(separator[stageIdCount - 1][1]); // 구분자
                     tr2[stageIdCount - 1][0].removeView(stageEdit[stageIdCount - 1][1]);
+                    tr2[stageIdCount - 1][0].removeView(separator[stageIdCount - 1][0]); // 구분자
                     tr2[stageIdCount - 1][0].removeView(stageEdit[stageIdCount - 1][0]);
                     tr2[stageIdCount - 1][0].removeView(startTime[stageIdCount - 1]);
                     stageTable.removeView(stageDescr[stageIdCount - 1]);
