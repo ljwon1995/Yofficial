@@ -38,6 +38,11 @@
         <activity android:name=".IngreSearchActivity"></activity>
         <activity android:name=".eval_popup" android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name=".Ingre_SearchAdapter"></activity>
+        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".StartActivity"></activity>
+        <activity android:name=".RecommendActivity"></activity>
+        <activity android:name=".Recommend_PopupActivity" android:theme="@android:style/Theme.Dialog" />
 
 
     </application>

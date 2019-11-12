@@ -213,7 +213,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
 
-                    android:src="@drawable/you2"
+                    android:src="@drawable/video"
                     android:scaleType="center"
                     android:id="@+id/youtubeUrl"
                     />
