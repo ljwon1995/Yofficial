@@ -58,6 +58,8 @@ public class StartActivity extends AppCompatActivity {
                             .requestEmail()
                             .build();
 
+
+
                     mGoogleSignInClient = GoogleSignIn.getClient(ac, gso);
                     mGoogleSignInClient.signOut();
                 }

@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,15 +47,13 @@ public class HyunWooActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hyunwoo);
 
-        Button button = (Button) findViewById(R.id.create);
+
 
 
         Bundle extras = getIntent().getExtras();
         String id = extras.getString("id");
         Log.d("HyunWoo!", id);
-
 
 
         database = FirebaseDatabase.getInstance();
@@ -63,66 +62,12 @@ public class HyunWooActivity extends AppCompatActivity {
         myRef.child("recipes").child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+
                 Log.d(TAG, "enterDataChange");
                 refo = dataSnapshot.getValue(RecipeInfo.class);
                 Log.d(TAG, refo.getRecipeTitle() + " " + refo.getRecipeId());
-
-                //db정보가 있는 RecipeInfo클래스에서 정보 받아오기
-                TextView recipeTitle = (TextView)findViewById(R.id.title);
-                recipeTitle.setText(refo.getRecipeTitle());
-                TextView recipeSubTitle = (TextView)findViewById(R.id.sub_title);
-                recipeSubTitle.setText(refo.getRecipeSubTitle());
-                TextView introEdit = (TextView) findViewById(R.id.introRecipe);
-                introEdit.setText(refo.getIntroRecipe());
-                TextView serveNum = (TextView)findViewById(R.id.serveNum);
-                serveNum.setText(refo.getServings());
-                TextView difficulty = (TextView)findViewById(R.id.difficulty);
-                difficulty.setText(refo.getDifficulty());
-                TextView duraTime = (TextView)findViewById(R.id.duraTime);
-                duraTime.setText(refo.getDuraTime());
-                TextView ingredientList = (TextView)findViewById(R.id.ingredientList);
-
-                StringBuilder ingreds = new StringBuilder();
-                for(int i = 0; i < refo.getIngredientName().size(); i++){
-                    ingreds.append(refo.getIngredientName().get(i));
-                    ingreds.append(refo.getIngredientAmount().get(i));
-                    ingreds.append(",");
-                    Log.d(TAG, "cur SB = " + ingreds.toString());
-                }
-
-                ingredientList.setText(ingreds.toString());
-
-
-
-
-
-
-                TextView seasoningList = (TextView)findViewById(R.id.seasoningList);
-
-                StringBuilder seasons = new StringBuilder();
-                for(int i = 0; i < refo.getSeasoningName().size(); i++){
-                    seasons.append(refo.getSeasoningName().get(i));
-                    seasons.append(refo.getSeasoningAmount().get(i));
-                    seasons.append(",");
-                    Log.d(TAG, "cur SB = " + ingreds.toString());
-                }
-
-                seasoningList.setText(seasons.toString());
-
-
-
-
-
-
-
-                //뷰, 버튼들의 선언부
-                ImageView imageView = (ImageView)findViewById(R.id.imageview);
-                ImageView yiconView = (ImageView)findViewById(R.id.yicon);
-                ImageView servings = (ImageView)findViewById(R.id.servings);
-                ImageView level = (ImageView)findViewById(R.id.level);
-                ImageView duration = (ImageView)findViewById(R.id.duration);
-                ImageView youtubeUrl = (ImageView) findViewById(R.id.youtubeUrl);
-
 
 
                 // drawable에 있는 이미지를 지정합니다.
@@ -131,43 +76,182 @@ public class HyunWooActivity extends AppCompatActivity {
                 storageRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
+
                         Log.d(TAG, "Succeeded");
                         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         BitmapDrawable img = new BitmapDrawable(getResources(), bitmap);
+
+
+
+                        setContentView(R.layout.activity_hyunwoo);
+
+                        //db정보가 있는 RecipeInfo클래스에서 정보 받아오기
+                        TextView recipeTitle = (TextView)findViewById(R.id.title);
+                        recipeTitle.setText(refo.getRecipeTitle());
+                        TextView recipeSubTitle = (TextView)findViewById(R.id.sub_title);
+                        recipeSubTitle.setText(refo.getRecipeSubTitle());
+                        TextView introEdit = (TextView) findViewById(R.id.introRecipe);
+                        introEdit.setText(refo.getIntroRecipe());
+                        TextView serveNum = (TextView)findViewById(R.id.serveNum);
+                        serveNum.setText(refo.getServings());
+                        TextView difficulty = (TextView)findViewById(R.id.difficulty);
+                        difficulty.setText(refo.getDifficulty());
+                        TextView duraTime = (TextView)findViewById(R.id.duraTime);
+                        duraTime.setText(refo.getDuraTime());
+                        TextView ingredientList = (TextView)findViewById(R.id.ingredientList);
+
+                        StringBuilder ingreds = new StringBuilder();
+                        for(int i = 0; i < refo.getIngredientName().size(); i++){
+                            ingreds.append(refo.getIngredientName().get(i));
+                            ingreds.append(refo.getIngredientAmount().get(i));
+                            ingreds.append(",");
+                            Log.d(TAG, "cur SB = " + ingreds.toString());
+                        }
+
+                        ingredientList.setText(ingreds.toString());
+
+
+                        TextView seasoningList = (TextView)findViewById(R.id.seasoningList);
+
+                        StringBuilder seasons = new StringBuilder();
+                        for(int i = 0; i < refo.getSeasoningName().size(); i++){
+                            seasons.append(refo.getSeasoningName().get(i));
+                            seasons.append(refo.getSeasoningAmount().get(i));
+                            seasons.append(",");
+                            Log.d(TAG, "cur SB = " + ingreds.toString());
+                        }
+
+                        seasoningList.setText(seasons.toString());
+
+                        //뷰, 버튼들의 선언부
+                        ImageView imageView = (ImageView)findViewById(R.id.imageview);
+                        ImageView yiconView = (ImageView)findViewById(R.id.yicon);
+                        ImageView servings = (ImageView)findViewById(R.id.servings);
+                        ImageView level = (ImageView)findViewById(R.id.level);
+                        ImageView duration = (ImageView)findViewById(R.id.duration);
+                        ImageView youtubeUrl = (ImageView) findViewById(R.id.youtubeUrl);
+
+
+
+                        yiconView.setImageResource(R.drawable.yicon);
+                        servings.setImageResource(R.drawable.servings);
+                        level.setImageResource(R.drawable.level);
+                        duration.setImageResource(R.drawable.duration);
+
+                        youtubeUrl.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getApplicationContext(), YouTubeActivity.class);
+                                intent.putExtra("url", refo.getYoutubeUrl());
+                                intent.putExtra("startTime", refo.getStartTime());
+                                intent.putExtra("endTime", refo.getEndTime());
+                                intent.putExtra("stepDesc", refo.getStepDescrib());
+                                startActivity(intent);
+                            }
+                        });
+
                         imageView.setImageDrawable(img);
+
+                        Button button = (Button) findViewById(R.id.create);
+                        button.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getApplicationContext(),CreateRecipeActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+
                     }
 
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+
+
+
+                        setContentView(R.layout.activity_hyunwoo);
+                        //db정보가 있는 RecipeInfo클래스에서 정보 받아오기
+                        TextView recipeTitle = (TextView)findViewById(R.id.title);
+                        recipeTitle.setText(refo.getRecipeTitle());
+                        TextView recipeSubTitle = (TextView)findViewById(R.id.sub_title);
+                        recipeSubTitle.setText(refo.getRecipeSubTitle());
+                        TextView introEdit = (TextView) findViewById(R.id.introRecipe);
+                        introEdit.setText(refo.getIntroRecipe());
+                        TextView serveNum = (TextView)findViewById(R.id.serveNum);
+                        serveNum.setText(refo.getServings());
+                        TextView difficulty = (TextView)findViewById(R.id.difficulty);
+                        difficulty.setText(refo.getDifficulty());
+                        TextView duraTime = (TextView)findViewById(R.id.duraTime);
+                        duraTime.setText(refo.getDuraTime());
+                        TextView ingredientList = (TextView)findViewById(R.id.ingredientList);
+
+                        StringBuilder ingreds = new StringBuilder();
+                        for(int i = 0; i < refo.getIngredientName().size(); i++){
+                            ingreds.append(refo.getIngredientName().get(i));
+                            ingreds.append(refo.getIngredientAmount().get(i));
+                            ingreds.append(",");
+                            Log.d(TAG, "cur SB = " + ingreds.toString());
+                        }
+
+                        ingredientList.setText(ingreds.toString());
+
+
+                        TextView seasoningList = (TextView)findViewById(R.id.seasoningList);
+
+                        StringBuilder seasons = new StringBuilder();
+                        for(int i = 0; i < refo.getSeasoningName().size(); i++){
+                            seasons.append(refo.getSeasoningName().get(i));
+                            seasons.append(refo.getSeasoningAmount().get(i));
+                            seasons.append(",");
+                            Log.d(TAG, "cur SB = " + ingreds.toString());
+                        }
+
+                        seasoningList.setText(seasons.toString());
+
+                        //뷰, 버튼들의 선언부
+                        ImageView imageView = (ImageView)findViewById(R.id.imageview);
+                        ImageView yiconView = (ImageView)findViewById(R.id.yicon);
+                        ImageView servings = (ImageView)findViewById(R.id.servings);
+                        ImageView level = (ImageView)findViewById(R.id.level);
+                        ImageView duration = (ImageView)findViewById(R.id.duration);
+                        ImageView youtubeUrl = (ImageView) findViewById(R.id.youtubeUrl);
+
+
+
+                        yiconView.setImageResource(R.drawable.yicon);
+                        servings.setImageResource(R.drawable.servings);
+                        level.setImageResource(R.drawable.level);
+                        duration.setImageResource(R.drawable.duration);
+
+                        youtubeUrl.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getApplicationContext(), YouTubeActivity.class);
+                                intent.putExtra("url", refo.getYoutubeUrl());
+                                intent.putExtra("startTime", refo.getStartTime());
+                                intent.putExtra("endTime", refo.getEndTime());
+                                intent.putExtra("stepDesc", refo.getStepDescrib());
+                                startActivity(intent);
+                            }
+                        });
+
                         Log.d(TAG, "Failed");
                         Drawable img = ContextCompat.getDrawable(c, R.drawable.fail);
                         imageView.setImageDrawable(img);
+
+                        Button button = (Button) findViewById(R.id.create);
+                        button.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getApplicationContext(),CreateRecipeActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+
                     }
                 });
 
 
-
-
-
-
-
-                yiconView.setImageResource(R.drawable.yicon);
-                servings.setImageResource(R.drawable.servings);
-                level.setImageResource(R.drawable.level);
-                duration.setImageResource(R.drawable.duration);
-
-                youtubeUrl.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), YouTubeActivity.class);
-                        intent.putExtra("url", refo.getYoutubeUrl());
-                        intent.putExtra("startTime", refo.getStartTime());
-                        intent.putExtra("endTime", refo.getEndTime());
-                        intent.putExtra("stepDesc", refo.getStepDescrib());
-                        startActivity(intent);
-                    }
-                });
 
             }
 
@@ -195,13 +279,7 @@ public class HyunWooActivity extends AppCompatActivity {
 
          */
 
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),CreateRecipeActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
 
 
