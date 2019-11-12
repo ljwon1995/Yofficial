@@ -33,6 +33,8 @@ public class LoginActivity extends AppCompatActivity{
 
 
     private void signIn(){
+
+        Log.d(TAG, "SignIn Entered");
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
@@ -82,6 +84,21 @@ public class LoginActivity extends AppCompatActivity{
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), JoonHongActivity.class);
                     startActivity(intent);
+                }
+            });
+
+            Button signOut = findViewById(R.id.signout);
+            signOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseAuth.getInstance().signOut();
+                    Log.d(TAG, "signed out");
+                    if(mAuth.getCurrentUser() == null){
+                        Log.d(TAG, "signed out succeed");
+                    }
+
+                    setContentView(R.layout.activity_login);
+
                 }
             });
 
