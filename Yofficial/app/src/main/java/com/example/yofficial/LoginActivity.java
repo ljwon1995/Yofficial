@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity{
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 1234;
     private final static String TAG = "Login!";
+    private SignInButton signInButton;
 
 
     private void signIn(){
@@ -69,96 +70,6 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 
-    void updateUI(FirebaseUser user){
-        if(user == null){
-
-        }
-
-        else{
-            setContentView(R.layout.activity_start);
-            Button start = findViewById(R.id.startbtn);
-
-
-            start.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), JoonHongActivity.class);
-                    startActivity(intent);
-                }
-            });
-
-            Button signOut = findViewById(R.id.signout);
-            signOut.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FirebaseAuth.getInstance().signOut();
-                    Log.d(TAG, "signed out");
-                    if(mAuth.getCurrentUser() == null){
-                        Log.d(TAG, "signed out succeed");
-                    }
-
-                    setContentView(R.layout.activity_login);
-
-                }
-            });
-
-        }
-    }
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-
-        SignInButton signInButton = findViewById(R.id.signinbtn);
-
-
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "BtnClicked");
-                switch(v.getId()){
-                    case R.id.signinbtn:
-                        Log.d(TAG, "Enter in case");
-                        signIn();
-                        break;
-                }
-            }
-        });
-
-
-
-        mAuth = FirebaseAuth.getInstance();
-
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("903484886790-84aqko9kngrqeohq586c1jujt0ide1vb.apps.googleusercontent.com")
-                .requestEmail()
-                .build();
-
-         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-        /*
-        If GoogleSignIn.getLastSignedInAccount returns a GoogleSignInAccount object (rather than null),
-        the user has already signed in to your app with Google. Update your UI accordingly—that is, hide the sign-in button,
-        launch your main activity, or whatever is appropriate for your app.
-
-        If GoogleSignIn.getLastSignedInAccount returns null,
-        the user has not yet signed in to your app with Google.
-        Update your UI to display the Google Sign-in button.
-         */
-
-    }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
@@ -187,4 +98,63 @@ public class LoginActivity extends AppCompatActivity{
                     }
                 });
     }
+
+    void updateUI(FirebaseUser user){
+        if(user == null){
+
+        }
+
+        else{
+            Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+            startActivity(intent);
+        }
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+
+        signInButton = findViewById(R.id.signinbtn);
+
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "BtnClicked");
+                switch(v.getId()){
+                    case R.id.signinbtn:
+                        Log.d(TAG, "Enter in case");
+                        signIn();
+                        break;
+                }
+            }
+        });
+
+
+
+        mAuth = FirebaseAuth.getInstance();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("903484886790-84aqko9kngrqeohq586c1jujt0ide1vb.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+
+
+
+
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
+
+
 }
