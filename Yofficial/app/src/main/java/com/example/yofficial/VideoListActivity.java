@@ -93,7 +93,7 @@ public class VideoListActivity extends AppCompatActivity {
                         Log.d(TAG, "Succeeded");
                         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         BitmapDrawable img = new BitmapDrawable(getResources(), bitmap);
-                        list.add(new VideoItem(img, p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews(), p.getRecipeId()));
+                        list.add(new VideoItem(img, p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews()+" views", p.getRecipeId()));
                         Log.d("jun", "listAdded" + list.size());
                         adapter = new VideoAdapter(c, list);
                         listview.setAdapter(adapter);
@@ -104,7 +104,7 @@ public class VideoListActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         Log.d(TAG, "Failed");
                         Drawable img = ContextCompat.getDrawable(c, R.drawable.fail);
-                        list.add(new VideoItem(img, p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews(), p.getRecipeId()));
+                        list.add(new VideoItem(img, p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews()+" views", p.getRecipeId()));
                         Log.d("jun", "listAdded" + list.size());
                         adapter = new VideoAdapter(c, list);
                         listview.setAdapter(adapter);
@@ -152,6 +152,9 @@ public class VideoListActivity extends AppCompatActivity {
                         int views = dataSnapshot.getValue(Integer.class);
                         views++;
                         myRef.child("posts").child(recipeId).child("views").setValue(views);
+                        list.get(position).setView_num(Integer.toString(views) + " views");
+                        adapter = new VideoAdapter(c, list);
+                        listview.setAdapter(adapter);
                         startActivity(intent); // 다음 화면으로 넘어간다
                     }
 
