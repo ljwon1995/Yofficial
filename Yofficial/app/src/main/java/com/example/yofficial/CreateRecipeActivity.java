@@ -31,6 +31,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -63,7 +64,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private Activity ac = this;
-
+    private FirebaseAuth mAuth;
 
     //재료 테이블 받아오기
     TableRow tr[] = new TableRow[100];
@@ -696,7 +697,11 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 postInfo.setRecipeId(recipeId);
                 postInfo.setTitle(recipeInfo.getRecipeTitle());
 
-                String userId = "ljwon1995"; //need to be change!
+                Log.d(TAG, "Before get auth");
+                mAuth = FirebaseAuth.getInstance();
+                Log.d(TAG, "after get auth");
+                String userId = mAuth.getCurrentUser().getDisplayName();
+                Log.d(TAG, userId);
 
                 postInfo.setUserId(userId);
                 postInfo.setViews(0);
