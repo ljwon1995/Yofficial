@@ -1,17 +1,28 @@
 package com.example.yofficial;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +34,13 @@ public class IngreSearchActivity extends AppCompatActivity {
     private EditText editSearch;        // 검색어를 입력할 Input 창
     private Ingre_SearchAdapter adapter;      // 리스트뷰에 연결할 아답터
     private ArrayList<String> arraylist;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private Ingredients ingreDB;
+    private Context c = this;
+
+
+
 
 
     @Override
@@ -33,49 +51,110 @@ public class IngreSearchActivity extends AppCompatActivity {
         editSearch = (EditText) findViewById(R.id.editSearch);
         listView = (ListView) findViewById(R.id.listView);
 
+
         // 리스트를 생성한다.
         list = new ArrayList<String>();
 
-        // 검색에 사용할 데이터을 미리 저장한다.
-        settingList();
-
-        // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
-        arraylist = new ArrayList<String>();
-        arraylist.addAll(list);
-
-        // 리스트에 연동될 아답터를 생성한다.
-        adapter = new Ingre_SearchAdapter(list, this);
-
-        // 리스트뷰에 아답터를 연결한다.
-        listView.setAdapter(adapter);
-
-        // input창에 검색어를 입력시 "addTextChangedListener" 이벤트 리스너를 정의한다.
-        editSearch.addTextChangedListener(new TextWatcher() {
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        myRef.child("ingredients").addValueEventListener(new ValueEventListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ingreDB = dataSnapshot.getValue(Ingredients.class);
+
+                // 검색에 사용할 데이터을 미리 저장한다.
+                for (int i = 0; i < ingreDB.meats.size(); i++) {    //육류 추가
+                    list.add(ingreDB.meats.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.begetables.size();i++) {    //채소류 추가
+                    list.add(ingreDB.begetables.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.eggs.size();i++) {  //난류 추가
+                    list.add(ingreDB.eggs.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.fruits.size();i++) {    //과일류 추가
+                    list.add(ingreDB.fruits.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.grains.size();i++) {    //곡물류 추가
+                    list.add(ingreDB.grains.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.noodles.size();i++) {   //면류 추가
+                    list.add(ingreDB.noodles.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.nuts.size();i++) {  //견과류 추가
+                    list.add(ingreDB.nuts.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.oils.size();i++) {  //유지류 추가
+                    list.add(ingreDB.oils.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.sauces.size();i++) {    //앙념류 추가
+                    list.add(ingreDB.sauces.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.seafoods.size();i++) {  //해산물류 추가
+                    list.add(ingreDB.seafoods.get(i));
+                }
+
+                // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
+                arraylist = new ArrayList<String>();
+                arraylist.addAll(list);
+
+                // 리스트에 연동될 아답터를 생성한다.
+                adapter = new Ingre_SearchAdapter(list, c);
+
+                // 리스트뷰에 아답터를 연결한다.
+                listView.setAdapter(adapter);
+
+                Spinner classfier_spinner = findViewById(R.id.classifier_spinner);
+                ArrayAdapter classifierAdapter = ArrayAdapter.createFromResource(c, R.array.data_mainIng, android.R.layout.simple_spinner_item);
+                classifierAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                classfier_spinner.setAdapter(classifierAdapter);
+
+
+                // input창에 검색어를 입력시 "addTextChangedListener" 이벤트 리스너를 정의한다.
+                editSearch.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        // input창에 문자를 입력할때마다 호출된다.
+                        // search 메소드를 호출한다.
+                        String text = editSearch.getText().toString();
+                        search(text);
+                    }
+                });
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        editSearch.setText((String)list.get(position));
+                    }
+                });
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // input창에 문자를 입력할때마다 호출된다.
-                // search 메소드를 호출한다.
-                String text = editSearch.getText().toString();
-                search(text);
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                editSearch.setText((String)list.get(position));
-            }
-        });
     }
 
     // 검색을 수행하는 메소드
