@@ -35,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -143,8 +144,25 @@ public class VideoListActivity extends AppCompatActivity {
                 Toast.makeText(VideoListActivity.this ,list.get(position). getV_title(),Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(getApplicationContext(), HyunWooActivity.class);
-                intent.putExtra("id", list.get(position).getRecipe_id());
-                startActivity(intent); // 다음 화면으로 넘어간다
+                String recipeId = list.get(position).getRecipe_id();
+                intent.putExtra("id", recipeId);
+                myRef.child("posts").child(recipeId).child("views").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int views = dataSnapshot.getValue(Integer.class);
+                        views++;
+                        myRef.child("posts").child(recipeId).child("views").setValue(views);
+                        startActivity(intent); // 다음 화면으로 넘어간다
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
             }
         });
 

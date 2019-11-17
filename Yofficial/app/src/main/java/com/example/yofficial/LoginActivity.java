@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity{
         }
 
         else{
-            Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+            Intent intent = new Intent(getApplicationContext(), JoonHongActivity.class);
             startActivity(intent);
         }
     }
