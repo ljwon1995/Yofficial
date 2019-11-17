@@ -138,6 +138,9 @@ public class HyunWooActivity extends AppCompatActivity {
                         level.setImageResource(R.drawable.level);
                         duration.setImageResource(R.drawable.duration);
 
+
+                        Log.d(TAG, "URL : " + refo.getYoutubeUrl());
+
                         youtubeUrl.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -223,10 +226,12 @@ public class HyunWooActivity extends AppCompatActivity {
                         level.setImageResource(R.drawable.level);
                         duration.setImageResource(R.drawable.duration);
 
+
                         youtubeUrl.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(getApplicationContext(), YouTubeActivity.class);
+
                                 intent.putExtra("url", refo.getYoutubeUrl());
                                 intent.putExtra("startTime", refo.getStartTime());
                                 intent.putExtra("endTime", refo.getEndTime());

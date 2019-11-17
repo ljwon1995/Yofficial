@@ -106,6 +106,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
 
 
+
         startTime = (ArrayList<String>)extras.get("startTime");
         endTime = (ArrayList<String>)extras.get("endTime");
         desc = (ArrayList<String>) extras.get("stepDesc");
