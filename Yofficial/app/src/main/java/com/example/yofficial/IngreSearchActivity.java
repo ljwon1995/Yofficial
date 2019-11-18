@@ -114,10 +114,101 @@ public class IngreSearchActivity extends AppCompatActivity {
                 listView.setAdapter(adapter);
 
                 Spinner classfier_spinner = findViewById(R.id.classifier_spinner);
-                ArrayAdapter classifierAdapter = ArrayAdapter.createFromResource(c, R.array.data_mainIng, android.R.layout.simple_spinner_item);
+                ArrayAdapter classifierAdapter = ArrayAdapter.createFromResource(c, R.array.data_ingredient_class, android.R.layout.simple_spinner_item);
                 classifierAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 classfier_spinner.setAdapter(classifierAdapter);
 
+                classfier_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if (position == 0) {
+                            list.clear();
+                            for (int i = 0; i < arraylist.size(); i++) {
+                                list.add(arraylist.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        if (position == 1) {
+                            list.clear();
+                            for (int i = 0; i < ingreDB.meats.size(); i++) {
+                                list.add(ingreDB.meats.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                        if (position == 2) {
+                            list.clear();
+                            for (int i = 0; i < ingreDB.begetables.size(); i++) {
+                                list.add(ingreDB.begetables.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                        if (position == 3) {
+                            list.clear();
+                            for (int i = 0; i < ingreDB.grains.size(); i++) {
+                                list.add(ingreDB.grains.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        if (position == 4) {
+                            list.clear();
+                            for (int i = 0; i < ingreDB.fruits.size(); i++) {
+                                list.add(ingreDB.fruits.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        if (position == 5) {
+                            list.clear();
+                            for (int i = 0; i < ingreDB.seafoods.size(); i++) {
+                                list.add(ingreDB.seafoods.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                        if (position == 6) {
+                            list.clear();
+                            for (int i = 0; i < ingreDB.eggs.size(); i++) {
+                                list.add(ingreDB.eggs.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                        if (position == 7) {
+                            list.clear();
+                            for (int i = 0; i < ingreDB.nuts.size(); i++) {
+                                list.add(ingreDB.nuts.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                        if (position == 8) {
+                            list.clear();
+                            for (int i = 0; i < ingreDB.noodles.size(); i++) {
+                                list.add(ingreDB.noodles.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                        if (position == 9) {
+                            list.clear();
+                            for (int i = 0; i < ingreDB.oils.size(); i++) {
+                                list.add(ingreDB.oils.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                        if (position == 10) {
+                            list.clear();
+                            for (int i = 0; i < ingreDB.sauces.size(); i++) {
+                                list.add(ingreDB.sauces.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
 
                 // input창에 검색어를 입력시 "addTextChangedListener" 이벤트 리스너를 정의한다.
                 editSearch.addTextChangedListener(new TextWatcher() {
@@ -157,6 +248,7 @@ public class IngreSearchActivity extends AppCompatActivity {
 
     }
 
+
     // 검색을 수행하는 메소드
     public void search(String charText) {
 
@@ -185,29 +277,6 @@ public class IngreSearchActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    // 검색에 사용될 데이터를 리스트에 추가한다.
-    private void settingList(){
-        list.add("돼지고기 삼겹살");
-        list.add("돼지고기 목살");
-        list.add("돼지고기 갈빗살");
-        list.add("소고기 목살");
-        list.add("소고기 갈빗살");
-        list.add("닭고기 다릿살");
-        list.add("참치 뱃살");
-        list.add("고등어");
-        list.add("오징어");
-        list.add("양파");
-        list.add("마늘");
-        list.add("쪽마늘");
-        list.add("대파");
-        list.add("쪽파");
-        list.add("간장");
-        list.add("굴소스");
-        list.add("소금");
-        list.add("설탕");
-        list.add("식초");
-
-    }
 
     public void mOnPopupClick(View v){
         Intent intent = new Intent();

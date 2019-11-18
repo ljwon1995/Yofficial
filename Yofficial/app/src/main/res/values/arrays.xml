@@ -185,5 +185,19 @@
         <item>59</item>
 
     </string-array>
+    <string-array name="data_ingredient_class">
+        <item>모두</item>
+        <item>육류</item>
+        <item>채소류</item>
+        <item>곡물류</item>
+        <item>과일류</item>
+        <item>해산물류</item>
+        <item>달걀류</item>
+        <item>견과류</item>
+        <item>면류</item>
+        <item>유지류</item>
+        <item>양념류</item>
+
+    </string-array>
 
 </resources>
