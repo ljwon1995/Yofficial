@@ -42,6 +42,7 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".StartActivity"></activity>
         <activity android:name=".RecommendActivity"></activity>
+        <activity android:name=".MyPageActivity"></activity>
         <activity android:name=".Recommend_PopupActivity" android:theme="@android:style/Theme.Dialog" />
 
 

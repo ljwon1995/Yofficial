@@ -34,10 +34,11 @@ public class JaeWonActivity extends Activity{
         setContentView(R.layout.activity_jaewon);
 
 
+        /*
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
-
+*/
         /*
         Ingredients i = new Ingredients();
         ArrayList<String> meats = new ArrayList<String>();
@@ -534,7 +535,7 @@ public class JaeWonActivity extends Activity{
         myRef.child("ingredients").setValue(i);
 
 */
-
+/*
         myRef.child("ingredients").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -555,6 +556,7 @@ public class JaeWonActivity extends Activity{
             }
         });
 
+ */
 
 
 
@@ -566,8 +568,17 @@ public class JaeWonActivity extends Activity{
 
 
 
+        Button myPageBtn = findViewById(R.id.myPageBtn);
         Button youtubeTestBtn = (Button)findViewById(R.id.youtubeTestBtn);
         Button dbTestBtn = (Button)findViewById(R.id.dbTestBtn);
+
+        myPageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                startActivity(intent);
+            }
+        });
 
         youtubeTestBtn.setOnClickListener(new View.OnClickListener() {
             @Override

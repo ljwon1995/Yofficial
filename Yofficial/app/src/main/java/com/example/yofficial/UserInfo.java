@@ -4,10 +4,12 @@ package com.example.yofficial;
 public class UserInfo {
     private String id;
     private String pw;
-    private String status;
-    private int level;
-    private float exp;
 
+    private int cookLevel;
+    private float cookExp;
+
+    private int chefLevel;
+    private float chefExp;
 
 
     public String getId() {
@@ -26,34 +28,35 @@ public class UserInfo {
         this.pw = pw;
     }
 
-    public String getStatus() {
-        return status;
+    public int getCookLevel() {
+        return cookLevel;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCookLevel(int cookLevel) {
+        this.cookLevel = cookLevel;
     }
 
-    public int getLevel() {
-        return level;
+    public float getCookExp() {
+        return cookExp;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setCookExp(float cookExp) {
+        this.cookExp = cookExp;
     }
 
-    public float getExp() {
-        return exp;
+    public int getChefLevel() {
+        return chefLevel;
     }
 
-    public void setExp(float exp) {
-        this.exp = exp;
+    public void setChefLevel(int chefLevel) {
+        this.chefLevel = chefLevel;
     }
 
-    public String printUser(){
-        StringBuilder sb = new StringBuilder();
+    public float getChefExp() {
+        return chefExp;
+    }
 
-        sb.append(id).append(pw).append(status).append(level).append(exp);
-        return sb.toString();
+    public void setChefExp(float chefExp) {
+        this.chefExp = chefExp;
     }
 }
