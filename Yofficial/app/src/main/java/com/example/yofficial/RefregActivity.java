@@ -1,17 +1,28 @@
 package com.example.yofficial;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +36,10 @@ public class RefregActivity extends AppCompatActivity {
     private EditText editSearch;        // 검색어를 입력할 Input 창
     private Refreg_SearchAdapter adapter;      // 리스트뷰에 연결할 아답터
     private ArrayList<String> arraylist;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private Ingredients ingreDB;
+    private Context c = this;
 
 
     @Override
@@ -36,69 +51,12 @@ public class RefregActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.refreg_listView);
 
         // 리스트를 생성한다.
-        list = new ArrayList<String>();
-        //select_list = new ArrayList<String>();
 
+        //select_list = new ArrayList<String>();
+        list = new ArrayList<String>();
         // 검색에 사용할 데이터을 미리 저장한다.
         settingList();
 
-        // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
-        arraylist = new ArrayList<String>();
-        arraylist.addAll(list);
-
-        // 리스트에 연동될 아답터를 생성한다.
-        adapter = new Refreg_SearchAdapter(list, this);
-
-        // 리스트뷰에 아답터를 연결한다.
-        listview.setAdapter(adapter);
-
-        // input창에 검색어를 입력시 "addTextChangedListener" 이벤트 리스너를 정의한다.
-        editSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // input창에 문자를 입력할때마다 호출된다.
-                // search 메소드를 호출한다.
-                String text = editSearch.getText().toString();
-                search(text);
-            }
-        });
-
-        // 리스트 목록 눌렀을때 해당 재료 이름 반영
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView input= (TextView)findViewById(R.id.refreg_ingredient_input);
-
-                if(select_list.contains(list.get(position))){
-
-                    select_list.remove(list.get(position));
-
-                    input.setText("선택된 재료(동일재료를 누르면 삭제됩니다!)\n" );
-                    for(Object object : select_list) {
-                        String element = (String) object;
-                        input.append("[" + element + "] ");
-                    }
-                }
-                else{
-                    input.setText("선택된 재료(동일재료를 누르면 삭제됩니다!)\n" );
-
-                    select_list.add(list.get(position));
-                    for(Object object : select_list) {
-                        String element = (String) object;
-                        input.append("[" + element + "] ");
-                    }
-                }
-            }
-        });
     }
 
 
@@ -133,19 +91,127 @@ public class RefregActivity extends AppCompatActivity {
 
     // 검색에 사용될 데이터를 리스트에 추가한다.
     private void settingList(){
-        list.add("돼지고기 목살");
-        list.add("돼지고기 갈빗살");
-        list.add("소고기 목살");
-        list.add("소고기 갈빗살");
-        list.add("닭고기 다릿살");
-        list.add("참치 뱃살");
-        list.add("고등어");
-        list.add("오징어");
-        list.add("양파");
-        list.add("마늘");
-        list.add("쪽마늘");
-        list.add("대파");
-        list.add("쪽파");
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        myRef.child("ingredients").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ingreDB = dataSnapshot.getValue(Ingredients.class);
+
+
+
+                // 검색에 사용할 데이터을 미리 저장한다.
+                for (int i = 0; i < ingreDB.meats.size(); i++) {    //육류 추가
+                    list.add(ingreDB.meats.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.begetables.size();i++) {    //채소류 추가
+                    list.add(ingreDB.begetables.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.eggs.size();i++) {  //난류 추가
+                    list.add(ingreDB.eggs.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.fruits.size();i++) {    //과일류 추가
+                    list.add(ingreDB.fruits.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.grains.size();i++) {    //곡물류 추가
+                    list.add(ingreDB.grains.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.noodles.size();i++) {   //면류 추가
+                    list.add(ingreDB.noodles.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.nuts.size();i++) {  //견과류 추가
+                    list.add(ingreDB.nuts.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.oils.size();i++) {  //유지류 추가
+                    list.add(ingreDB.oils.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.sauces.size();i++) {    //앙념류 추가
+                    list.add(ingreDB.sauces.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.seafoods.size();i++) {  //해산물류 추가
+                    list.add(ingreDB.seafoods.get(i));
+                }
+
+
+
+                // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
+                arraylist = new ArrayList<String>();
+                arraylist.addAll(list);
+
+                // 리스트에 연동될 아답터를 생성한다.
+                adapter = new Refreg_SearchAdapter(list, c);
+
+                // 리스트뷰에 아답터를 연결한다.
+                listview.setAdapter(adapter);
+
+
+                // input창에 검색어를 입력시 "addTextChangedListener" 이벤트 리스너를 정의한다.
+                editSearch.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        // input창에 문자를 입력할때마다 호출된다.
+                        // search 메소드를 호출한다.
+                        String text = editSearch.getText().toString();
+                        search(text);
+                    }
+                });
+
+                // 리스트 목록 눌렀을때 해당 재료 이름 반영
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        TextView input= (TextView)findViewById(R.id.refreg_ingredient_input);
+
+                        if(select_list.contains(list.get(position))){
+
+                            select_list.remove(list.get(position));
+
+                            input.setText("선택된 재료(동일재료를 누르면 삭제됩니다!)\n" );
+                            for(Object object : select_list) {
+                                String element = (String) object;
+                                input.append("[" + element + "] ");
+                            }
+                        }
+                        else{
+                            input.setText("선택된 재료(동일재료를 누르면 삭제됩니다!)\n" );
+
+                            select_list.add(list.get(position));
+                            for(Object object : select_list) {
+                                String element = (String) object;
+                                input.append("[" + element + "] ");
+                            }
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
 
@@ -153,6 +219,7 @@ public class RefregActivity extends AppCompatActivity {
     public void mOnPopupClick(View v){
         Intent intent = new Intent(this, Refreg_PopupActivity.class);
         intent.putStringArrayListExtra("ArrayList", select_list);
+        Log.d("123", select_list.toString());
         startActivityForResult(intent, 1);
     }
 }

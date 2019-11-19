@@ -1,8 +1,14 @@
 package com.example.yofficial;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -10,9 +16,24 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -22,6 +43,55 @@ public class Refreg_PopupActivity extends Activity {
     List<VideoItem> list;
     ListView listview;
     VideoAdapter adapter;
+    ArrayList<String> ReceiveArr;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private final static String TAG = "POP!";
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private ArrayList<PostInfo> pList;
+    Context c = this;
+    ArrayList<RecipeInfo> data;
+
+
+
+
+    ArrayList<RecipeInfo> toArrayList(DataSnapshot dataSnapshot){
+        ArrayList<RecipeInfo> r = new ArrayList<>();
+
+        Iterator<DataSnapshot> itr = dataSnapshot.getChildren().iterator();
+
+        while(itr.hasNext()){
+            r.add(itr.next().getValue(RecipeInfo.class));
+        }
+
+        return r;
+    }
+
+
+    ArrayList<Integer> calDistance(ArrayList<RecipeInfo> data, ArrayList<String> texts){
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        int dataLen = data.size();
+        int textsLen = texts.size();
+        for(int i = 0; i < dataLen; i++){
+
+            ArrayList<String> ingreds = data.get(i).getIngredientName();
+
+
+            int d = ingreds.size();
+            for(int j = 0; j < textsLen; j++){
+                if(ingreds.contains(texts.get(j))){
+                    d--;
+                }
+            }
+            ans.add(d);
+        }
+
+
+
+        return ans;
+    }
 
 
     @Override
@@ -36,7 +106,7 @@ public class Refreg_PopupActivity extends Activity {
 
         //데이터 가져오기
         Intent intent = getIntent();
-        ArrayList<String> ReceiveArr = intent.getStringArrayListExtra("ArrayList"); //어레이 리스트 받아옴 (선택된 재료들)
+        ReceiveArr = intent.getStringArrayListExtra("ArrayList"); //어레이 리스트 받아옴 (선택된 재료들)
 
         txtText.setText("선택된 재료\n" );
         for(int i=0;i<ReceiveArr.size();i++){ // 어레이리스트 출력
@@ -44,9 +114,94 @@ public class Refreg_PopupActivity extends Activity {
         }
 
 
+
         // 팝업내 리스트뷰
         listview = (ListView) findViewById(R.id.pop_listView);
         list = new ArrayList<VideoItem>();
+        pList = new ArrayList<>();
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        myRef.child("recipes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+
+                //make itr to ArrayList<RecipeInfo>
+                data = toArrayList(dataSnapshot);
+
+                //calculate distance (return ArrayList<Integer>)
+                ArrayList<Integer> distance = calDistance(data, ReceiveArr);
+
+                //get 0,1,2 recipe ID
+
+                ArrayList<String> targRecipeId = new ArrayList<String>();
+                int dSize = distance.size();
+                for(int i = 0; i < dSize; i++){
+                    int d = distance.get(i);
+                    if(d == 0 || d == 1 || d == 2){
+                        targRecipeId.add(data.get(i).getRecipeId());
+                    }
+                }
+
+                //list add posts whose id is recipeID
+                int idSize = targRecipeId.size();
+                for(int i = 0; i < idSize; i++){
+                    myRef.child("posts").child(targRecipeId.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            PostInfo p = dataSnapshot.getValue(PostInfo.class);
+                            pList.add(p);
+
+
+                            storage = FirebaseStorage.getInstance();
+                            storageRef = storage.getReference().child("images/" + p.getRecipeId() +".jpg");
+                            storageRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    Log.d(TAG, "Succeeded");
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    BitmapDrawable img = new BitmapDrawable(getResources(), bitmap);
+                                    list.add(new VideoItem(img, p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews()+" views", p.getRecipeId()));
+                                    adapter = new VideoAdapter(c, list);
+                                    listview.setAdapter(adapter);
+                                }
+
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, "Failed");
+                                    Drawable img = ContextCompat.getDrawable(c, R.drawable.fail);
+                                    list.add(new VideoItem(img, p.getTitle(), "\n"+p.getUserId(), "\n" + p.getViews()+" views", p.getRecipeId()));
+                                    adapter = new VideoAdapter(c, list);
+                                    listview.setAdapter(adapter);
+
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
 
         /*
         list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.ab), "3분만에 만드는 맛있는 수제햄버거", "\n맥도날드", "\n24212 views"));
@@ -54,29 +209,39 @@ public class Refreg_PopupActivity extends Activity {
         list.add(new VideoItem(ContextCompat.getDrawable(this, R.drawable.citrus_image), "Cuisse de grenouille", "\n이재원", "\n11views"));
 */
 
-        adapter = new VideoAdapter(this, list);
-        listview.setAdapter(adapter);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if("delicious gyudon" == list.get(position). getV_title()){
-                    Intent intent = new Intent(
-                            getApplicationContext(), // 현재 화면의 제어권자
-                            HyunWooActivity.class); // 다음 넘어갈 클래스 지정
-                    //intent.putExtra();
-                    startActivity(intent); // 다음 화면으로 넘어간다
-                }
-                if("Cuisse de grenouille" == list.get(position). getV_title()){
-                    Intent intent = new Intent(
-                            getApplicationContext(), // 현재 화면의 제어권자
-                            CitrusActivity.class); // 다음 넘어갈 클래스 지정
-                    //intent.putExtra();
-                    startActivity(intent); // 다음 화면으로 넘어간다
-                }
+
+                Intent intent = new Intent(getApplicationContext(), HyunWooActivity.class);
+                String recipeId = list.get(position).getRecipe_id();
+                intent.putExtra("id", recipeId);
+                myRef.child("posts").child(recipeId).child("views").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int views = dataSnapshot.getValue(Integer.class);
+                        views++;
+                        myRef.child("posts").child(recipeId).child("views").setValue(views);
+                        list.get(position).setView_num(Integer.toString(views) + " views");
+                        adapter = new VideoAdapter(c, list);
+                        listview.setAdapter(adapter);
+                        startActivity(intent); // 다음 화면으로 넘어간다
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+
+
+                });
             }
         });
     }
+
+
+
 
 
     //확인 버튼 클릭
