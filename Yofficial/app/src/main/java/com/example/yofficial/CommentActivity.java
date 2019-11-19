@@ -19,7 +19,8 @@ import java.util.Date;
 import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
-    List<CommentItem> list;
+    BoardItem board;
+    ArrayList<CommentItem> list;
     ListView listview;
     CommentAdapter adapter;
     MenuItem mSearch;
@@ -37,17 +38,17 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.c_list);
 
+        board = new BoardItem("1", "\n탕수육을 왜먹냐? 그 돈으로 국밥 3그릇을 먹지", "박현우", "2018/01/01", "아무튼 국밥임");
+
         edit_comment = (EditText)findViewById(R.id.comment_edit);
 
-
         listview = (ListView) findViewById(R.id.listview1);
-        list = new ArrayList<CommentItem>();
+        board.c_list = new ArrayList<CommentItem>();
+        board.c_list.add(new CommentItem("박현우", "2018/01/01", "\n다들 인정하지?"));
+        board.c_list.add(new CommentItem("이재원", "2018/01/02", "\nㄴㄴ 국밥충 극혐임"));
+        board.c_list.add(new CommentItem("민준홍", "2018/01/02", "\nㄹㅇ ㅋㅋ"));
 
-
-
-        list.add(new CommentItem("1", "1", "박현우", "2019/11/19", "다들 ㅇㅈ이지?"));
-        list.add(new CommentItem("1", "2", "이재원", "2019/11/19", "ㄴㄴ 국밥충 극혐"));
-        list.add(new CommentItem("1", "3", "민준홍", "2019/11/19", "ㄹㅇ ㅋㅋ"));
+        list =  board.c_list;
 
         adapter = new CommentAdapter(this, list);
         listview.setAdapter(adapter);
@@ -101,7 +102,7 @@ public class CommentActivity extends AppCompatActivity {
         String strDate = dateFormat.format(date);
 
 
-        list.add(new CommentItem("1", "4", "민준홍", strDate, text));
+        list.add(new CommentItem("민준홍", strDate, text));
         adapter.notifyDataSetChanged();
         edit_comment.setText("");
     }

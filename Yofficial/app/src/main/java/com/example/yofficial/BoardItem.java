@@ -1,5 +1,8 @@
 package com.example.yofficial;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BoardItem {
 
     String board_id;
@@ -7,6 +10,17 @@ public class BoardItem {
     String board_uploader;
     String board_date;
     String board_data;
+
+    ArrayList<CommentItem> c_list;
+
+    public List<CommentItem> getList() {
+        return c_list;
+    }
+
+    public void setList(ArrayList<CommentItem> list) {
+        this.c_list = list;
+    }
+
 
 
     public void setBoard_title(String board_title) {
