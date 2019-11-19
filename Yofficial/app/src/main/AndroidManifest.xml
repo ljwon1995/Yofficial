@@ -44,6 +44,10 @@
         <activity android:name=".RecommendActivity"></activity>
         <activity android:name=".MyPageActivity"></activity>
         <activity android:name=".Recommend_PopupActivity" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".CommunityActivity"></activity>
+        <activity android:name=".BoardActivity"></activity>
+        <activity android:name=".CommentActivity"></activity>
+        <activity android:name=".BoardMakeActivity"></activity>
 
 
     </application>

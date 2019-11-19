@@ -80,11 +80,12 @@ public class JoonHongActivity extends AppCompatActivity {
 
     }
 
-    public void onButton2Clicked(View view){
+    public void onButton2Clicked(View view){//커뮤니티 버튼
         // LENGTH_LONG : 길게 화면에 나타남
         // LENGTH_SHORT : 짧게 화면에 나타남
         Toast.makeText(getApplicationContext(), "버튼이 눌렸습니다!", Toast.LENGTH_SHORT).show();
-
+        Intent intent = new Intent(getApplicationContext(), CommunityActivity.class);
+        startActivity(intent);
 
 
     }

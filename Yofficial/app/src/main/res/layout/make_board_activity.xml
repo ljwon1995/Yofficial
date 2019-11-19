@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/board_t_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="게시글의 제목을 입력하세요." />
+
+    <EditText
+        android:id="@+id/board_b_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:hint="게시글을 입력하세요." />
+
+    <Button
+        android:id="@+id/board_upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="upload_board"
+        android:text="게시글 올리기" />
+</LinearLayout>
