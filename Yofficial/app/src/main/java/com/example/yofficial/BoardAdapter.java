@@ -25,6 +25,11 @@ public class BoardAdapter extends BaseAdapter {
         this.listview.addAll(boardList);
     }
 
+
+    public void setBoardList(List<BoardItem> boardList) {
+        this.boardList = boardList;
+    }
+
     @Override
     public int getCount(){
         return boardList.size();

@@ -43,12 +43,13 @@ public class CommentActivity extends AppCompatActivity {
         edit_comment = (EditText)findViewById(R.id.comment_edit);
 
         listview = (ListView) findViewById(R.id.listview1);
+        /*
         board.c_list = new ArrayList<CommentItem>();
         board.c_list.add(new CommentItem("박현우", "2018/01/01", "\n다들 인정하지?"));
         board.c_list.add(new CommentItem("이재원", "2018/01/02", "\nㄴㄴ 국밥충 극혐임"));
         board.c_list.add(new CommentItem("민준홍", "2018/01/02", "\nㄹㅇ ㅋㅋ"));
-
-        list =  board.c_list;
+*/
+//        list =  board.c_list;
 
         adapter = new CommentAdapter(this, list);
         listview.setAdapter(adapter);

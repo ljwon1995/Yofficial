@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,9 +13,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CommunityActivity extends AppCompatActivity {
@@ -23,10 +33,12 @@ public class CommunityActivity extends AppCompatActivity {
     BoardAdapter adapter;
     MenuItem mSearch;
     Context c = this;
-
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
     private ArrayList<BoardItem> arraylist;
     private EditText board_search;
-    private final static String TAG = "VideoActivity!";
+    private final static String TAG = "community!";
+
 
 
 
@@ -45,12 +57,35 @@ public class CommunityActivity extends AppCompatActivity {
         arraylist = new ArrayList<BoardItem>();
 
 
-        list.add(new BoardItem("1", "\n탕수육을 왜먹냐? 그 돈으로 국밥 3그릇을 먹지", "박현우", "2018/01/01", "아무튼 국밥임"));
-        list.add(new BoardItem("2", "\n국밥을 왜먹냐? 그 돈으로 123을 가겠다", "이재원", "2018/01/01","123이 최고임"));
-        arraylist.addAll(list);
+        adapter = new BoardAdapter(c, list);
 
-        adapter = new BoardAdapter(this, list);
-        listview.setAdapter(adapter);
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        Log.d(TAG,  "get ref");
+        myRef.child("boards").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, ""+dataSnapshot.getChildrenCount());
+
+                Iterator<DataSnapshot> itr = dataSnapshot.getChildren().iterator();
+                Log.d(TAG,  "get iterator");
+                while(itr.hasNext()){
+                    BoardItem b = itr.next().getValue(BoardItem.class);
+                    Log.d(TAG, b.board_title);
+                    list.add(b);
+                    arraylist.addAll(list);
+                    adapter.setBoardList(list);
+                    listview.setAdapter(adapter);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 버튼 작동
@@ -84,7 +119,12 @@ public class CommunityActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
+
+
+
 
     public void search(String charText) {
 
