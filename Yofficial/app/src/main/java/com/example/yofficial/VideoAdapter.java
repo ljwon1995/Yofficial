@@ -1,12 +1,21 @@
 package com.example.yofficial;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +28,9 @@ public class VideoAdapter extends BaseAdapter {
     LayoutInflater inflater;
     private List<VideoItem> videoList = null;
     private ArrayList<VideoItem> listview;
+    private final static String TAG = "cond!";
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     public VideoAdapter(Context context, List<VideoItem> videoList) {
         this.context = context;
@@ -84,20 +96,128 @@ public class VideoAdapter extends BaseAdapter {
 
 
 
+    int[] checkIsActive(String servings, String mainIng, String type, String feature){
+        int[] ans = new int[4];
 
-    public void filter(String charText) {
+        if(servings.compareTo("인원수") != 0){
+            ans[0] = 1;
+        }
+
+        if(mainIng.compareTo("주재료") != 0){
+            ans[1] = 1;
+        }
+
+        if(type.compareTo("타입") != 0){
+            ans[2] = 1;
+        }
+
+        if(feature.compareTo("특징") != 0){
+            ans[3] = 1;
+        }
+
+
+
+        return ans;
+
+    }
+
+    public void filter(String charText, String servings, String mainIng, String type, String feature) {
         charText = charText.toLowerCase(Locale.getDefault());
         videoList.clear();
+        notifyDataSetChanged();
+        Log.d(TAG, "Video cleared");
         if (charText.length() == 0) {
             videoList.addAll(listview);
         } else {
+
+
+
+            //Check if conditional search active
+            int[] isActive;
+            isActive = checkIsActive(servings, mainIng, type, feature);
+            //return integer array
+
+            Log.d(TAG, "Active = "+isActive[0]+" "+isActive[1]+" "+ isActive[2]+" " + isActive[3]);
+
+
+
             for (VideoItem potion : listview) {
+                Log.d(TAG, "name search");
                 if (potion.getV_title().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    videoList.add(potion);
+
+                    //if none are active just add and finish
+                    //else need to get recipe id and get recipe Info.
+                    String recipeId = potion.getRecipe_id();
+                    database = FirebaseDatabase.getInstance();
+                    myRef = database.getReference();
+                    Log.d(TAG, "succeeded name search");
+                    myRef.child("recipes").child(recipeId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            RecipeInfo r = dataSnapshot.getValue(RecipeInfo.class);
+                            int[] isSatisfy = new int[4];
+
+                            //set flag to 0000
+                            //four conditional search and set flags if conditional search is not active then just set to 1
+
+                            Log.d(TAG, "Active = "+isActive[0]+" "+isActive[1]+" "+ isActive[2]+" " + isActive[3]);
+                            if(isActive[0] == 0){
+
+                                isSatisfy[0] = 1;
+                            }
+                            else{
+                                if(servings.compareTo(r.getServings()) == 0){
+                                    isSatisfy[0] = 1;
+                                }
+                            }
+
+                            if(isActive[1] == 0){
+                                isSatisfy[1] = 1;
+                            }
+                            else{
+                                if(mainIng.compareTo(r.getMainIngredient()) == 0){
+                                    isSatisfy[1] = 1;
+                                }
+                            }
+
+
+                            if(isActive[2] == 0){
+                                isSatisfy[2] = 1;
+                            }
+                            else{
+                                if(type.compareTo(r.getType()) == 0){
+                                    isSatisfy[2] = 1;
+                                }
+                            }
+                            if(isActive[3] == 0){
+                                isSatisfy[3] = 1;
+                            }
+                            else{
+                                if(feature.compareTo(r.getFeature()) == 0){
+                                    isSatisfy[3] = 1;
+                                }
+                            }
+
+                            Log.d(TAG, "Satisfy = "+isSatisfy[0]+" "+isSatisfy[1]+" "+ isSatisfy[2]+" " + isSatisfy[3]);
+
+                            //if all 4 is 1 then add
+                            if(isSatisfy[0] == 1 && isSatisfy[1] == 1 && isSatisfy[2] == 1 && isSatisfy[3] == 1){
+                                videoList.add(potion);
+                                notifyDataSetChanged();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                 }
             }
         }
-        notifyDataSetChanged();
+
     }
 
 }

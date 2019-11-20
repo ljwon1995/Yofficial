@@ -297,7 +297,15 @@ public class VideoListActivity extends AppCompatActivity {
                 //   text.setText(query + "를 검색합니다.");
                 Log.d("search", query);
                 //get all posts.
-                adapter.filter(query);
+                adapter.filter(query, spinnerServings.getSelectedItem().toString(),
+                        spinner_mainIng.getSelectedItem().toString(),
+                        spinner_type.getSelectedItem().toString(),
+                        spinner_feature.getSelectedItem().toString());
+
+
+
+
+
 
                 return true;
             }
