@@ -8,13 +8,13 @@
         android:id="@+id/board_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="탕수육을 왜먹냐? 그 돈으로 국밥 3그릇을 먹지" />
+        />
 
     <TextView
         android:id="@+id/board_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="박현우 | 2018/01/01" />
+        />
 
     <View
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                 android:id="@+id/board_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="너무너무 맛있는 국밥 나는 오늘도 국밥을 먹었다" />
+                 />
 
         </LinearLayout>
     </ScrollView>
