@@ -1,9 +1,11 @@
 package com.example.yofficial;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,11 +13,22 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
@@ -26,33 +39,72 @@ public class CommentActivity extends AppCompatActivity {
     MenuItem mSearch;
     Context c = this;
 
+
     String text;
     private EditText edit_comment;
-    private final static String TAG = "VideoActivity!";
+    private final static String TAG = "Comment!";
+    private String board_id;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private FirebaseAuth mAuth;
 
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.c_list);
 
-        board = new BoardItem("1", "\n탕수육을 왜먹냐? 그 돈으로 국밥 3그릇을 먹지", "박현우", "2018/01/01", "아무튼 국밥임");
+
+        Intent intent = getIntent();
+        board_id = intent.getExtras().getString("id");
+
+        Log.d(TAG, board_id);
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        Log.d(TAG, "get reference");
+
+        list = new ArrayList<>();
+        Log.d(TAG, "get list");
+
 
         edit_comment = (EditText)findViewById(R.id.comment_edit);
-
         listview = (ListView) findViewById(R.id.listview1);
-        /*
-        board.c_list = new ArrayList<CommentItem>();
-        board.c_list.add(new CommentItem("박현우", "2018/01/01", "\n다들 인정하지?"));
-        board.c_list.add(new CommentItem("이재원", "2018/01/02", "\nㄴㄴ 국밥충 극혐임"));
-        board.c_list.add(new CommentItem("민준홍", "2018/01/02", "\nㄹㅇ ㅋㅋ"));
-*/
-//        list =  board.c_list;
 
-        adapter = new CommentAdapter(this, list);
-        listview.setAdapter(adapter);
+        adapter = new CommentAdapter(c, list);
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("comments").child(board_id).exists()){
+                    Log.d(TAG, ""+dataSnapshot.child("comments").child(board_id).getChildrenCount());
+                    Iterator<DataSnapshot> itr = dataSnapshot.child("comments").child(board_id).getChildren().iterator();
+
+                    while(itr.hasNext()){
+                        CommentItem c = itr.next().getValue(CommentItem.class);
+                        Log.d(TAG, c.comment_data);
+                        list.add(c);
+                    }
+                    adapter.setCommentList(list);
+                    listview.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+                }
+                else{
+                    Log.d(TAG, "No comments");
+                    //need to insert error handle for no comments
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
@@ -85,7 +137,9 @@ public class CommentActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(list.get(position).user_id == "박현우"){
+                mAuth = FirebaseAuth.getInstance();
+                String userID = mAuth.getCurrentUser().getDisplayName();
+                if(list.get(position).user_id == "userID"){
                     list.remove(position);
                 }
                 else{
@@ -96,17 +150,51 @@ public class CommentActivity extends AppCompatActivity {
         });
     }
     public void insert_comment(View v){
-        Toast.makeText(CommentActivity.this ,"삽입",Toast.LENGTH_LONG).show();
-
         SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault());
         Date date = new Date();
         String strDate = dateFormat.format(date);
 
+        if(text.isEmpty()){
+            Toast.makeText(getApplicationContext(), "댓글을 입력해주세요!", Toast.LENGTH_LONG).show();
 
-        list.add(new CommentItem("민준홍", strDate, text));
-        adapter.notifyDataSetChanged();
-        edit_comment.setText("");
+        }
+        else{
+            Log.d(TAG, "comment is not empty!");
+            String commentId = myRef.child("comments").child(board_id).push().getKey();
+            mAuth = FirebaseAuth.getInstance();
+            Log.d(TAG, "get key from comments");
+
+            String userID = mAuth.getCurrentUser().getDisplayName();
+            CommentItem c = new CommentItem(userID, strDate, text, commentId);
+            Log.d(TAG, "made Comment Item");
+
+            myRef.child("comments").child(board_id).child(commentId).setValue(c).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "Succeded");
+
+                    list.add(c);
+                    Log.d(TAG, "listAdded");
+                    adapter.setCommentList(list);
+                    listview.setAdapter(adapter);
+
+                    adapter.notifyDataSetChanged();
+                    Log.d(TAG, "notifydatachanged");
+                    edit_comment.setText("");
+                    Log.d(TAG, "set Text");
+                    Toast.makeText(CommentActivity.this ,"삽입",Toast.LENGTH_LONG).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    Log.d(TAG, "Failed");
+                    Toast.makeText(getApplicationContext(), "다시 한번 시도해주세요!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+
+
     }
-
-
 }

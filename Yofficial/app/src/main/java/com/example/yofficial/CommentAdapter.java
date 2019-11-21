@@ -28,6 +28,10 @@ public class CommentAdapter extends BaseAdapter {
         this.listview.addAll(commentList);
     }
 
+    public void setCommentList(List<CommentItem> commentList) {
+        this.commentList = commentList;
+    }
+
     @Override
     public int getCount(){
         return commentList.size();
