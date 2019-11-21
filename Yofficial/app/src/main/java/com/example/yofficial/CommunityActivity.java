@@ -74,10 +74,11 @@ public class CommunityActivity extends AppCompatActivity {
                     BoardItem b = itr.next().getValue(BoardItem.class);
                     Log.d(TAG, b.board_title);
                     list.add(b);
-                    arraylist.addAll(list);
-                    adapter.setBoardList(list);
-                    listview.setAdapter(adapter);
+
                 }
+                arraylist.addAll(list);
+                adapter.setBoardList(list);
+                listview.setAdapter(adapter);
 
             }
 
@@ -124,7 +125,41 @@ public class CommunityActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        Log.d(TAG,  "get ref");
+        myRef.child("boards").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, ""+dataSnapshot.getChildrenCount());
+
+                list.clear();
+                Iterator<DataSnapshot> itr = dataSnapshot.getChildren().iterator();
+                Log.d(TAG,  "get iterator");
+                while(itr.hasNext()){
+                    BoardItem b = itr.next().getValue(BoardItem.class);
+                    Log.d(TAG, b.board_title);
+                    list.add(b);
+
+                }
+                arraylist.addAll(list);
+                adapter.setBoardList(list);
+                listview.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
     public void search(String charText) {
 
