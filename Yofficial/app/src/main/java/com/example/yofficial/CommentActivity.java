@@ -139,13 +139,28 @@ public class CommentActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mAuth = FirebaseAuth.getInstance();
                 String userID = mAuth.getCurrentUser().getDisplayName();
-                if(list.get(position).user_id == "userID"){
-                    list.remove(position);
+                if(list.get(position).user_id.compareTo(userID) == 0){
+
+                    String c_id = list.get(position).comment_id;
+                    myRef.child("comments").child(board_id).child(c_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            list.remove(position);
+                            adapter.setCommentList(list);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(CommentActivity.this ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
                 else{
                     Toast.makeText(CommentActivity.this ,"본인 댓글만 삭제 가능합니다!",Toast.LENGTH_SHORT).show();
                 }
-                adapter.notifyDataSetChanged();
+
             }
         });
     }
