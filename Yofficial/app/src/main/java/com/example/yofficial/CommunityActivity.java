@@ -76,6 +76,7 @@ public class CommunityActivity extends AppCompatActivity {
                     list.add(b);
 
                 }
+                arraylist.clear();
                 arraylist.addAll(list);
                 adapter.setBoardList(list);
                 listview.setAdapter(adapter);
@@ -146,6 +147,7 @@ public class CommunityActivity extends AppCompatActivity {
                     list.add(b);
 
                 }
+                arraylist.clear();
                 arraylist.addAll(list);
                 adapter.setBoardList(list);
                 listview.setAdapter(adapter);
