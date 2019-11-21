@@ -14,15 +14,14 @@
 
         <ImageView
             android:id="@+id/profile"
-            android:layout_width="97dp"
-            android:layout_height="97dp"
+            android:layout_width="108dp"
+            android:layout_height="108dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:background="@color/colorAccent"
             android:scaleType="fitXY"
-            android:src="@drawable/yofficial"
-            />
+            android:src="@drawable/yofficial" />
 
         <TextView
             android:id="@+id/name"
@@ -45,82 +44,154 @@
             android:text="ijwon1995@gmail.com"
             android:textColor="#050505" />
 
-
-
-        <TextView
-            android:id="@+id/chefLv"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/pics"
+            android:layout_toRightOf="@id/profile"
             android:layout_below="@id/email"
-            android:layout_alignLeft="@id/name"
-            android:layout_marginTop="7dp"
-            android:background="#F7F8F7"
-            android:text="LV : 9"
-            android:textColor="#050505" />
-        <TextView
-            android:id="@+id/chefExpTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/email"
-            android:layout_toRightOf="@+id/chefLv"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
-            android:background="#F7F8F7"
-            android:text="EXP : "
-            android:textColor="#050505" />
+            android:baselineAlignBottom="@+id/levels"
+            android:layout_marginRight="5dp">
 
-        <ProgressBar
-            android:id="@+id/chefExp"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/email"
-            android:layout_toRightOf="@+id/chefExpTextView"
-            android:layout_marginTop="7dp"
-            android:background="#F7F8F7"
-            android:progress="25"
-            android:textColor="#050505"
-            android:layout_marginLeft="10dp"
-            android:layout_alignBottom="@+id/chefExpTextView"
+            <ImageView
+                android:layout_marginTop="5dp"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:src="@drawable/chef"
+
             />
 
-        <TextView
-            android:id="@+id/cookLv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/chefLv"
-            android:layout_alignLeft="@id/name"
-            android:layout_marginTop="7dp"
-            android:background="#F7F8F7"
-            android:text="LV : 10"
-            android:textColor="#050505" />
-        <TextView
-            android:id="@+id/cookExpTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/chefExpTextView"
-            android:layout_toRightOf="@+id/cookLv"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
-            android:background="#F7F8F7"
-            android:text="EXP : "
-            android:textColor="#050505" />
-
-        <ProgressBar
-            android:id="@+id/cookExp"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/chefExp"
-            android:layout_toRightOf="@+id/cookExpTextView"
-            android:layout_marginTop="7dp"
-            android:background="#F7F8F7"
-            android:progress="25"
-            android:textColor="#050505"
-            android:layout_marginLeft="10dp"
-            android:layout_alignBottom="@+id/cookExpTextView"
+            <ImageView
+                android:layout_marginTop="5dp"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:src="@drawable/skimmer"
 
             />
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/pics"
+            android:layout_below="@+id/email"
+            android:id="@+id/levels">
+
+
+            <TextView
+                android:id="@+id/chefLv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/email"
+                android:layout_alignLeft="@id/name"
+                android:layout_marginTop="7dp"
+                android:background="#F7F8F7"
+                android:text="LV : 900"
+                android:textColor="#050505" />
+
+            <TextView
+                android:id="@+id/cookLv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/chefLv"
+                android:layout_alignLeft="@id/name"
+                android:layout_marginTop="7dp"
+                android:background="#F7F8F7"
+                android:text="LV : 10"
+                android:textColor="#050505" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@id/levels"
+            android:layout_below="@+id/email">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/chefExpTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/email"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_toRightOf="@+id/chefLv"
+                    android:background="#F7F8F7"
+                    android:text="EXP : "
+                    android:textColor="#050505" />
+
+                <ProgressBar
+                    android:id="@+id/chefExp"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/email"
+                    android:layout_alignBottom="@+id/chefExpTextView"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_toRightOf="@+id/chefExpTextView"
+                    android:background="#F7F8F7"
+                    android:progress="25"
+                    android:textColor="#050505" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/cookExpTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/chefExpTextView"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_toRightOf="@+id/cookLv"
+                    android:background="#F7F8F7"
+                    android:text="EXP : "
+                    android:textColor="#050505" />
+
+                <ProgressBar
+                    android:id="@+id/cookExp"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/chefExp"
+                    android:layout_alignBottom="@+id/cookExpTextView"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_toRightOf="@+id/cookExpTextView"
+                    android:background="#F7F8F7"
+                    android:progress="25"
+                    android:textColor="#050505"
+
+                    />
+
+            </LinearLayout>
+
+
+
+
+
+
+        </LinearLayout>
+
+
 
 
     </RelativeLayout>
@@ -150,6 +221,32 @@
             android:background="#F7F8F7"
             android:gravity="center_vertical"
             android:text="내가 쓴 글"
+            android:textColor="#050505"
+
+            />
+
+        <Button
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="#F7F8F7"
+            android:gravity="center_vertical"
+            android:text="내가 쓴 댓글"
+            android:textColor="#050505"
+
+            />
+
+        <Button
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="#F7F8F7"
+            android:gravity="center_vertical"
+            android:text="구독"
             android:textColor="#050505"
 
             />
