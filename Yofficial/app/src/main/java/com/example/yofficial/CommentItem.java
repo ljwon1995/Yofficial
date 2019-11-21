@@ -7,6 +7,7 @@ public class CommentItem  {
     String user_id;
     String upload_date;
     String comment_data;
+    String comment_id;
 
 
     public String getUser_id() {
@@ -33,11 +34,23 @@ public class CommentItem  {
         this.comment_data = comment_data;
     }
 
+    public String getComment_id() {
+        return comment_id;
+    }
 
-    public CommentItem ( String  _user_id, String _upload_date, String _comment_data){
+    public void setComment_id(String comment_id) {
+        this.comment_id = comment_id;
+    }
+
+    public CommentItem (String  _user_id, String _upload_date, String _comment_data, String _comment_id){
         user_id = _user_id;
         upload_date = _upload_date;
         comment_data = _comment_data;
+        comment_id = _comment_id;
+    }
+
+    public CommentItem(){
+
     }
 
 

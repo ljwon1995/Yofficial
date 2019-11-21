@@ -62,6 +62,7 @@ public class BoardActivity extends AppCompatActivity {
 
     public void see_comment(View v){
         Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
+        intent.putExtra("id", item.board_id);
         startActivity(intent);
     }
 
