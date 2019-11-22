@@ -3,7 +3,7 @@ package com.example.yofficial;
 
 public class UserInfo {
     private String id;
-    private String pw;
+
 
     private int cookLevel;
     private float cookExp;
@@ -18,14 +18,6 @@ public class UserInfo {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getPw() {
-        return pw;
-    }
-
-    public void setPw(String pw) {
-        this.pw = pw;
     }
 
     public int getCookLevel() {
