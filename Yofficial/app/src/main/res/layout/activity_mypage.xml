@@ -202,15 +202,6 @@
         android:orientation="vertical"
         android:layout_marginTop="30dp">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="#F7F8F7"
-            android:gravity="center_vertical"
-            android:text="프로필 설정"
-            android:textColor="#050505" />
 
         <Button
             android:layout_marginTop="2dp"
@@ -222,7 +213,7 @@
             android:gravity="center_vertical"
             android:text="내가 쓴 글"
             android:textColor="#050505"
-
+            android:id="@+id/my_boards_btn"
             />
 
         <Button
@@ -235,19 +226,7 @@
             android:gravity="center_vertical"
             android:text="내가 쓴 댓글"
             android:textColor="#050505"
-
-            />
-
-        <Button
-            android:layout_marginTop="2dp"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="#F7F8F7"
-            android:gravity="center_vertical"
-            android:text="구독"
-            android:textColor="#050505"
+            android:id="@+id/my_comments_btn"
 
             />
 
