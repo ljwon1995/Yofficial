@@ -681,7 +681,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 if (temp.getBytes().length <= 0) {
                     showToast(getApplicationContext(), "1단계 시작 시간을 입력하세요");
                 } else {
-                    stageDescr1Flag = true;
+                    stageStartHour1Flag = true;
                 }
 
                 temp = s_minute1.getText().toString();
@@ -726,13 +726,13 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                 for (int i = 0; i < stageIdCount; i++) {
 
-                    boolean descrFlag = false;
-                    boolean sHourFlag = false;
-                    boolean sMinuteFlag = false;
-                    boolean sSecondFlag = false;
-                    boolean eHourFlag = false;
-                    boolean eMinuteFlag = false;
-                    boolean eSecondFlag = false;
+                    boolean descrFlag = true;
+                    boolean sHourFlag = true;
+                    boolean sMinuteFlag = true;
+                    boolean sSecondFlag = true;
+                    boolean eHourFlag = true;
+                    boolean eMinuteFlag = true;
+                    boolean eSecondFlag = true;
 
                     temp = stageDescr[i].getText().toString();
                     if (temp.getBytes().length <= 0) {
@@ -812,11 +812,57 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     }
                 }
 
-                if (titleFlag && subTitleFlag && introFlag && mainIngFlag && typeFlag && featureFlag && servingFlag && difficultyFlag && durationFlag
-                    && ingName1Flag && ingNameFlag && ingFigure1Flag && ingFigureFlag && ssnName1Flag && ssnNameFlag && ssnFigure1Flag && ssnFigureFlag
-                    && urlFlag && stageDescr1Flag && stageStartHour1Flag && stageStartMinute1Flag && stageStartSecond1Flag && stageEndHour1Flag
-                    && stageEndMinute1Flag && stageEndSecond1Flag && stageDescrFlag && stageStartHourFlag && stageStartMinuteFlag && stageStartSecondFlag
-                    && stageEndHourFlag && stageEndMinuteFlag && stageEndSecondFlag) {
+                boolean tp = titleFlag && subTitleFlag && introFlag && mainIngFlag && typeFlag && featureFlag && servingFlag && difficultyFlag && durationFlag
+                        && ingName1Flag && ingFigure1Flag && ssnName1Flag && ssnFigure1Flag
+                        && urlFlag && stageDescr1Flag && stageStartHour1Flag && stageStartMinute1Flag && stageStartSecond1Flag && stageEndHour1Flag
+                        && stageEndMinute1Flag && stageEndSecond1Flag;
+
+                  if (timeIdCount > 0) {
+                      tp = tp && ingNameFlag && ingFigureFlag;
+                  }
+
+                  if (ssnIdCount > 0) {
+                      tp = tp && ssnNameFlag && ssnFigureFlag;
+                  }
+
+                  if (stageIdCount > 0) {
+                      tp = tp  && stageDescrFlag && stageStartHourFlag && stageStartMinuteFlag && stageStartSecondFlag
+                              && stageEndHourFlag && stageEndMinuteFlag && stageEndSecondFlag;
+                  }
+
+                System.out.println("titleFlag : " + titleFlag);
+                System.out.println("subTitleFlag : " + subTitleFlag);
+                System.out.println("intro : " + introFlag);
+                System.out.println("mainIng : " + mainIngFlag);
+                System.out.println("type : " + typeFlag);
+                System.out.println("feature : " + featureFlag);
+                System.out.println("serving : " + servingFlag);
+                System.out.println("difficulty : " + difficultyFlag);
+                System.out.println("duration : " + durationFlag);
+                System.out.println("ingName1 : " + ingName1Flag);
+                System.out.println("ingName : " + ingNameFlag);
+                System.out.println("ingFigure1 : " + ingFigure1Flag);
+                System.out.println("ingFigure : " + ingFigureFlag);
+                System.out.println("ssnName1 : " + ssnName1Flag);
+                System.out.println("ssnName : " + ssnNameFlag);
+                System.out.println("ssnFigure1 : " + ssnFigure1Flag);
+                System.out.println("ssnFigure : " + ssnFigureFlag);
+                System.out.println("url : " + urlFlag);
+                System.out.println("stDescr1 : " + stageDescr1Flag);
+                System.out.println("stStH1 : " + stageStartHour1Flag);
+                System.out.println("stStM1 : " + stageStartMinute1Flag);
+                System.out.println("stStS1 : " + stageStartSecond1Flag);
+                System.out.println("stEdH1 : " + stageEndHour1Flag);
+                System.out.println("stEdM1 : " + stageEndMinute1Flag);
+                System.out.println("stEdS1 : " + stageEndSecond1Flag);
+                System.out.println("stDescr : " + stageDescrFlag);
+                System.out.println("stStH : " + stageStartHourFlag);
+                System.out.println("stStM :" + stageStartMinuteFlag);
+                System.out.println("stStS : " + stageStartSecondFlag);
+                System.out.println("stEdH : " + stageEndHourFlag);
+                System.out.println("stEdM : " + stageEndMinuteFlag);
+                System.out.println("stEdS : " + stageEndSecondFlag);
+                if (tp) {
                     recipeInfo.setRecipeSubTitle(titleEdit.getText().toString());
                     recipeInfo.setRecipeSubTitle(subTitleEdit.getText().toString()); // 부제목 전달
                     recipeInfo.setIntroRecipe(introEdit.getText().toString()); //요리 설명 전달
