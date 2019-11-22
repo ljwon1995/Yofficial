@@ -266,7 +266,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:id="@+id/ing1"
-                        android:hint=" 예시) 돼지고기"
+                        android:hint="터치로 재료입력"
+                        android:focusableInTouchMode="false"
                         android:textColorHint="#4075757E"
                         android:background="@null"
                         android:textSize="15dp"
@@ -285,62 +286,7 @@
                         />
 
                 </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight = "1">
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:id="@+id/ing2"
-                        android:hint=" 예시) 마늘"
-                        android:textColorHint="#4075757E"
-                        android:background="@null"
-                        android:textSize="15dp"
-                        android:layout_weight="1"
-                        />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:id="@+id/volume2"
-                        android:hint=" 예시) 2~3개"
-                        android:textColorHint="#4075757E"
-                        android:background="@null"
-                        android:textSize="15dp"
-                        android:layout_weight="1"
-                        />
-
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight = "1">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:id="@+id/ing3"
-                        android:hint=" 예시) 밥"
-                        android:textColorHint="#4075757E"
-                        android:background="@null"
-                        android:textSize="15dp"
-                        android:layout_weight="1"
-                        />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:id="@+id/volume3"
-                        android:hint=" 예시) 1~2 공기"
-                        android:textColorHint="#4075757E"
-                        android:background="@null"
-                        android:textSize="15dp"
-                        android:layout_weight="1"
-                        />
-
-                </TableRow>
 
             </TableLayout>
             <TableLayout
@@ -400,7 +346,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:id="@+id/ssn1"
-                        android:hint=" 예시) 간장"
+                        android:hint="터치로 앙념입력"
+                        android:focusableInTouchMode="false"
                         android:textColorHint="#4075757E"
                         android:background="@null"
                         android:textSize="15dp"
@@ -412,61 +359,6 @@
                         android:layout_height="30dp"
                         android:id="@+id/vol1"
                         android:hint=" 예시) 2T"
-                        android:textColorHint="#4075757E"
-                        android:background="@null"
-                        android:textSize="15dp"
-                        android:layout_weight="1"
-                        />
-
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight = "1">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:id="@+id/ssn2"
-                        android:hint=" 예시) 케첩"
-                        android:textColorHint="#4075757E"
-                        android:background="@null"
-                        android:textSize="15dp"
-                        android:layout_weight="1"
-                        />
-
-                    <EditText
-                        android:id="@+id/vol2"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:hint=" 예시) 2S"
-                        android:textColorHint="#4075757E"
-                        android:textSize="15dp" />
-
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight = "1">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:id="@+id/ssn3"
-                        android:hint=" 예시) 식초"
-                        android:textColorHint="#4075757E"
-                        android:background="@null"
-                        android:textSize="15dp"
-                        android:layout_weight="1"
-                        />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:id="@+id/vol3"
-                        android:hint=" 예시) 3T"
                         android:textColorHint="#4075757E"
                         android:background="@null"
                         android:textSize="15dp"
@@ -711,14 +603,6 @@
                 </TableRow>
 
             </TableLayout>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:id="@+id/testSearchButton"
-                android:hint="재료 검색 테스트"
-                />
 
             <Button
                 android:layout_width="match_parent"

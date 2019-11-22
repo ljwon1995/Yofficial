@@ -1,6 +1,7 @@
 package com.example.yofficial;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -52,6 +53,7 @@ import java.util.Map;
 public class CreateRecipeActivity extends AppCompatActivity {
 
     private static final String TAG = "Create!";
+    private static Toast sToast;
 
     private static final int REQUEST_CODE = 0;
     private ImageView getImage;
@@ -65,6 +67,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private Activity ac = this;
     private FirebaseAuth mAuth;
+    private int ingSendNumber = 1112;
+    private int ssnSendNumber = 2112;
 
     //재료 테이블 받아오기
     TableRow tr[] = new TableRow[100];
@@ -92,12 +96,15 @@ public class CreateRecipeActivity extends AppCompatActivity {
     ArrayList<String> seasoningName = new ArrayList<String>();
     ArrayList<String> seasoningAmount = new ArrayList<String>();
 
-    // 영상 url 및 시간 태깅 받는 arrayList
+    // 영상 url 및 시간 태깅 a받는 arrayList
     ArrayList<String> stepDescrib = new ArrayList<String>();
     ArrayList<String> startTimeList = new ArrayList<String>();
     ArrayList<String> endTimeList = new ArrayList<String>();
 
-    EditText testSearchButton;
+    EditText ing1;
+    EditText ssn1;
+    EditText vol1;
+    EditText volume1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,18 +114,10 @@ public class CreateRecipeActivity extends AppCompatActivity {
         final EditText titleEdit = findViewById(R.id.titleEdit);
         final EditText subTitleEdit = findViewById(R.id.subTitleEdit);
         final EditText introEdit = findViewById(R.id.introEdit);
-        final EditText ing1 = findViewById(R.id.ing1);
-        final EditText ing2 = findViewById(R.id.ing2);
-        final EditText ing3 = findViewById(R.id.ing3);
-        final EditText volume1 = findViewById(R.id.volume1);
-        final EditText volume2 = findViewById(R.id.volume2);
-        final EditText volume3 = findViewById(R.id.volume3);
-        final EditText ssn1 = findViewById(R.id.ssn1);
-        final EditText ssn2 = findViewById(R.id.ssn2);
-        final EditText ssn3 = findViewById(R.id.ssn3);
-        final EditText vol1 = findViewById(R.id.vol1);
-        final EditText vol2 = findViewById(R.id.vol2);
-        final EditText vol3 = findViewById(R.id.vol3);
+        ing1 = findViewById(R.id.ing1);
+        volume1 = findViewById(R.id.volume1);
+        ssn1 = findViewById(R.id.ssn1);
+        vol1 = findViewById(R.id.vol1);
         final EditText youtubeUrl = findViewById(R.id.yUrl);
         final EditText stepDescrib1 = findViewById(R.id.stepDescrib1);
         final EditText s_hour1 = findViewById(R.id.s_hour1);
@@ -147,9 +146,11 @@ public class CreateRecipeActivity extends AppCompatActivity {
             ingName[i] = new EditText(this);
             ingName[i].setLayoutParams(params);
             ingName[i].setBackground(null);
-            ingName[i].setHint("예시) 돼지고기");
+            ingName[i].setHint("터치로 재료입력");
             ingName[i].setHintTextColor(Color.parseColor("#4075757E"));
             ingName[i].setTextSize(15);
+            ingName[i].setFocusable(false);
+
         }
 
         for (int i = 0; i < ingFigures.length; i++) {
@@ -170,9 +171,10 @@ public class CreateRecipeActivity extends AppCompatActivity {
             ssnName[i] = new EditText(this);
             ssnName[i].setLayoutParams(params);
             ssnName[i].setBackground(null);
-            ssnName[i].setHint("예시) 간장");
+            ssnName[i].setHint("터치로 양념입력");
             ssnName[i].setHintTextColor(Color.parseColor("#4075757E"));
             ssnName[i].setTextSize(15);
+            ssnName[i].setFocusable(false);
         }
 
         for (int i = 0; i < ssnFigures.length; i++) {
@@ -488,270 +490,624 @@ public class CreateRecipeActivity extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() { // 레시피 정보 액티비티에 입력받은 값 전달
             @Override
             public void onClick(View v) {
-                recipeInfo.setRecipeTitle(titleEdit.getText().toString()); // 제목 전달
-                recipeInfo.setRecipeSubTitle(subTitleEdit.getText().toString()); // 부제목 전달
-                recipeInfo.setIntroRecipe(introEdit.getText().toString()); //요리 설명 전달
-                recipeInfo.setMainIngredient(mainIngSpinner.getSelectedItem().toString()); // 카테고리 중 주재료 부분 전달
-                recipeInfo.setType(typeSpinner.getSelectedItem().toString()); // 카테고리 중 타입 부분 전달
-                recipeInfo.setFeature(featureSpinner.getSelectedItem().toString()); // 카테고리 중 특징 부분 전달
-                recipeInfo.setServings(servingSelB.getText().toString()); // 인분 수 전달
-                recipeInfo.setDifficulty(diffiSelB.getText().toString()); // 난이도 전달
-                recipeInfo.setDuraTime(duraSelB.getText().toString()); // 소요시간 전달
 
+                boolean titleFlag = false, subTitleFlag = false, introFlag = false;
+                boolean mainIngFlag = false, typeFlag = false, featureFlag = false;
+                boolean servingFlag = false, difficultyFlag = false, durationFlag = false;
+                boolean ingName1Flag = false, ingFigure1Flag = false;
+                boolean ingNameFlag = false, ingFigureFlag = false;
+                boolean ssnName1Flag = false, ssnFigure1Flag = false;
+                boolean ssnNameFlag =false, ssnFigureFlag = false;
+                boolean urlFlag = false;
+                boolean stageDescr1Flag = false;
+                boolean stageStartHour1Flag = false, stageStartMinute1Flag = false, stageStartSecond1Flag = false;
+                boolean stageEndHour1Flag = false, stageEndMinute1Flag = false, stageEndSecond1Flag = false;
+                boolean stageDescrFlag = false;
+                boolean stageStartHourFlag = false, stageStartMinuteFlag = false, stageStartSecondFlag = false;
+                boolean stageEndHourFlag = false, stageEndMinuteFlag = false, stageEndSecondFlag = false;
 
-                // 재료 입력 전달 부분
-                ingredientName.add(ing1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료 이름 부분
-                ingredientName.add(ing2.getText().toString());
-                ingredientName.add(ing3.getText().toString());
-                ingredientAmount.add(volume1.getText().toString()); // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료의 양 부분
-                ingredientAmount.add(volume2.getText().toString());
-                ingredientAmount.add(volume3.getText().toString());
+                String temp;
 
-                // 추가 버튼으로 만들어진 동적 테이블 행에 들어간 값 arraylist에 입력
+                temp = titleEdit.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "제목을 입력하세요");
+                } else {
+                    titleFlag = true;
+                }
+
+                temp = subTitleEdit.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "부제목을 입력하세요");
+                } else {
+                    subTitleFlag = true;
+                }
+
+                temp = introEdit.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "요리 소개를 입력하세요");
+                } else {
+                    introFlag = true;
+                }
+
+                temp = mainIngSpinner.getSelectedItem().toString();
+                if (temp.equals("주재료")) {
+                    showToast(getApplicationContext(), "주재료 항목을 입력하세요");
+                } else {
+                    mainIngFlag = true;
+                }
+
+                temp = typeSpinner.getSelectedItem().toString();
+                if (temp.equals("타입")) {
+                    showToast(getApplicationContext(), "타입 항목을 입력하세요");
+                } else {
+                    typeFlag = true;
+                }
+
+                temp = featureSpinner.getSelectedItem().toString();
+                if (temp.equals("특징")) {
+                    showToast(getApplicationContext(), "특징 항목을 입력하세요");
+                } else {
+                    featureFlag = true;
+                }
+
+                temp = servingSelB.getText().toString();
+                if (temp.equals("선택")) {
+                    showToast(getApplicationContext(), "인원 수를 선택하세요");
+                } else {
+                    servingFlag = true;
+                }
+
+                temp = diffiSelB.getText().toString();
+                if (temp.equals("선택")) {
+                    showToast(getApplicationContext(), "난이도를 선택하세요");
+                } else {
+                    difficultyFlag = true;
+                }
+
+                temp = duraSelB.getText().toString();
+                if (temp.equals("선택")) {
+                    showToast(getApplicationContext(), "소요 시간을 선택하세요");
+                } else {
+                    durationFlag = true;
+                }
+
+                temp = ing1.getText().toString();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "재료를 입력하세요");
+                } else {
+                    ingName1Flag = true;
+                }
+
                 for (int i = 0; i < timeIdCount; i++) {
-                    EditText tempName = (EditText)tr[i].getChildAt(0);
-                    ingredientName.add(tempName.getText().toString());
+                    temp = ingName[i].getText().toString();
+                    boolean flag = true;
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), "재료를 입력하세요");
+                        ingNameFlag = false;
+                        flag = false;
+                    }
 
-                    EditText tempAmount = (EditText)tr[i].getChildAt(1);
-                    ingredientAmount.add(tempAmount.getText().toString());
+                    if (i == timeIdCount - 1 && flag == true) {
+                        ingNameFlag = true;
+                    }
                 }
 
-                recipeInfo.setIngredientName(ingredientName); // 들어가는 재료 이름 전달
-                recipeInfo.setIngredientAmount(ingredientAmount); // 들어가는 재료의 양 전달
 
-                // 양념 입력 전달 부분
-                seasoningName.add(ssn1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 양념 이름 부분
-                seasoningName.add(ssn2.getText().toString());
-                seasoningName.add(ssn3.getText().toString());
-                seasoningAmount.add(vol1.getText().toString()); // xml의 view를 통해 입력 받은 값 arraylist에 입력, 양념의 양 부분
-                seasoningAmount.add(vol2.getText().toString());
-                seasoningAmount.add(vol3.getText().toString());
 
-                // 추가 버튼으로 만들어진 동적 테이블 행에 들어간 값 arraylist에 입력
+                temp = volume1.getText().toString();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "재료 양을 입력하세요");
+                } else {
+                    ingFigure1Flag = true;
+                }
+
+                for (int i = 0; i < timeIdCount; i++) {
+                    temp = ingFigures[i].getText().toString();
+                    boolean flag = true;
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), "재료 양을 입력하세요");
+                        ingFigureFlag = false;
+                        flag = false;
+                    }
+
+                    if (i == timeIdCount - 1 && flag == true) {
+                        ingFigureFlag = true;
+                    }
+                }
+
+                temp = ssn1.getText().toString();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "앙념을 입력하세요");
+                } else {
+                    ssnName1Flag = true;
+                }
+
                 for (int i = 0; i < ssnIdCount; i++) {
-                    EditText tempName = (EditText)tr1[i].getChildAt(0);
-                    seasoningName.add(tempName.getText().toString());
+                    temp = ssnName[i].getText().toString();
+                    boolean flag = true;
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), "양념을 입력하세요");
+                        ssnNameFlag = false;
+                        flag = false;
+                    }
 
-                    EditText tempAmount = (EditText)tr1[i].getChildAt(1);
-                    seasoningAmount.add(tempAmount.getText().toString());
+                    if (i == timeIdCount - 1 && flag == true) {
+                        ssnNameFlag = true;
+                    }
                 }
 
-
-                recipeInfo.setSeasoningName(seasoningName); // 들어가는 양념 이름 전달
-                recipeInfo.setSeasoningAmount(seasoningAmount); // 들어가는 양념의 양 전달
-
-                recipeInfo.setYoutubeUrl(youtubeUrl.getText().toString()); // 실행할 영상 url 전달
-
-                // 단계별 설명 및 시간 태깅 전달 부분
-                stepDescrib.add(stepDescrib1.getText().toString());
-
-
-                int stTime;
-                int edTime;
-
-                int h, m, s;
-
-                if(s_hour1.getText().toString().compareTo("") == 0){
-                    h = 0;
-                }
-                else{
-                    h = Integer.parseInt(s_hour1.getText().toString());
+                temp = vol1.getText().toString();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "앙념 양을 입력하세요");
+                } else {
+                    ssnFigure1Flag = true;
                 }
 
-                if(s_minute1.getText().toString().compareTo("") == 0){
-                    m = 0;
-                }
-                else{
-                    m = Integer.parseInt(s_minute1.getText().toString());
-                }
+                for (int i = 0; i < ssnIdCount; i++) {
+                    temp = ssnFigures[i].getText().toString();
+                    boolean flag = true;
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), "양념 양을 입력하세요");
+                        ssnFigureFlag = false;
+                        flag = false;
+                    }
 
-                if(s_second1.getText().toString().compareTo("") == 0){
-                    s = 0;
-                }
-                else{
-                    s = Integer.parseInt(s_second1.getText().toString());
-                }
-
-                stTime = 3600 * h + 60 * m + s;
-
-                if(e_hour1.getText().toString().compareTo("") == 0){
-                    h = 0;
-                }
-                else{
-                    h = Integer.parseInt(e_hour1.getText().toString());
+                    if (i == timeIdCount - 1 && flag == true) {
+                        ssnFigureFlag = true;
+                    }
                 }
 
-                if(e_minute1.getText().toString().compareTo("") == 0){
-                    m = 0;
-                }
-                else{
-                    m = Integer.parseInt(e_minute1.getText().toString());
-                }
-
-                if(e_second1.getText().toString().compareTo("") == 0){
-                    s = 0;
-                }
-                else{
-                    s = Integer.parseInt(e_second1.getText().toString());
+                temp = youtubeUrl.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "URL을 입력하세요");
+                } else {
+                    urlFlag = true;
                 }
 
-                edTime = 3600 * h + 60 * m + s;
+                temp = stepDescrib1.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "1단계 영상 설명을 입력하세요");
+                } else {
+                    stageDescr1Flag = true;
+                }
 
-                Log.d(TAG, ""+stTime+" " + edTime);
+                temp = s_hour1.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "1단계 시작 시간을 입력하세요");
+                } else {
+                    stageDescr1Flag = true;
+                }
 
-                startTimeList.add(Integer.toString(stTime));
-                endTimeList.add(Integer.toString(edTime));
+                temp = s_minute1.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "1단계 시작 시간을 입력하세요");
+                } else {
+                    stageStartMinute1Flag = true;
+                }
 
+                temp = s_second1.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "1단계 시작 시간을 입력하세요");
+                } else {
+                    stageStartSecond1Flag = true;
+                }
 
+                temp = e_hour1.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "1단계 종료 시간을 입력하세요");
+                } else {
+                    stageEndHour1Flag = true;
+                }
+
+                temp = e_minute1.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "1단계 종료 시간을 입력하세요");
+                } else {
+                    stageEndMinute1Flag = true;
+                }
+
+                temp = e_second1.getText().toString();
+                temp = temp.trim();
+                if (temp.getBytes().length <= 0) {
+                    showToast(getApplicationContext(), "1단계 종료 시간을 입력하세요");
+                } else {
+                    stageEndSecond1Flag = true;
+                }
 
                 for (int i = 0; i < stageIdCount; i++) {
-                    EditText tempStepDescrib = (EditText) stageTable.getChildAt(3 * (i + 1));
-                    stepDescrib.add(tempStepDescrib.getText().toString());
+
+                    boolean descrFlag = false;
+                    boolean sHourFlag = false;
+                    boolean sMinuteFlag = false;
+                    boolean sSecondFlag = false;
+                    boolean eHourFlag = false;
+                    boolean eMinuteFlag = false;
+                    boolean eSecondFlag = false;
+
+                    temp = stageDescr[i].getText().toString();
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), (i+2) + "단계 영상 설명을 입력하세요");
+                        stageDescrFlag = false;
+                        descrFlag = false;
+                    }
+
+                    if (i == stageIdCount - 1 && descrFlag == true) {
+                        stageDescrFlag = true;
+                    }
+
+                    temp = stageEdit[i][0].getText().toString();
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), (i+2) + "단계 시작 시간을 입력하세요");
+                        stageStartHourFlag = false;
+                        sHourFlag= false;
+                    }
+
+                    if (i == stageIdCount - 1 && sHourFlag == true) {
+                        stageStartHourFlag = true;
+                    }
+
+                    temp = stageEdit[i][1].getText().toString();
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), (i+2) + "단계 시작 시간을 입력하세요");
+                        stageStartMinuteFlag = false;
+                        sMinuteFlag= false;
+                    }
+
+                    if (i == stageIdCount - 1 && sMinuteFlag == true) {
+                        stageStartMinuteFlag = true;
+                    }
+
+                    temp = stageEdit[i][2].getText().toString();
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), (i+2) + "단계 시작 시간을 입력하세요");
+                        stageStartSecondFlag = false;
+                        sSecondFlag= false;
+                    }
+
+                    if (i == stageIdCount - 1 && sSecondFlag == true) {
+                        stageStartSecondFlag = true;
+                    }
+
+                    temp = stageEdit[i][3].getText().toString();
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), (i+2) + "단계 종료 시간을 입력하세요");
+                        stageEndHourFlag = false;
+                        eHourFlag= false;
+                    }
+
+                    if (i == stageIdCount - 1 && eHourFlag == true) {
+                        stageEndHourFlag = true;
+                    }
+
+                    temp = stageEdit[i][4].getText().toString();
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), (i+2) + "단계 종료 시간을 입력하세요");
+                        stageEndMinuteFlag = false;
+                        eMinuteFlag= false;
+                    }
+
+                    if (i == stageIdCount - 1 && eMinuteFlag == true) {
+                        stageEndMinuteFlag = true;
+                    }
+
+                    temp = stageEdit[i][5].getText().toString();
+                    if (temp.getBytes().length <= 0) {
+                        showToast(getApplicationContext(), (i+2) + "단계 종료 시간을 입력하세요");
+                        stageEndSecondFlag = false;
+                        eSecondFlag= false;
+                    }
+
+                    if (i == stageIdCount - 1 && eSecondFlag == true) {
+                        stageEndSecondFlag = true;
+                    }
+                }
+
+                if (titleFlag && subTitleFlag && introFlag && mainIngFlag && typeFlag && featureFlag && servingFlag && difficultyFlag && durationFlag
+                    && ingName1Flag && ingNameFlag && ingFigure1Flag && ingFigureFlag && ssnName1Flag && ssnNameFlag && ssnFigure1Flag && ssnFigureFlag
+                    && urlFlag && stageDescr1Flag && stageStartHour1Flag && stageStartMinute1Flag && stageStartSecond1Flag && stageEndHour1Flag
+                    && stageEndMinute1Flag && stageEndSecond1Flag && stageDescrFlag && stageStartHourFlag && stageStartMinuteFlag && stageStartSecondFlag
+                    && stageEndHourFlag && stageEndMinuteFlag && stageEndSecondFlag) {
+                    recipeInfo.setRecipeSubTitle(titleEdit.getText().toString());
+                    recipeInfo.setRecipeSubTitle(subTitleEdit.getText().toString()); // 부제목 전달
+                    recipeInfo.setIntroRecipe(introEdit.getText().toString()); //요리 설명 전달
+                    recipeInfo.setMainIngredient(mainIngSpinner.getSelectedItem().toString()); // 카테고리 중 주재료 부분 전달
+                    recipeInfo.setType(typeSpinner.getSelectedItem().toString()); // 카테고리 중 타입 부분 전달
+                    recipeInfo.setFeature(featureSpinner.getSelectedItem().toString()); // 카테고리 중 특징 부분 전달
+                    recipeInfo.setServings(servingSelB.getText().toString()); // 인분 수 전달
+                    recipeInfo.setDifficulty(diffiSelB.getText().toString()); // 난이도 전달
+                    recipeInfo.setDuraTime(duraSelB.getText().toString()); // 소요시간 전달
 
 
+                    // 재료 입력 전달 부분
+                    ingredientName.add(ing1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료 이름 부분
+                    ingredientAmount.add(volume1.getText().toString()); // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료의 양 부분
 
-                    EditText tempStartHour = (EditText) tr2[i][0].getChildAt(1);
-                    EditText tempStartMinute = (EditText) tr2[i][0].getChildAt(2);
-                    EditText tempStartSecond = (EditText) tr2[i][0].getChildAt(3);
+
+                    // 추가 버튼으로 만들어진 동적 테이블 행에 들어간 값 arraylist에 입력
+                    for (int i = 0; i < timeIdCount; i++) {
+                        EditText tempName = (EditText)tr[i].getChildAt(0);
+                        ingredientName.add(tempName.getText().toString());
+
+                        EditText tempAmount = (EditText)tr[i].getChildAt(1);
+                        ingredientAmount.add(tempAmount.getText().toString());
+                    }
+
+                    recipeInfo.setIngredientName(ingredientName); // 들어가는 재료 이름 전달
+                    recipeInfo.setIngredientAmount(ingredientAmount); // 들어가는 재료의 양 전달
+
+                    // 양념 입력 전달 부분
+                    seasoningName.add(ssn1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 양념 이름 부분
+                    seasoningAmount.add(vol1.getText().toString()); // xml의 view를 통해 입력 받은 값 arraylist에 입력, 양념의 양 부분
+
+                    // 추가 버튼으로 만들어진 동적 테이블 행에 들어간 값 arraylist에 입력
+                    for (int i = 0; i < ssnIdCount; i++) {
+                        EditText tempName = (EditText)tr1[i].getChildAt(0);
+                        seasoningName.add(tempName.getText().toString());
+
+                        EditText tempAmount = (EditText)tr1[i].getChildAt(1);
+                        seasoningAmount.add(tempAmount.getText().toString());
+                    }
 
 
-                    if(tempStartHour.getText().toString().compareTo("") == 0){
+                    recipeInfo.setSeasoningName(seasoningName); // 들어가는 양념 이름 전달
+                    recipeInfo.setSeasoningAmount(seasoningAmount); // 들어가는 양념의 양 전달
+
+                    recipeInfo.setYoutubeUrl(youtubeUrl.getText().toString()); // 실행할 영상 url 전달
+
+                    // 단계별 설명 및 시간 태깅 전달 부분
+                    stepDescrib.add(stepDescrib1.getText().toString());
+
+
+                    int stTime;
+                    int edTime;
+
+                    int h, m, s;
+
+                    if(s_hour1.getText().toString().compareTo("") == 0){
                         h = 0;
                     }
                     else{
-                        h = Integer.parseInt(tempStartHour.getText().toString());
+                        h = Integer.parseInt(s_hour1.getText().toString());
                     }
 
-                    if(tempStartMinute.getText().toString().compareTo("") == 0){
+                    if(s_minute1.getText().toString().compareTo("") == 0){
                         m = 0;
                     }
                     else{
-                        m = Integer.parseInt(tempStartMinute.getText().toString());
+                        m = Integer.parseInt(s_minute1.getText().toString());
                     }
 
-                    if(tempStartSecond.getText().toString().compareTo("") == 0){
+                    if(s_second1.getText().toString().compareTo("") == 0){
                         s = 0;
                     }
                     else{
-                        s = Integer.parseInt(tempStartSecond.getText().toString());
+                        s = Integer.parseInt(s_second1.getText().toString());
                     }
 
                     stTime = 3600 * h + 60 * m + s;
 
-                    startTimeList.add(Integer.toString(stTime));
-
-
-                    EditText tempEndHour = (EditText) tr2[i][1].getChildAt(1);
-                    EditText tempEndMinute = (EditText) tr2[i][1].getChildAt(2);
-                    EditText tempEndSecond = (EditText) tr2[i][1].getChildAt(3);
-
-                    if(tempEndHour.getText().toString().compareTo("") == 0){
+                    if(e_hour1.getText().toString().compareTo("") == 0){
                         h = 0;
                     }
                     else{
-                        h = Integer.parseInt(tempEndHour.getText().toString());
+                        h = Integer.parseInt(e_hour1.getText().toString());
                     }
 
-                    if(tempEndMinute.getText().toString().compareTo("") == 0){
+                    if(e_minute1.getText().toString().compareTo("") == 0){
                         m = 0;
                     }
                     else{
-                        m = Integer.parseInt(tempEndMinute.getText().toString());
+                        m = Integer.parseInt(e_minute1.getText().toString());
                     }
 
-                    if(tempEndSecond.getText().toString().compareTo("") == 0){
+                    if(e_second1.getText().toString().compareTo("") == 0){
                         s = 0;
                     }
                     else{
-                        s = Integer.parseInt(tempEndSecond.getText().toString());
+                        s = Integer.parseInt(e_second1.getText().toString());
                     }
 
                     edTime = 3600 * h + 60 * m + s;
 
+                    Log.d(TAG, ""+stTime+" " + edTime);
+
+                    startTimeList.add(Integer.toString(stTime));
                     endTimeList.add(Integer.toString(edTime));
 
+
+
+                    for (int i = 0; i < stageIdCount; i++) {
+                        EditText tempStepDescrib = (EditText) stageTable.getChildAt(3 * (i + 1));
+                        stepDescrib.add(tempStepDescrib.getText().toString());
+
+
+
+                        EditText tempStartHour = (EditText) tr2[i][0].getChildAt(1);
+                        EditText tempStartMinute = (EditText) tr2[i][0].getChildAt(2);
+                        EditText tempStartSecond = (EditText) tr2[i][0].getChildAt(3);
+
+
+                        if(tempStartHour.getText().toString().compareTo("") == 0){
+                            h = 0;
+                        }
+                        else{
+                            h = Integer.parseInt(tempStartHour.getText().toString());
+                        }
+
+                        if(tempStartMinute.getText().toString().compareTo("") == 0){
+                            m = 0;
+                        }
+                        else{
+                            m = Integer.parseInt(tempStartMinute.getText().toString());
+                        }
+
+                        if(tempStartSecond.getText().toString().compareTo("") == 0){
+                            s = 0;
+                        }
+                        else{
+                            s = Integer.parseInt(tempStartSecond.getText().toString());
+                        }
+
+                        stTime = 3600 * h + 60 * m + s;
+
+                        startTimeList.add(Integer.toString(stTime));
+
+
+                        EditText tempEndHour = (EditText) tr2[i][1].getChildAt(1);
+                        EditText tempEndMinute = (EditText) tr2[i][1].getChildAt(2);
+                        EditText tempEndSecond = (EditText) tr2[i][1].getChildAt(3);
+
+                        if(tempEndHour.getText().toString().compareTo("") == 0){
+                            h = 0;
+                        }
+                        else{
+                            h = Integer.parseInt(tempEndHour.getText().toString());
+                        }
+
+                        if(tempEndMinute.getText().toString().compareTo("") == 0){
+                            m = 0;
+                        }
+                        else{
+                            m = Integer.parseInt(tempEndMinute.getText().toString());
+                        }
+
+                        if(tempEndSecond.getText().toString().compareTo("") == 0){
+                            s = 0;
+                        }
+                        else{
+                            s = Integer.parseInt(tempEndSecond.getText().toString());
+                        }
+
+                        edTime = 3600 * h + 60 * m + s;
+
+                        endTimeList.add(Integer.toString(edTime));
+
+                    }
+
+                    for (int i = 0; i < stepDescrib.size(); i++) {
+                        System.out.println(stepDescrib.get(i));
+                        System.out.println(startTimeList.get(i));
+                        System.out.println(endTimeList.get(i));
+                    }
+
+                    recipeInfo.setStepDescrib(stepDescrib); //단계별 설명 전달
+                    recipeInfo.setStartTime(startTimeList); // 단계별 시작 시간 전달
+                    recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
+
+
+                    database = FirebaseDatabase.getInstance();
+                    myRef = database.getReference();
+
+                    String recipeId = myRef.child("recipes").push().getKey();
+
+                    Log.d(TAG, recipeId);
+                    recipeInfo.setRecipeId(recipeId);
+                    myRef.child("recipes").child(recipeId).setValue(recipeInfo);
+
+
+                    PostInfo postInfo = new PostInfo();
+                    postInfo.setRecipeId(recipeId);
+                    postInfo.setTitle(recipeInfo.getRecipeTitle());
+
+                    Log.d(TAG, "Before get auth");
+                    mAuth = FirebaseAuth.getInstance();
+                    Log.d(TAG, "after get auth");
+                    String userId = mAuth.getCurrentUser().getDisplayName();
+                    Log.d(TAG, userId);
+
+                    postInfo.setUserId(userId);
+                    postInfo.setViews(0);
+
+                    myRef.child("posts").child(recipeId).setValue(postInfo).addOnSuccessListener(ac, new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }).addOnFailureListener(ac, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ac.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    storage = FirebaseStorage.getInstance();
+                    storageRef = storage.getReference().child("images/"+ recipeId +".jpg");
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    img.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] data = baos.toByteArray();
+
+                    Log.d(TAG, data.toString());
+
+                    UploadTask uploadTask = storageRef.putBytes(data);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "Failed");
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Log.d(TAG, "Succeeded");
+                            ac.finish();
+                        }
+                    });
                 }
 
-                for (int i = 0; i < stepDescrib.size(); i++) {
-                    System.out.println(stepDescrib.get(i));
-                    System.out.println(startTimeList.get(i));
-                    System.out.println(endTimeList.get(i));
-                }
-
-                recipeInfo.setStepDescrib(stepDescrib); //단계별 설명 전달
-                recipeInfo.setStartTime(startTimeList); // 단계별 시작 시간 전달
-                recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
-
-
-                database = FirebaseDatabase.getInstance();
-                myRef = database.getReference();
-
-                String recipeId = myRef.child("recipes").push().getKey();
-
-                Log.d(TAG, recipeId);
-                recipeInfo.setRecipeId(recipeId);
-                myRef.child("recipes").child(recipeId).setValue(recipeInfo);
-
-
-                PostInfo postInfo = new PostInfo();
-                postInfo.setRecipeId(recipeId);
-                postInfo.setTitle(recipeInfo.getRecipeTitle());
-
-                Log.d(TAG, "Before get auth");
-                mAuth = FirebaseAuth.getInstance();
-                Log.d(TAG, "after get auth");
-                String userId = mAuth.getCurrentUser().getDisplayName();
-                Log.d(TAG, userId);
-
-                postInfo.setUserId(userId);
-                postInfo.setViews(0);
-
-                myRef.child("posts").child(recipeId).setValue(postInfo).addOnSuccessListener(ac, new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
-
-                    }
-                }).addOnFailureListener(ac, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ac.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                storage = FirebaseStorage.getInstance();
-                storageRef = storage.getReference().child("images/"+ recipeId +".jpg");
-
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                img.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] data = baos.toByteArray();
-
-                Log.d(TAG, data.toString());
-
-                UploadTask uploadTask = storageRef.putBytes(data);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Failed");
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.d(TAG, "Succeeded");
-                        ac.finish();
-                    }
-                });
             }
         });
 
-        testSearchButton = findViewById(R.id.testSearchButton);
-        testSearchButton.setOnClickListener(new View.OnClickListener() {
+
+        ing1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateRecipeActivity.this, IngreSearchActivity.class);
                 startActivityForResult(intent, 1111); //1111로 코드 부여
             }
         });
+
+        for (int i = 0; i < ingName.length; i++) {
+            int temp = i;
+            ingName[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CreateRecipeActivity.this, IngreSearchActivity.class);
+                    startActivityForResult(intent, ingSendNumber+ temp); //1111로 코드 부여
+                }
+            });
+        }
+
+        ssn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateRecipeActivity.this, IngreSearchActivity.class);
+                startActivityForResult(intent, 2111); //1111로 코드 부여
+            }
+        });
+
+        for (int i = 0; i < ssnName.length; i++) {
+            int temp = i;
+            ssnName[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CreateRecipeActivity.this, IngreSearchActivity.class);
+                    startActivityForResult(intent, ssnSendNumber+ temp); //1111로 코드 부여
+                }
+            });
+        }
+
+
     }
 
 
@@ -760,6 +1116,53 @@ public class CreateRecipeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+
+        // 재료 입력 리스트에서 받아오기
+        for (int i = 0; i < 100; i++) {
+            if (requestCode == 1112 + i) {
+                if (resultCode == 1234) {
+                    String temp = data.getStringExtra("result");
+
+                    if (requestCode == ingSendNumber + i) {
+                        ingName[i].setText(temp);
+                    }
+                }
+            }
+        }
+
+        if (requestCode == 1111) {
+            if (resultCode == 1234) {
+                String temp = data.getStringExtra("result");
+
+                if (requestCode == ingSendNumber - 1) {
+                    ing1.setText(temp);
+                }
+            }
+        }
+
+        // 양념 입력 리스트에서 받아오기
+        for (int i = 0; i < 100; i++) {
+            if (requestCode == 2112 + i) {
+                if (resultCode == 1234) {
+                    String temp = data.getStringExtra("result");
+
+                    if (requestCode == ssnSendNumber + i) {
+                        ssnName[i].setText(temp);
+                    }
+                }
+            }
+        }
+
+        if (requestCode == 2111) {
+            if (resultCode == 1234) {
+                String temp = data.getStringExtra("result");
+
+                if (requestCode == ssnSendNumber - 1) {
+                    ssn1.setText(temp);
+                }
+            }
+        }
+
 
         if(requestCode == 1) {
             if(resultCode == RESULT_OK)
@@ -783,14 +1186,19 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
             }
         }
-        // 재료 입력 리스트에서 받아오기
-        if (requestCode == 1111) {
-            if (resultCode == 1234) {
-                String temp = data.getStringExtra("result");
-                testSearchButton.setText(temp);
-            }
-        }
+
     }
+
+    public static void showToast(Context context, String message) {
+        if (sToast == null) {
+            sToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        } else {
+            sToast.setText(message);
+        }
+        sToast.show();
+    }
+
+
 }
 
 

@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,7 +34,8 @@ public class IngreSearchActivity extends AppCompatActivity {
     private ListView listView;          // 검색을 보여줄 리스트변수
     private EditText editSearch;        // 검색어를 입력할 Input 창
     private Ingre_SearchAdapter adapter;      // 리스트뷰에 연결할 아답터
-    private ArrayList<String> arraylist;
+    private ArrayList<String> selectedlist;
+    private ArrayList<String> everylist;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private Ingredients ingreDB;
@@ -48,12 +50,7 @@ public class IngreSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingre_search);
 
-        editSearch = (EditText) findViewById(R.id.editSearch);
-        listView = (ListView) findViewById(R.id.listView);
 
-
-        // 리스트를 생성한다.
-        list = new ArrayList<String>();
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -61,6 +58,13 @@ public class IngreSearchActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ingreDB = dataSnapshot.getValue(Ingredients.class);
+
+                editSearch = (EditText) findViewById(R.id.editSearch);
+                listView = (ListView) findViewById(R.id.listView);
+
+
+                // 리스트를 생성한다.
+                list = new ArrayList<String>();
 
                 // 검색에 사용할 데이터을 미리 저장한다.
                 for (int i = 0; i < ingreDB.meats.size(); i++) {    //육류 추가
@@ -71,24 +75,28 @@ public class IngreSearchActivity extends AppCompatActivity {
                     list.add(ingreDB.begetables.get(i));
                 }
 
-                for (int i = 0; i < ingreDB.eggs.size();i++) {  //난류 추가
-                    list.add(ingreDB.eggs.get(i));
+                for (int i = 0; i < ingreDB.grains.size();i++) {    //곡물류 추가
+                    list.add(ingreDB.grains.get(i));
                 }
 
                 for (int i = 0; i < ingreDB.fruits.size();i++) {    //과일류 추가
                     list.add(ingreDB.fruits.get(i));
                 }
 
-                for (int i = 0; i < ingreDB.grains.size();i++) {    //곡물류 추가
-                    list.add(ingreDB.grains.get(i));
+                for (int i = 0; i < ingreDB.seafoods.size();i++) {  //해산물류 추가
+                    list.add(ingreDB.seafoods.get(i));
                 }
 
-                for (int i = 0; i < ingreDB.noodles.size();i++) {   //면류 추가
-                    list.add(ingreDB.noodles.get(i));
+                for (int i = 0; i < ingreDB.eggs.size();i++) {  //달걀류 추가
+                    list.add(ingreDB.eggs.get(i));
                 }
 
                 for (int i = 0; i < ingreDB.nuts.size();i++) {  //견과류 추가
                     list.add(ingreDB.nuts.get(i));
+                }
+
+                for (int i = 0; i < ingreDB.noodles.size();i++) {   //면류 추가
+                    list.add(ingreDB.noodles.get(i));
                 }
 
                 for (int i = 0; i < ingreDB.oils.size();i++) {  //유지류 추가
@@ -99,13 +107,14 @@ public class IngreSearchActivity extends AppCompatActivity {
                     list.add(ingreDB.sauces.get(i));
                 }
 
-                for (int i = 0; i < ingreDB.seafoods.size();i++) {  //해산물류 추가
-                    list.add(ingreDB.seafoods.get(i));
-                }
+
 
                 // 리스트의 모든 데이터를 arraylist에 복사한다.// list 복사본을 만든다.
-                arraylist = new ArrayList<String>();
-                arraylist.addAll(list);
+                everylist = new ArrayList<String>();
+                everylist.addAll(list);
+
+                selectedlist = new ArrayList<>();
+                selectedlist.addAll(list);
 
                 // 리스트에 연동될 아답터를 생성한다.
                 adapter = new Ingre_SearchAdapter(list, c);
@@ -123,9 +132,12 @@ public class IngreSearchActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (position == 0) {
                             list.clear();
-                            for (int i = 0; i < arraylist.size(); i++) {
-                                list.add(arraylist.get(i));
+
+                            for (int i = 0; i < everylist.size(); i++) {
+                                list.add(everylist.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(everylist);
                             adapter.notifyDataSetChanged();
                         }
 
@@ -134,6 +146,8 @@ public class IngreSearchActivity extends AppCompatActivity {
                             for (int i = 0; i < ingreDB.meats.size(); i++) {
                                 list.add(ingreDB.meats.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(list);
                             adapter.notifyDataSetChanged();
                         }
                         if (position == 2) {
@@ -141,6 +155,8 @@ public class IngreSearchActivity extends AppCompatActivity {
                             for (int i = 0; i < ingreDB.begetables.size(); i++) {
                                 list.add(ingreDB.begetables.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(list);
                             adapter.notifyDataSetChanged();
                         }
                         if (position == 3) {
@@ -148,6 +164,8 @@ public class IngreSearchActivity extends AppCompatActivity {
                             for (int i = 0; i < ingreDB.grains.size(); i++) {
                                 list.add(ingreDB.grains.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(list);
                             adapter.notifyDataSetChanged();
                         }
 
@@ -156,6 +174,8 @@ public class IngreSearchActivity extends AppCompatActivity {
                             for (int i = 0; i < ingreDB.fruits.size(); i++) {
                                 list.add(ingreDB.fruits.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(list);
                             adapter.notifyDataSetChanged();
                         }
 
@@ -164,6 +184,8 @@ public class IngreSearchActivity extends AppCompatActivity {
                             for (int i = 0; i < ingreDB.seafoods.size(); i++) {
                                 list.add(ingreDB.seafoods.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(list);
                             adapter.notifyDataSetChanged();
                         }
                         if (position == 6) {
@@ -171,6 +193,8 @@ public class IngreSearchActivity extends AppCompatActivity {
                             for (int i = 0; i < ingreDB.eggs.size(); i++) {
                                 list.add(ingreDB.eggs.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(list);
                             adapter.notifyDataSetChanged();
                         }
                         if (position == 7) {
@@ -178,6 +202,8 @@ public class IngreSearchActivity extends AppCompatActivity {
                             for (int i = 0; i < ingreDB.nuts.size(); i++) {
                                 list.add(ingreDB.nuts.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(list);
                             adapter.notifyDataSetChanged();
                         }
                         if (position == 8) {
@@ -185,6 +211,8 @@ public class IngreSearchActivity extends AppCompatActivity {
                             for (int i = 0; i < ingreDB.noodles.size(); i++) {
                                 list.add(ingreDB.noodles.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(list);
                             adapter.notifyDataSetChanged();
                         }
                         if (position == 9) {
@@ -192,6 +220,8 @@ public class IngreSearchActivity extends AppCompatActivity {
                             for (int i = 0; i < ingreDB.oils.size(); i++) {
                                 list.add(ingreDB.oils.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(list);
                             adapter.notifyDataSetChanged();
                         }
                         if (position == 10) {
@@ -199,6 +229,8 @@ public class IngreSearchActivity extends AppCompatActivity {
                             for (int i = 0; i < ingreDB.sauces.size(); i++) {
                                 list.add(ingreDB.sauces.get(i));
                             }
+                            selectedlist.clear();
+                            selectedlist.addAll(list);
                             adapter.notifyDataSetChanged();
                         }
 
@@ -257,19 +289,20 @@ public class IngreSearchActivity extends AppCompatActivity {
 
         // 문자 입력이 없을때는 모든 데이터를 보여준다.
         if (charText.length() == 0) {
-            list.addAll(arraylist);
+            list.addAll(selectedlist);
         }
         // 문자 입력을 할때..
         else
         {
             // 리스트의 모든 데이터를 검색한다.
-            for(int i = 0;i < arraylist.size(); i++)
+            for(int i = 0;i < selectedlist.size(); i++)
             {
+
                 // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
-                if (arraylist.get(i).toLowerCase().contains(charText))
-                {
+
+                if (selectedlist.get(i).toLowerCase().contains(charText)) {
                     // 검색된 데이터를 리스트에 추가한다.
-                    list.add(arraylist.get(i));
+                    list.add(selectedlist.get(i));
                 }
             }
         }
@@ -279,12 +312,26 @@ public class IngreSearchActivity extends AppCompatActivity {
 
 
     public void mOnPopupClick(View v){
-        Intent intent = new Intent();
-        intent.putExtra("result", editSearch.getText().toString());
-        System.out.println(editSearch.getText().toString());
-        setResult(1234, intent);
+        boolean flag = false;
 
-        finish();
+        for (int i = 0; i < selectedlist.size(); i++) {
+            if (selectedlist.get(i).toLowerCase().equals(editSearch.getText().toString()))
+            {
+                flag = true;
+            }
+        }
+        if (flag) {
+            Intent intent = new Intent();
+            intent.putExtra("result", editSearch.getText().toString());
+            System.out.println(editSearch.getText().toString());
+            setResult(1234, intent);
+
+            finish();
+        } else {
+            Toast.makeText(getApplicationContext(), "다른 형식의 값을 입력하셨습니다. ", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
     @Override
