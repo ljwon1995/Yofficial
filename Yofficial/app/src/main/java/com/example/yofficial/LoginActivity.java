@@ -45,19 +45,25 @@ public class LoginActivity extends AppCompatActivity{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d(TAG, "Result recieved");
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
+
+            Log.d(TAG, "RC_SIGN_IN");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            Log.d(TAG, "task = " + task.toString());
             handleSignInResult(task);
         }
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        Log.d(TAG, "handleSignInResult");
         try {
+            Log.d(TAG, "Enter into try");
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
+            Log.d(TAG, "get account");
 
             firebaseAuthWithGoogle(account);
             // Signed in successfully, show authenticated UI.
@@ -66,6 +72,8 @@ public class LoginActivity extends AppCompatActivity{
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
 
+            Log.d(TAG, "ERROR");
+            Log.d(TAG, e.getMessage());
             //updateUI(null);
         }
     }
@@ -119,6 +127,22 @@ public class LoginActivity extends AppCompatActivity{
 
         signInButton = findViewById(R.id.signinbtn);
 
+        Log.d(TAG, "OnCreate");
+
+        mAuth = FirebaseAuth.getInstance();
+
+        Log.d(TAG, "get firebase mAuth = " + mAuth.toString());
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("903484886790-84aqko9kngrqeohq586c1jujt0ide1vb.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        Log.d(TAG, "get mGoogleSignInClent = " + mGoogleSignInClient.toString());
+
+
 
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,14 +159,6 @@ public class LoginActivity extends AppCompatActivity{
 
 
 
-        mAuth = FirebaseAuth.getInstance();
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("903484886790-84aqko9kngrqeohq586c1jujt0ide1vb.apps.googleusercontent.com")
-                .requestEmail()
-                .build();
-
-         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
 
