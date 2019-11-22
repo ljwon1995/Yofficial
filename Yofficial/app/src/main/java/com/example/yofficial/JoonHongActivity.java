@@ -8,24 +8,86 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class JoonHongActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private Activity ac = this;
+    private final static String TAG = "Joon!";
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joonhong);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        Log.d(TAG, mAuth.getCurrentUser().getUid());
+        Log.d(TAG, mAuth.getCurrentUser().getEmail());
+
+
+        //if user is not in users make new userInfo instance and save it into db
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
+        Log.d(TAG, "get database reference");
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                Log.d(TAG, "Enter into on data change");
+                Log.d(TAG, mAuth.getCurrentUser().getEmail());
+
+
+                String userEmail = mAuth.getCurrentUser().getEmail();
+                String userId = userEmail.split("@")[0];
+                Log.d(TAG, userId);
+
+
+                if(!dataSnapshot.child("users").child(userId).exists()){
+                    Log.d(TAG, "not exists");
+                    UserInfo u = new UserInfo();
+                    u.setId(userId);
+                    u.setChefExp(0);
+                    u.setChefLevel(0);
+                    u.setCookExp(0);
+                    u.setCookLevel(0);
+
+                    myRef.child("users").child(u.getId()).setValue(u);
+                }
+                else{
+                    Log.d(TAG, "Exists");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //else do nothing.
+
     }
 
     @Override
@@ -39,7 +101,7 @@ public class JoonHongActivity extends AppCompatActivity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.signoutbtn:
-                mAuth = FirebaseAuth.getInstance();
+
                 mAuth.signOut();
 
                 if(mAuth.getCurrentUser() == null){
