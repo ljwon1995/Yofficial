@@ -387,6 +387,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
+                Log.d(TAG, "Enter onclick");
                 startActivityForResult(intent, 1);
             }
         });
@@ -865,7 +866,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 System.out.println("stEdM : " + stageEndMinuteFlag);
                 System.out.println("stEdS : " + stageEndSecondFlag);
                 if (tp) {
-                    recipeInfo.setRecipeSubTitle(titleEdit.getText().toString());
+                    recipeInfo.setRecipeTitle(titleEdit.getText().toString());
                     recipeInfo.setRecipeSubTitle(subTitleEdit.getText().toString()); // 부제목 전달
                     recipeInfo.setIntroRecipe(introEdit.getText().toString()); //요리 설명 전달
                     recipeInfo.setMainIngredient(mainIngSpinner.getSelectedItem().toString()); // 카테고리 중 주재료 부분 전달
@@ -1061,25 +1062,31 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     Log.d(TAG, recipeId);
                     recipeInfo.setRecipeId(recipeId);
                     myRef.child("recipes").child(recipeId).setValue(recipeInfo);
+                    Log.d(TAG, "Recipe Create Succeeded");
 
 
                     PostInfo postInfo = new PostInfo();
                     postInfo.setRecipeId(recipeId);
+                    Log.d(TAG, "set recipe id");
                     postInfo.setTitle(recipeInfo.getRecipeTitle());
+                    Log.d(TAG, "set recipe title");
+                    Log.d(TAG, postInfo.getTitle());
 
                     Log.d(TAG, "Before get auth");
                     mAuth = FirebaseAuth.getInstance();
                     Log.d(TAG, "after get auth");
-                    String userId = mAuth.getCurrentUser().getDisplayName();
+                    String userId = mAuth.getCurrentUser().getEmail().split("@")[0];
                     Log.d(TAG, userId);
 
                     postInfo.setUserId(userId);
                     postInfo.setViews(0);
 
+
                     myRef.child("posts").child(recipeId).setValue(postInfo).addOnSuccessListener(ac, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "post uploaded");
 
                         }
                     }).addOnFailureListener(ac, new OnFailureListener() {
@@ -1091,7 +1098,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                     storage = FirebaseStorage.getInstance();
                     storageRef = storage.getReference().child("images/"+ recipeId +".jpg");
-
+                    Log.d(TAG, "get storage");
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     img.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     byte[] data = baos.toByteArray();
@@ -1213,15 +1220,22 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
 
         if(requestCode == 1) {
+            Log.d(TAG, "Enter onActivity Result");
             if(resultCode == RESULT_OK)
             {
+                Log.d(TAG, "RESULT OK");
                 try{
+                    Log.d(TAG, "Before get data");
                     InputStream in = getContentResolver().openInputStream(data.getData());
+                    Log.d(TAG, "After get data");
 
                     img = BitmapFactory.decodeStream(in);
+                    Log.d(TAG, "img factoring");
                     in.close();
 
                     getImage.setImageBitmap(img);
+                    Log.d(TAG, "set bitmap");
+
                     user_img = findViewById(R.id.user_image);
                     ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) user_img.getLayoutParams();
                     params.width = user_img.getWidth();
@@ -1229,9 +1243,12 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     getImage.setLayoutParams(params);
                     getImage.setPadding(30,0,0,0);
 
+
                 }catch(Exception e)
                 {
-
+                    Log.d(TAG, "Enter catch");
+                    Log.d(TAG, e.getMessage());
+                    Log.d(TAG, e.getStackTrace().toString());
                 }
             }
             else if(resultCode == RESULT_CANCELED)
