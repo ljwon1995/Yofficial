@@ -6,10 +6,10 @@ public class UserInfo {
 
 
     private int cookLevel;
-    private float cookExp;
+    private int cookExp;
 
     private int chefLevel;
-    private float chefExp;
+    private int chefExp;
 
 
     public String getId() {
@@ -28,11 +28,11 @@ public class UserInfo {
         this.cookLevel = cookLevel;
     }
 
-    public float getCookExp() {
+    public int getCookExp() {
         return cookExp;
     }
 
-    public void setCookExp(float cookExp) {
+    public void setCookExp(int cookExp) {
         this.cookExp = cookExp;
     }
 
@@ -44,11 +44,11 @@ public class UserInfo {
         this.chefLevel = chefLevel;
     }
 
-    public float getChefExp() {
+    public int getChefExp() {
         return chefExp;
     }
 
-    public void setChefExp(float chefExp) {
+    public void setChefExp(int chefExp) {
         this.chefExp = chefExp;
     }
 }
