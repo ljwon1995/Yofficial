@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void joonButtonClicked(View v){
-        Intent intent = new Intent(getApplicationContext(), JoonHongActivity.class);
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
 
