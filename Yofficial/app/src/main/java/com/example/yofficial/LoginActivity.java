@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity{
 
             Log.d(TAG, "ERROR");
             Log.d(TAG, e.getMessage());
+            Log.d(TAG, e.getStackTrace().toString());
             //updateUI(null);
         }
     }
