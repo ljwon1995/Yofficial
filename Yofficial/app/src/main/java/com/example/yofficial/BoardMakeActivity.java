@@ -81,7 +81,7 @@ public class BoardMakeActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         mAuth = FirebaseAuth.getInstance();
-        b_uploader = mAuth.getCurrentUser().getDisplayName();
+        b_uploader = mAuth.getCurrentUser().getEmail().split("@")[0];
         b_id = myRef.child("boards").push().getKey();
         item = new BoardItem(b_id, title, b_uploader, strDate, body);
         Log.d(TAG, "StartUploading");
