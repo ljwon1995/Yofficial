@@ -50,6 +50,7 @@
         <activity android:name=".CommentActivity"></activity>
         <activity android:name=".BoardMakeActivity"></activity>
         <activity android:name=".MyBoards"></activity>
+        <activity android:name=".MyCommentActivity"></activity>
 
 
     </application>

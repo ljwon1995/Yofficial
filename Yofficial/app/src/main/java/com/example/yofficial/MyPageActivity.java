@@ -82,14 +82,15 @@ public class MyPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyBoards.class);
-                startActivity(intent); // 다음 화면으로 넘어간다
+                startActivity(intent);
             }
         });
 
         myCommentsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(), MyCommentActivity.class);
+                startActivity(intent);
             }
         });
 
