@@ -106,6 +106,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
     EditText vol1;
     EditText volume1;
 
+    ImageView user_img;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -493,6 +494,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 boolean titleFlag = false, subTitleFlag = false, introFlag = false;
+                boolean imgFlag = false;
                 boolean mainIngFlag = false, typeFlag = false, featureFlag = false;
                 boolean servingFlag = false, difficultyFlag = false, durationFlag = false;
                 boolean ingName1Flag = false, ingFigure1Flag = false;
@@ -1233,6 +1235,13 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                     getImage.setImageBitmap(img);
                     Log.d(TAG, "set bitmap");
+
+                    user_img = findViewById(R.id.user_image);
+                    ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) user_img.getLayoutParams();
+                    params.width = user_img.getWidth();
+                    params.height = user_img.getHeight();
+                    getImage.setLayoutParams(params);
+                    getImage.setPadding(30,0,0,0);
 
 
                 }catch(Exception e)
