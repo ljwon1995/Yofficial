@@ -33,6 +33,7 @@ public class CommunityActivity extends AppCompatActivity {
     BoardAdapter adapter;
     MenuItem mSearch;
     Context c = this;
+    String text;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private ArrayList<BoardItem> arraylist;
@@ -115,9 +116,7 @@ public class CommunityActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 // input창에 문자를 입력할때마다 호출된다.
                 // search 메소드를 호출한다.
-                String text;
                 text =  board_search.getText().toString();
-                search(text);
             }
         });
 
@@ -193,6 +192,10 @@ public class CommunityActivity extends AppCompatActivity {
     public void make_board(View v){
         Intent intent = new Intent(getApplicationContext(), BoardMakeActivity.class);
         startActivity(intent);
+    }
+
+    public void search_board(View v){
+        search(text);
     }
 
 }

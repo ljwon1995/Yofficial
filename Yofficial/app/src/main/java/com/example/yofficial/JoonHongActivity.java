@@ -36,6 +36,7 @@ public class JoonHongActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joonhong);
+        getSupportActionBar().setElevation(0);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -139,6 +140,19 @@ public class JoonHongActivity extends AppCompatActivity {
         // LENGTH_SHORT : 짧게 화면에 나타남
         Toast.makeText(getApplicationContext(), "버튼이 눌렸습니다!", Toast.LENGTH_SHORT).show();
 
+        //Intent intent = new Intent(
+             //   getApplicationContext(), // 현재 화면의 제어권자
+               // VideoListActivity.class); // 다음 넘어갈 클래스 지정
+        //intent.putExtra();
+       // startActivity(intent); // 다음 화면으로 넘어간다
+
+    }
+
+    public void onButton2Clicked(View view){
+        // LENGTH_LONG : 길게 화면에 나타남
+        // LENGTH_SHORT : 짧게 화면에 나타남
+        Toast.makeText(getApplicationContext(), "버튼이 눌렸습니다!", Toast.LENGTH_SHORT).show();
+
         Intent intent = new Intent(
                 getApplicationContext(), // 현재 화면의 제어권자
                 VideoListActivity.class); // 다음 넘어갈 클래스 지정
@@ -147,7 +161,7 @@ public class JoonHongActivity extends AppCompatActivity {
 
     }
 
-    public void onButton2Clicked(View view){//커뮤니티 버튼
+    public void onButton5Clicked(View view){//커뮤니티 버튼
         // LENGTH_LONG : 길게 화면에 나타남
         // LENGTH_SHORT : 짧게 화면에 나타남
         Toast.makeText(getApplicationContext(), "버튼이 눌렸습니다!", Toast.LENGTH_SHORT).show();
@@ -157,7 +171,7 @@ public class JoonHongActivity extends AppCompatActivity {
 
     }
 
-    public void onButton3Clicked(View view){
+    public void onButton4Clicked(View view){
         // LENGTH_LONG : 길게 화면에 나타남
         // LENGTH_SHORT : 짧게 화면에 나타남
         Toast.makeText(getApplicationContext(), "버튼이 눌렸습니다!", Toast.LENGTH_SHORT).show();
@@ -170,7 +184,7 @@ public class JoonHongActivity extends AppCompatActivity {
 
     }
 
-    public void onButton4Clicked(View view){
+    public void onButton3Clicked(View view){
         // LENGTH_LONG : 길게 화면에 나타남
         // LENGTH_SHORT : 짧게 화면에 나타남
         Toast.makeText(getApplicationContext(), "버튼이 눌렸습니다!", Toast.LENGTH_SHORT).show();

@@ -4,140 +4,118 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF9E27"
+    android:background="#FAFAFA"
     tools:context=".JoonHongActivity">
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="162dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.001"
-        app:srcCompat="@drawable/table" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#46DADDE2"
-        android:fontFamily="times new roman"
-        android:text="  Better cuisine   \n  Better life!   "
-        android:textColor="#FFFFFF"
-        android:textSize="40dp"
+        android:layout_width="0dp"
+        android:layout_height="140dp"
+        android:background="@drawable/main_top"
+        android:text="\n    Hi JunHong!!\n    Welcome to Yofficial"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.639" />
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="313dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="416dp" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="240dp"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scaleType="centerCrop"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/refregButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/plate" />
-
-    <ImageButton
-        android:id="@+id/refregButton"
-        android:layout_width="58dp"
-        android:layout_height="71dp"
-        android:background="#FF9E27"
-        android:scaleType="centerCrop"
-        android:onClick="onButton3Clicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.164"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.5"
-        app:srcCompat="@drawable/refrigerator" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="1.0"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
-    <ImageButton
-        android:id="@+id/imageButton5"
-        android:layout_width="71dp"
-        android:layout_height="72dp"
-        android:background="#FF9E27"
-        android:onClick="mypage"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/refregButton"
-        app:layout_constraintVertical_bias="0.5"
-        app:srcCompat="@drawable/delivery" />
 
-    <ImageButton
-        android:id="@+id/recommendButton"
-        android:layout_width="65dp"
-        android:layout_height="61dp"
-        android:background="#FF9E27"
-        android:onClick="onButton4Clicked"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/refregButton"
-        app:layout_constraintEnd_toStartOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.5"
-        app:srcCompat="@drawable/question_mark" />
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginVertical="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/main_button_coner"
+            android:drawableLeft="@drawable/baseline_account_box_black_48dp"
+            android:drawablePadding="18dip"
+            android:paddingLeft="18dip"
+            android:text="나의 프로필"
+            android:textColor="#3F3F3F"
+            android:textSize="20dp"
+            android:onClick="onButton1Clicked"/>
 
-    <ImageButton
-        android:id="@+id/SearchMenuButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:onClick="onButton1Clicked"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.864"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.311"
-        app:srcCompat="@drawable/search" />
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginVertical="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/main_button_coner"
+            android:drawableLeft="@drawable/baseline_search_black_48dp"
+            android:drawablePadding="18dip"
+            android:paddingLeft="18dip"
+            android:text="레시피 찾기"
+            android:textColor="#3F3F3F"
+            android:textSize="20dp"
+            android:onClick="onButton2Clicked"/>
 
-    <ImageButton
-        android:id="@+id/communityButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:background="@android:color/transparent"
-        android:onClick="onButton2Clicked"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.726"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/SearchMenuButton"
-        app:layout_constraintVertical_bias="0.376"
-        app:srcCompat="@drawable/community" />
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginVertical="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/main_button_coner"
+            android:drawableLeft="@drawable/baseline_restaurant_menu_black_48dp"
+            android:drawablePadding="18dip"
+            android:paddingLeft="18dip"
+            android:text="요리 추천받기"
+            android:textColor="#3F3F3F"
+            android:textSize="20dp"
+            android:onClick="onButton3Clicked"/>
 
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginVertical="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/main_button_coner"
+            android:drawableLeft="@drawable/baseline_kitchen_black_48dp"
+            android:drawablePadding="18dip"
+            android:paddingLeft="18dip"
+            android:text="냉장고를 부탁해!"
+            android:textColor="#3F3F3F"
+            android:textSize="20dp"
+            android:onClick="onButton4Clicked"/>
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginVertical="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/main_button_coner"
+            android:drawableLeft="@drawable/baseline_forum_black_48dp"
+            android:drawablePadding="18dip"
+            android:paddingLeft="18dip"
+            android:text="커뮤니티"
+            android:textColor="#3F3F3F"
+            android:textSize="20dp"
+            android:onClick="onButton5Clicked"/>
+
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 

@@ -30,7 +30,7 @@
         <activity android:name=".HyunWooActivity"></activity>
         <activity android:name=".JaeWonActivity"></activity>
         <activity android:name=".JoonHongActivity"></activity>
-        <activity android:name=".YouTubeActivity"></activity>
+        <activity android:name=".YouTubeActivity" android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".DBActivity"></activity>
         <activity android:name=".VideoListActivity"></activity>
         <activity android:name=".CreateRecipeActivity"></activity>

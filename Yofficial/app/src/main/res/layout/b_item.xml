@@ -9,14 +9,28 @@
         android:layout_weight="2"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/txt_c_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="TextView"
+            android:textSize="20dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="작성자: " />
 
             <TextView
                 android:id="@+id/txt_c_u"
-                android:layout_width="78dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
@@ -26,14 +40,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:text="TextView" />
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txt_c_data"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textSize="20dp" />
+            android:layout_height="1dp"
+            android:background="#E4E4E4" />
+
     </LinearLayout>
 
 </LinearLayout>

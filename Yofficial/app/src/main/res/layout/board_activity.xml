@@ -8,6 +8,8 @@
         android:id="@+id/board_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         />
 
     <TextView
@@ -19,7 +21,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#66bdbdbd" />
+        android:background="#66bdbdbd"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
 
 
     <ScrollView
@@ -51,16 +55,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:onClick="see_comment"
-            android:text="댓글보기" />
+            android:text="댓글보기"
+            android:background="#ff9800"
+            android:textColor="#ffffff"/>
 
         <Button
             android:id="@+id/board_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:onClick="delete_board"
-            android:text="게시글 삭제" />
+            android:text="게시글 삭제"
+            android:background="#ff9800"
+            android:textColor="#ffffff"/>
     </LinearLayout>
 
 </LinearLayout>

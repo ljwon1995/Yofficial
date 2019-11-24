@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -131,7 +132,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
 
 
-        voiceTv = findViewById(R.id.voiceTextView);
+        //voiceTv = findViewById(R.id.voiceTextView);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         Sensor proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         if (proximitySensor == null) {
@@ -592,6 +593,16 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
         finish();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            player.setFullscreen(true);
+        }
+
+    }
 
 }
 

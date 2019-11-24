@@ -44,7 +44,7 @@ public class BoardAdapter extends BaseAdapter {
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             holder = new BoardAdapter.ViewHolder();
-            convertView = inflater.inflate(R.layout.c_item, null);
+            convertView = inflater.inflate(R.layout.b_item, null);
 
             // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
             holder.tv1 = (TextView) convertView.findViewById(R.id.txt_c_date) ;
@@ -56,8 +56,8 @@ public class BoardAdapter extends BaseAdapter {
             holder = (BoardAdapter.ViewHolder) convertView.getTag();
         }
 
-        holder.tv1.setText(potion.board_uploader);
-        holder.tv2.setText(potion.board_date);
+        holder.tv1.setText(potion.board_date);
+        holder.tv2.setText(potion.board_uploader);
         holder.tv3.setText(potion.board_title);
 
         return convertView;
