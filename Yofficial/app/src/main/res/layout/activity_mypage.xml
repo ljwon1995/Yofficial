@@ -92,7 +92,7 @@
                 android:layout_alignLeft="@id/name"
                 android:layout_marginTop="7dp"
                 android:background="#F7F8F7"
-                android:text="LV : 900"
+                android:text="LV : "
                 android:textColor="#050505" />
 
             <TextView
@@ -103,7 +103,7 @@
                 android:layout_alignLeft="@id/name"
                 android:layout_marginTop="7dp"
                 android:background="#F7F8F7"
-                android:text="LV : 10"
+                android:text="LV : "
                 android:textColor="#050505" />
 
         </LinearLayout>
@@ -144,7 +144,7 @@
                     android:layout_marginTop="7dp"
                     android:layout_toRightOf="@+id/chefExpTextView"
                     android:background="#F7F8F7"
-                    android:progress="25"
+                    android:progress="0"
                     android:textColor="#050505" />
 
             </LinearLayout>
@@ -177,7 +177,7 @@
                     android:layout_marginTop="7dp"
                     android:layout_toRightOf="@+id/cookExpTextView"
                     android:background="#F7F8F7"
-                    android:progress="25"
+                    android:progress="0"
                     android:textColor="#050505"
 
                     />
@@ -230,6 +230,32 @@
 
             />
 
+        <Button
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="#F7F8F7"
+            android:gravity="center_vertical"
+            android:text="내가 쓴 레시피"
+            android:textColor="#050505"
+            android:id="@+id/my_recipes_btn"
+
+            />
+        <Button
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="#F7F8F7"
+            android:gravity="center_vertical"
+            android:text="레시피 업로드"
+            android:textColor="#050505"
+            android:id="@+id/create_recipe_btn"
+
+            />
 
 
     </LinearLayout>

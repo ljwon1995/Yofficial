@@ -9,6 +9,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +27,8 @@ public class BoardActivity extends AppCompatActivity {
     TextView body;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private FirebaseAuth mAuth;
+    private BoardActivity ba = this;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,7 @@ public class BoardActivity extends AppCompatActivity {
         myRef.child("boards").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 item = dataSnapshot.getValue(BoardItem.class);
                 title = (TextView)findViewById(R.id.board_title);
                 info = (TextView)findViewById(R.id.board_info);
@@ -67,6 +73,39 @@ public class BoardActivity extends AppCompatActivity {
     }
 
     public void delete_board(View v){
-        this.finish();
+        mAuth = FirebaseAuth.getInstance();
+        String userID = mAuth.getCurrentUser().getEmail().split("@")[0];
+
+        if(item.board_uploader.compareTo(userID) == 0){
+
+            myRef.child("boards").child(item.board_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    myRef.child("comments").child(item.board_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            ba.finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(BoardActivity.this ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(BoardActivity.this ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        }
+        else{
+            Toast.makeText(BoardActivity.this ,"본인 게시글만 삭제 가능합니다!",Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

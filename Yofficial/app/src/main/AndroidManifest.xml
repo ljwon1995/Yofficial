@@ -51,6 +51,10 @@
         <activity android:name=".CommentActivity"></activity>
         <activity android:name=".BoardMakeActivity"></activity>
         <activity android:name=".IngrePopupActivity"  android:theme="@android:style/Theme.Dialog"></activity>
+        <activity android:name=".MyBoards"></activity>
+        <activity android:name=".MyCommentActivity"></activity>
+        <activity android:name=".MyRecipeActivity"></activity>
+
 
 
     </application>

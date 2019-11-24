@@ -125,6 +125,11 @@ public class JoonHongActivity extends AppCompatActivity {
 
 
 
+    public void mypage(View view){
+        Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+        startActivity(intent);
+    }
+
 
 
     // onButton1Clicked에 대한 로직

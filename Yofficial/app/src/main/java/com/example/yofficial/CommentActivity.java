@@ -138,7 +138,7 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mAuth = FirebaseAuth.getInstance();
-                String userID = mAuth.getCurrentUser().getDisplayName();
+                String userID = mAuth.getCurrentUser().getEmail().split("@")[0];
                 if(list.get(position).user_id.compareTo(userID) == 0){
 
                     String c_id = list.get(position).comment_id;
@@ -179,7 +179,7 @@ public class CommentActivity extends AppCompatActivity {
             mAuth = FirebaseAuth.getInstance();
             Log.d(TAG, "get key from comments");
 
-            String userID = mAuth.getCurrentUser().getDisplayName();
+            String userID = mAuth.getCurrentUser().getEmail().split("@")[0];
             CommentItem c = new CommentItem(userID, strDate, text, commentId);
             Log.d(TAG, "made Comment Item");
 
