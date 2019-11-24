@@ -1,7 +1,6 @@
 package com.example.yofficial;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.Window;
 
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -37,7 +35,7 @@ public class eval_popup extends Activity {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-        setContentView(R.layout.activity_ingre_popup);
+        setContentView(R.layout.activity_eval_popup);
 
         //UI 객체생성
         rateText = (TextView)findViewById(R.id.rateText);

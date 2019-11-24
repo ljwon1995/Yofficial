@@ -982,8 +982,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
 
                         EditText tempStartHour = (EditText) tr2[i][0].getChildAt(1);
-                        EditText tempStartMinute = (EditText) tr2[i][0].getChildAt(2);
-                        EditText tempStartSecond = (EditText) tr2[i][0].getChildAt(3);
+                        EditText tempStartMinute = (EditText) tr2[i][0].getChildAt(3);
+                        EditText tempStartSecond = (EditText) tr2[i][0].getChildAt(5);
 
 
                         if(tempStartHour.getText().toString().compareTo("") == 0){
