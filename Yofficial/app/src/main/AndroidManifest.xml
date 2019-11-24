@@ -51,6 +51,7 @@
         <activity android:name=".BoardMakeActivity"></activity>
         <activity android:name=".MyBoards"></activity>
         <activity android:name=".MyCommentActivity"></activity>
+        <activity android:name=".MyRecipeActivity"></activity>
 
 
     </application>

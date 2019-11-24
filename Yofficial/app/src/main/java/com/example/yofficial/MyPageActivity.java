@@ -21,6 +21,8 @@ public class MyPageActivity extends AppCompatActivity {
 
     private Button myBoardsBtn;
     private Button myCommentsBtn;
+    private Button myRecipeBtn;
+    private Button createRecipeBtn;
     private TextView nameTV;
     private TextView emailTV;
     private TextView chefLVTV;
@@ -41,12 +43,15 @@ public class MyPageActivity extends AppCompatActivity {
 
         myBoardsBtn = findViewById(R.id.my_boards_btn);
         myCommentsBtn = findViewById(R.id.my_comments_btn);
+        myRecipeBtn = findViewById(R.id.my_recipes_btn);
+        createRecipeBtn = findViewById(R.id.create_recipe_btn);
         nameTV = findViewById(R.id.name);
         emailTV = findViewById(R.id.email);
         chefLVTV = findViewById(R.id.chefLv);
         cookLVTV = findViewById(R.id.cookLv);
         chefExpPB = findViewById(R.id.chefExp);
         cookExpPB = findViewById(R.id.cookExp);
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -93,6 +98,26 @@ public class MyPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        myRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyRecipeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        createRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreateRecipeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
 
     }
