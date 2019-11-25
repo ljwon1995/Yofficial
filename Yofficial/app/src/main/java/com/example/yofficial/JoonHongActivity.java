@@ -139,7 +139,8 @@ public class JoonHongActivity extends AppCompatActivity {
         // LENGTH_LONG : 길게 화면에 나타남
         // LENGTH_SHORT : 짧게 화면에 나타남
         Toast.makeText(getApplicationContext(), "버튼이 눌렸습니다!", Toast.LENGTH_SHORT).show();
-
+        Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+        startActivity(intent);
         //Intent intent = new Intent(
              //   getApplicationContext(), // 현재 화면의 제어권자
                // VideoListActivity.class); // 다음 넘어갈 클래스 지정
