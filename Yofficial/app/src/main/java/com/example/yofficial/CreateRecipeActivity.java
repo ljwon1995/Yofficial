@@ -1013,8 +1013,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
 
                         EditText tempEndHour = (EditText) tr2[i][1].getChildAt(1);
-                        EditText tempEndMinute = (EditText) tr2[i][1].getChildAt(2);
-                        EditText tempEndSecond = (EditText) tr2[i][1].getChildAt(3);
+                        EditText tempEndMinute = (EditText) tr2[i][1].getChildAt(3);
+                        EditText tempEndSecond = (EditText) tr2[i][1].getChildAt(5);
 
                         if(tempEndHour.getText().toString().compareTo("") == 0){
                             h = 0;

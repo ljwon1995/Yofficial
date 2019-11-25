@@ -155,14 +155,6 @@ public class HyunWooActivity extends AppCompatActivity {
 
                         imageView.setImageDrawable(img);
 
-                        Button button = (Button) findViewById(R.id.create);
-                        button.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getApplicationContext(),CreateRecipeActivity.class);
-                                startActivity(intent);
-                            }
-                        });
 
                     }
 
@@ -244,14 +236,7 @@ public class HyunWooActivity extends AppCompatActivity {
                         Drawable img = ContextCompat.getDrawable(c, R.drawable.fail);
                         imageView.setImageDrawable(img);
 
-                        Button button = (Button) findViewById(R.id.create);
-                        button.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getApplicationContext(),CreateRecipeActivity.class);
-                                startActivity(intent);
-                            }
-                        });
+
 
                     }
                 });
