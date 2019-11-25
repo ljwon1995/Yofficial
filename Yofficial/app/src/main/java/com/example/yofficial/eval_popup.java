@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -12,6 +13,14 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class eval_popup extends Activity {
@@ -23,8 +32,18 @@ public class eval_popup extends Activity {
     ImageView fourth;
     ImageView fifth;
 
-    int self_score = 0;
+    FirebaseAuth mAuth;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    String userId;
 
+    int exp = 0;
+    int self_score = 0;
+    int curCookLv;
+    int curCookExp;
+    int flag = 0;
+
+    String TAG = "Eval!";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +76,7 @@ public class eval_popup extends Activity {
                 fifth.setImageResource(R.drawable.empty_star);
                 rateText.setText("연습이 필요");
                 self_score = 1;
+                exp = -30;
                 System.out.println(rateText.getText());
                 System.out.println(self_score);
             }
@@ -74,6 +94,7 @@ public class eval_popup extends Activity {
                 self_score = 2;
                 System.out.println(rateText.getText());
                 System.out.println(self_score);
+                exp = -10;
             }
         });
 
@@ -89,6 +110,7 @@ public class eval_popup extends Activity {
                 self_score = 3;
                 System.out.println(rateText.getText());
                 System.out.println(self_score);
+                exp = 0;
             }
         });
 
@@ -104,6 +126,7 @@ public class eval_popup extends Activity {
                 self_score = 4;
                 System.out.println(rateText.getText());
                 System.out.println(self_score);
+                exp = 10;
             }
         });
 
@@ -119,8 +142,44 @@ public class eval_popup extends Activity {
                 self_score = 5;
                 System.out.println(rateText.getText());
                 System.out.println(self_score);
+                exp = 30;
             }
         });
+
+        mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getCurrentUser().getEmail().split("@")[0];
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
+        myRef.child("users").child(userId).child("cookLevel").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                curCookLv = dataSnapshot.getValue(Integer.class);
+                myRef.child("users").child(userId).child("cookExp").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        curCookExp = dataSnapshot.getValue(Integer.class);
+                        flag = 1;
+                        Log.d(TAG, ""+ curCookLv);
+                        Log.d(TAG, ""+ curCookExp);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
 
     }
@@ -128,9 +187,32 @@ public class eval_popup extends Activity {
     //확인 버튼 클릭
     public void mOnClose(View v){
         //데이터 전달하기
+
+        while(flag!=1){
+
+        }
+
+        curCookExp += exp;
+        if(curCookExp >= 100){
+            curCookExp -= 100;
+            curCookLv++;
+        }
+
+        else if(curCookExp < 0){
+            curCookExp += 100;
+            curCookLv--;
+        }
+
+        myRef.child("users").child(userId).child("cookExp").setValue(curCookExp);
+        myRef.child("users").child(userId).child("cookLevel").setValue(curCookLv);
+
+
         Intent intent = new Intent();
         intent.putExtra("result", "Close Popup");
         setResult(RESULT_OK, intent);
+
+
+
 
         //액티비티(팝업) 닫기
         finish();
