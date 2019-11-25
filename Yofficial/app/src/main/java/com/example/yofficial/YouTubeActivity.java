@@ -34,10 +34,8 @@ import java.util.ArrayList;
 
 
 
-//로딩중엔 음성인식 안되
+//로딩중엔 음성인식 안되게
 public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventListener {
-
-
 
     private static final int NOTHING = -1;
     private static final int PLAYING = 0;
@@ -46,8 +44,9 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
     private static final int LOADED = 3;
     private static final int ENDED = 4;
 
+    private CheckThread t = null;
     private int savedVState;
-
+    private int flag = 0;
     private static final String TAG = "YouTubeActivity!";
 
     ArrayList<Integer> start_time;
@@ -145,10 +144,6 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
         }
 
         //junhong end
-
-
-
-
 
 
 
@@ -292,65 +287,28 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
             @Override
             public void onSeekTo(int i) {
 
+                if(t != null){
+                    if(t.isAlive()){
+                        Log.d(TAG, "t is alive");
+                        t.flag = 1;
+                        try {
+                            t.join();
+                        } catch (InterruptedException e) {
+                            Log.d(TAG, e.getStackTrace().toString());
+                        }
+                    }
+                }
+
+                t = new CheckThread();
+                t.start();
+
                 player.play();
                 videoState = PLAYING;
                 Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PLAYING);
                 tv.setText(desc.get(step));
 
-                final Handler handler = new Handler();
-                Thread t = new Thread(new Runnable() {
-                    Runnable stop = new Runnable(){
-                        @Override
-                        public void run() {
-                            pause();
-                            Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PAUSED);
-                        }
-                    };
-                    Runnable finish = new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), "Finished", Toast.LENGTH_LONG).show();
-                            videoState = ENDED;
-                            Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + ENDED);
-                        }
-                    };
-
-                    Runnable searchNext = new Runnable() {
-                        @Override
-                        public void run() {
-                            player.seekToMillis(start_time.get(step) * 1000);
-
-                        }
-                    };
-
-                    @Override
-                    public void run() {
-                        try {
-                            while(player.getCurrentTimeMillis() < end_time.get(step) * 1000){
-                                //Log.d(TAG, ""+ player.getCurrentTimeMillis());
-                                Thread.sleep(100);
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
 
 
-                        handler.post(stop);
-                        Log.d(TAG, "Stopped at time : "+player.getCurrentTimeMillis());
-                        step += 1;
-                        Log.d(TAG, "State = " + step);
-                        if(step == totalStep){
-                            handler.post(finish);
-                            Log.d(TAG, "All Video Finished");
-                        }
-                        else {
-                            handler.post(searchNext);
-                        }
-
-
-                    }
-                });
-                t.start();
             }
         };
 
@@ -544,18 +502,33 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
             if (step > 0) {
                 step -= 1;
             }
+
+            if(t != null){
+                if(t.isAlive()){
+                    t.flag = 1;
+                }
+            }
+
+
             player.seekToMillis(start_time.get(step) * 1000);
         }
     }
 
     void replay() {
 
+
         if(videoState == PAUSED || videoState == PLAYING || videoState == ENDED) {
+            if(t != null){
+                if(t.isAlive()){
+                    t.flag = 1;
+                }
+            }
             player.seekToMillis(start_time.get(step) * 1000);
         }
     }
 
     void pause() {
+
         if(videoState == PLAYING) {
             player.pause();
             videoState = PAUSED;
@@ -581,6 +554,11 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
             if (step < totalStep - 1) {
                 step += 1;
             }
+            if(t != null){
+                if(t.isAlive()){
+                    t.flag = 1;
+                }
+            }
             player.seekToMillis(start_time.get(step) * 1000);
         }
     }
@@ -589,8 +567,21 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
 
     public void onBackButtonClicked(View v){
-        if(videoState != LOADING)
-        finish();
+        if(videoState != LOADING){
+            if(t != null){
+                if(t.isAlive()){
+                    t.flag = 1;
+                    try {
+                        t.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            finish();
+        }
+
     }
 
     @Override
@@ -604,6 +595,81 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
 
     }
 
+
+
+
+    class CheckThread extends Thread{
+
+        int flag;
+
+        CheckThread(){
+            flag = 0;
+        }
+
+
+        @Override
+        public void run() {
+            try {
+                while(player.getCurrentTimeMillis() < end_time.get(step) * 1000 && flag != 1 && step != totalStep){
+                    Log.d(TAG, this.getId()+" : "+ player.getCurrentTimeMillis());
+                    Thread.sleep(100);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Log.d(TAG, "Error Occur in run() of thread");
+            }
+
+
+            try {
+
+                if (flag == 0) {
+                    tStop();
+                    Log.d(TAG, "Stopped at time : " + player.getCurrentTimeMillis());
+                    step += 1;
+                    Log.d(TAG, "State = " + step);
+                    if (step == totalStep) {
+                        fin();
+                        Log.d(TAG, "All Video Finished");
+                    } else {
+                        searchNext();
+                    }
+                }
+            }catch (Exception e){
+                Log.d(TAG, e.getStackTrace().toString());
+
+            }
+
+            Log.d(TAG, this.getId() + " : Thread Completed");
+        }
+
+        void tStop(){
+            pause();
+            Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PAUSED);
+        }
+
+        void fin() {
+
+            Log.d(TAG, "EnterFinish");
+
+            //Toast.makeText(getApplicationContext(), "Finished", Toast.LENGTH_LONG).show();
+            videoState = ENDED;
+            Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + ENDED);
+            Log.d(TAG, "Final State = " + videoState);
+            Intent intent = new Intent(getApplicationContext(), eval_popup.class);
+            startActivity(intent);
+        }
+
+        void searchNext(){
+            player.seekToMillis(start_time.get(step) * 1000);
+
+        }
+
+
+    }
+
 }
+
+
+
 
 
