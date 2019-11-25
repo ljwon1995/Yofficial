@@ -130,17 +130,18 @@ public class Refreg_PopupActivity extends Activity {
 
                 //make itr to ArrayList<RecipeInfo>
                 data = toArrayList(dataSnapshot);
+                Log.d(TAG, data.toString());
 
                 //calculate distance (return ArrayList<Integer>)
                 ArrayList<Integer> distance = calDistance(data, ReceiveArr);
-
+                Log.d(TAG, distance.toString());
                 //get 0,1,2 recipe ID
 
                 ArrayList<String> targRecipeId = new ArrayList<String>();
                 int dSize = distance.size();
                 for(int i = 0; i < dSize; i++){
                     int d = distance.get(i);
-                    if(d == 0 || d == 1 || d == 2){
+                    if(d == 0){
                         targRecipeId.add(data.get(i).getRecipeId());
                     }
                 }
