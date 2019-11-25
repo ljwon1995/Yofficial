@@ -102,10 +102,19 @@ public class HyunWooActivity extends AppCompatActivity {
 
                         StringBuilder ingreds = new StringBuilder();
                         for(int i = 0; i < refo.getIngredientName().size(); i++){
-                            ingreds.append(refo.getIngredientName().get(i));
-                            ingreds.append(refo.getIngredientAmount().get(i));
-                            ingreds.append(",");
-                            Log.d(TAG, "cur SB = " + ingreds.toString());
+
+                            if (i == refo.getIngredientName().size() - 1) {
+                                ingreds.append(refo.getIngredientName().get(i));
+                                ingreds.append(" ");
+                                ingreds.append(refo.getIngredientAmount().get(i));
+                            } else {
+                                ingreds.append(refo.getIngredientName().get(i));
+                                ingreds.append(" ");
+                                ingreds.append(refo.getIngredientAmount().get(i));
+                                ingreds.append(", ");
+                                Log.d(TAG, "cur SB = " + ingreds.toString());
+                            }
+
                         }
 
                         ingredientList.setText(ingreds.toString());
@@ -115,10 +124,18 @@ public class HyunWooActivity extends AppCompatActivity {
 
                         StringBuilder seasons = new StringBuilder();
                         for(int i = 0; i < refo.getSeasoningName().size(); i++){
-                            seasons.append(refo.getSeasoningName().get(i));
-                            seasons.append(refo.getSeasoningAmount().get(i));
-                            seasons.append(",");
-                            Log.d(TAG, "cur SB = " + ingreds.toString());
+                            if (i == refo.getSeasoningName().size() - 1) {
+                                seasons.append(refo.getSeasoningName().get(i));
+                                seasons.append(" ");
+                                seasons.append(refo.getSeasoningAmount().get(i));
+                            } else {
+                                seasons.append(refo.getSeasoningName().get(i));
+                                seasons.append(" ");
+                                seasons.append(refo.getSeasoningAmount().get(i));
+                                seasons.append(", ");
+                                Log.d(TAG, "cur SB = " + ingreds.toString());
+                            }
+
                         }
 
                         seasoningList.setText(seasons.toString());
