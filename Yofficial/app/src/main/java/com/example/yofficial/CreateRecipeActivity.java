@@ -2,6 +2,7 @@ package com.example.yofficial;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -121,7 +122,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
     EditText volume1;
 
     ImageView user_img;
-    private File tempFile;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +139,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
         }
+
+
 
         final EditText titleEdit = findViewById(R.id.titleEdit);
         final EditText subTitleEdit = findViewById(R.id.subTitleEdit);
@@ -1290,6 +1294,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                 if (requestCode == ingSendNumber - 1) {
                     ing1.setText(temp);
+                    ing1.requestFocus();
                 }
             }
         }
@@ -1398,6 +1403,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
                 matrix, true);
     }
+
+
 
 }
 

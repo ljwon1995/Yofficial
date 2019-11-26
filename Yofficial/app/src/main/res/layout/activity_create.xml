@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:gravity="center">
 
 
@@ -413,33 +415,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="20dp"
-                android:id="@+id/recipeVideo"
                 android:gravity="center_vertical"
                 android:background="#4075757E"
-                android:text=" 단계별 레시피 영상"
+                android:text="유튜브 URL"
                 android:textColor="#000000"
                 android:textSize="15dp"
                 />
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#4075757E"
-                android:text="유튜브 URL"
-                android:textColor="#000000"
-                android:textSize="12dp"
-                android:layout_weight="1"/>
-
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:id="@+id/yUrl"
                 android:hint=" URL을 입력해 주세요"
                 android:textColorHint="#4075757E"
                 android:background="@null"
                 android:textSize="15dp"
                 />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/recipeVideo"
+                android:gravity="center_vertical"
+                android:background="#4075757E"
+                android:text=" 단계별 영상 시간 입력"
+                android:textColor="#000000"
+                android:textSize="15dp"
+                />
+
+
+
 
             <TableLayout
                 android:layout_width="match_parent"
