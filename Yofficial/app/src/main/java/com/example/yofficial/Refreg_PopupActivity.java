@@ -52,6 +52,7 @@ public class Refreg_PopupActivity extends Activity {
     private ArrayList<PostInfo> pList;
     Context c = this;
     ArrayList<RecipeInfo> data;
+    String userId;
 
 
 
@@ -225,6 +226,55 @@ public class Refreg_PopupActivity extends Activity {
                         views++;
                         myRef.child("posts").child(recipeId).child("views").setValue(views);
                         list.get(position).setView_num(Integer.toString(views) + " views");
+
+
+
+                        userId = list.get(position).getV_uploader();
+                        userId = userId.substring(1);
+
+                        Log.d(TAG,userId);
+                        myRef.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Log.d(TAG, "Enter users");
+                                UserInfo u = dataSnapshot.getValue(UserInfo.class);
+                                int curExp = u.getChefExp();
+                                int curLv = u.getChefLevel();
+
+                                Log.d(TAG, ""+ curExp + " " + curLv);
+                                curExp += 5;
+                                if(curExp >= 100){
+                                    curExp -= 100;
+                                    curLv++;
+                                }
+                                u.setChefLevel(curLv);
+                                u.setChefExp(curExp);
+
+                                Log.d(TAG, u.toString());
+                                myRef.child("users").child(userId).setValue(u);
+                                Log.d(TAG, "updated");
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Log.d(TAG, "Cancelled");
+                                Log.d(TAG, databaseError.toString());
+                            }
+                        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         adapter = new VideoAdapter(c, list);
                         listview.setAdapter(adapter);
                         startActivity(intent); // 다음 화면으로 넘어간다
