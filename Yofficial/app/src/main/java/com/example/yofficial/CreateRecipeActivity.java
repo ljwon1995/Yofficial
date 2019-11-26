@@ -42,8 +42,11 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -78,6 +81,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private int ingSendNumber = 1112;
     private int ssnSendNumber = 2112;
+    private int curChefExp;
+    private int curChefLevel;
 
     //재료 테이블 받아오기
     TableRow tr[] = new TableRow[100];
@@ -1111,6 +1116,14 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
 
 
+
+                    Log.d(TAG, recipeInfo.getYoutubeUrl());
+                    Log.d(TAG, recipeInfo.getYoutubeUrl().split("v=")[1]);
+
+                    String url = recipeInfo.getYoutubeUrl().split("v=")[1];
+                    recipeInfo.setYoutubeUrl(url);
+
+
                     database = FirebaseDatabase.getInstance();
                     myRef = database.getReference();
 
@@ -1144,12 +1157,41 @@ public class CreateRecipeActivity extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
                             Log.d(TAG, "post uploaded");
+                            //get user info from db and update it
+                            myRef.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    UserInfo u = dataSnapshot.getValue(UserInfo.class);
+                                    curChefLevel = u.getChefLevel();
+                                    curChefExp = u.getChefExp();
+
+                                    curChefExp += 20;
+                                    if(curChefExp >= 100){
+                                        curChefLevel++;
+                                        curChefExp -= 100;
+                                    }
+
+                                    u.setChefLevel(curChefLevel);
+                                    u.setChefExp(curChefExp);
+
+                                    Log.d(TAG, u.getId());
+                                    Log.d(TAG, u.toString());
+                                    myRef.child("users").child(u.getId()).setValue(u);
+                                    Log.d(TAG, "updated");
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
 
                         }
                     }).addOnFailureListener(ac, new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ac.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ac.getApplicationContext(), "post Failed", Toast.LENGTH_SHORT).show();
                         }
                     });
 

@@ -68,10 +68,13 @@ public class MyRecipeActivity extends AppCompatActivity {
         myRef.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 Iterator<DataSnapshot> itr = dataSnapshot.getChildren().iterator();
-                if(itr.hasNext()){
+                while(itr.hasNext()){
                     PostInfo p = itr.next().getValue(PostInfo.class);
+                    Log.d(TAG, "p : " + p.getUserId() + " user : " + userId);
                     if(p.getUserId().compareTo(userId) == 0){
+                        Log.d(TAG, "ENTER");
                         pList.add(p);
 
                         storage = FirebaseStorage.getInstance();
