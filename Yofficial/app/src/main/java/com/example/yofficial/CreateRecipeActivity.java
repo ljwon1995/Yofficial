@@ -1097,10 +1097,16 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
 
                     Log.d(TAG, recipeInfo.getYoutubeUrl());
-                    Log.d(TAG, recipeInfo.getYoutubeUrl().split("v=")[1]);
 
-                    String url = recipeInfo.getYoutubeUrl().split("v=")[1];
-                    recipeInfo.setYoutubeUrl(url);
+                    if(recipeInfo.getYoutubeUrl().contains("v=")){
+                        String[] url = recipeInfo.getYoutubeUrl().split("v=");
+                        if(url.length >= 2){
+                            recipeInfo.setYoutubeUrl(url[1]);
+                        }
+
+                    }
+
+
 
 
                     database = FirebaseDatabase.getInstance();
