@@ -115,6 +115,8 @@ public class LoginActivity extends AppCompatActivity{
 
         else{
             Intent intent = new Intent(getApplicationContext(), JoonHongActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     }
