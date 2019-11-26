@@ -122,8 +122,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
     EditText volume1;
 
     ImageView user_img;
-
-
+    String imagePath;
+    Uri imgUri;
+    Context c = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1209,7 +1210,41 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     storageRef = storage.getReference().child("images/"+ recipeId +".jpg");
                     Log.d(TAG, "get storage");
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    img.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    img = resize(c, imgUri, 500);
+                    Bitmap rotatedBitmap = null;
+                    try {
+                        ExifInterface exif = new ExifInterface(imagePath);
+
+                        int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+                        switch(exifOrientation) {
+
+                            case ExifInterface.ORIENTATION_ROTATE_90:
+                                rotatedBitmap = rotateImage(img, 90);
+                                break;
+
+                            case ExifInterface.ORIENTATION_ROTATE_180:
+                                rotatedBitmap = rotateImage(img, 180);
+                                break;
+
+                            case ExifInterface.ORIENTATION_ROTATE_270:
+                                rotatedBitmap = rotateImage(img, 270);
+                                break;
+
+                            case ExifInterface.ORIENTATION_NORMAL:
+                            default:
+                                rotatedBitmap = img;
+                        }
+                    } catch (Exception e) {
+                        Log.d(TAG, "Enter catch");
+                        Log.d(TAG, e.getMessage());
+                        Log.d(TAG, e.getStackTrace().toString());
+                    }
+
+                    rotatedBitmap = Bitmap.createScaledBitmap(rotatedBitmap, 200, 200, true);
+                    rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+
                     byte[] data = baos.toByteArray();
 
                     Log.d(TAG, data.toString());
@@ -1336,13 +1371,14 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 Log.d(TAG, "RESULT OK");
 
                 try{
-                    Uri imgUri = data.getData();
+                    imgUri = data.getData();
                     String[] filePath = { MediaStore.Images.Media.DATA };
                     Cursor cursor = getContentResolver().query(imgUri, filePath, null, null, null);
                     cursor.moveToFirst();
-                    String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+                    imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    options.inSampleSize = 4;
                     img = BitmapFactory.decodeFile(imagePath,options);
 
                     ExifInterface exif = new ExifInterface(imagePath);
@@ -1367,7 +1403,6 @@ public class CreateRecipeActivity extends AppCompatActivity {
                         default:
                             rotatedBitmap = img;
                     }
-
 
                     getImage.setImageBitmap(rotatedBitmap);
                     cursor.close();
@@ -1411,6 +1446,34 @@ public class CreateRecipeActivity extends AppCompatActivity {
     }
 
 
+    private Bitmap resize(Context context,Uri uri,int resize){
+        Bitmap resizeBitmap=null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        try {
+            BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); // 1번
+
+            int width = options.outWidth;
+            int height = options.outHeight;
+            int samplesize = 1;
+
+            while (true) {//2번
+                if (width / 2 < resize || height / 2 < resize)
+                    break;
+                width /= 2;
+                height /= 2;
+                samplesize *= 2;
+            }
+
+            options.inSampleSize = samplesize;
+            Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); //3번
+            resizeBitmap=bitmap;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resizeBitmap;
+    }
 
 }
 
