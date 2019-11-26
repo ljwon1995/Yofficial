@@ -1,14 +1,22 @@
 package com.example.yofficial;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
@@ -28,6 +36,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -107,10 +116,22 @@ public class CreateRecipeActivity extends AppCompatActivity {
     EditText volume1;
 
     ImageView user_img;
+    private File tempFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        // 6.0 마쉬멜로우 이상일 경우에는 권한 체크 후 권한 요청
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "권한 설정 완료");
+            } else {
+                Log.d(TAG, "권한 설정 요청");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+        }
 
         final EditText titleEdit = findViewById(R.id.titleEdit);
         final EditText subTitleEdit = findViewById(R.id.subTitleEdit);
@@ -384,9 +405,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
         getImage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                //intent.setAction(Intent.ACTION_GET_CONTENT);
                 Log.d(TAG, "Enter onclick");
                 startActivityForResult(intent, 1);
             }
@@ -1260,17 +1281,43 @@ public class CreateRecipeActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK)
             {
                 Log.d(TAG, "RESULT OK");
+
                 try{
-                    Log.d(TAG, "Before get data");
-                    InputStream in = getContentResolver().openInputStream(data.getData());
-                    Log.d(TAG, "After get data");
+                    Uri imgUri = data.getData();
+                    String[] filePath = { MediaStore.Images.Media.DATA };
+                    Cursor cursor = getContentResolver().query(imgUri, filePath, null, null, null);
+                    cursor.moveToFirst();
+                    String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    img = BitmapFactory.decodeFile(imagePath,options);
 
-                    img = BitmapFactory.decodeStream(in);
-                    Log.d(TAG, "img factoring");
-                    in.close();
+                    ExifInterface exif = new ExifInterface(imagePath);
+                    int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
-                    getImage.setImageBitmap(img);
-                    Log.d(TAG, "set bitmap");
+                    Bitmap rotatedBitmap = null;
+                    switch(exifOrientation) {
+
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            rotatedBitmap = rotateImage(img, 90);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            rotatedBitmap = rotateImage(img, 180);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            rotatedBitmap = rotateImage(img, 270);
+                            break;
+
+                        case ExifInterface.ORIENTATION_NORMAL:
+                        default:
+                            rotatedBitmap = img;
+                    }
+
+
+                    getImage.setImageBitmap(rotatedBitmap);
+                    cursor.close();
 
                     user_img = findViewById(R.id.user_image);
                     ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) user_img.getLayoutParams();
@@ -1287,8 +1334,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     Log.d(TAG, e.getStackTrace().toString());
                 }
             }
-            else if(resultCode == RESULT_CANCELED)
-            {
+            else if(resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
             }
         }
@@ -1304,6 +1350,12 @@ public class CreateRecipeActivity extends AppCompatActivity {
         sToast.show();
     }
 
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+    }
 
 }
 

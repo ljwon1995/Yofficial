@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -22,6 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
@@ -270,6 +274,7 @@ public class HyunWooActivity extends AppCompatActivity {
 
 
 
+
         /*
         //db에서 쏴 준 정보 임시 문자열 테이블에 저장, 나중에 db연동 시 수정
         ingredients = new String[dbIng.length];
@@ -290,5 +295,25 @@ public class HyunWooActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.recipe_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.recipe_delete_btn:
+
+               // 레시피 정보를 디비에서 지우기
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

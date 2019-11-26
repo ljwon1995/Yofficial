@@ -63,10 +63,22 @@
                 android:textColorHint="#4075757E"
                 />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/recipeImage"
+                android:gravity="center_vertical"
+                android:background="#4075757E"
+                android:text=" 레시피 사진"
+                android:textColor="#000000"
+                android:textSize="15dp"
+                />
+
             <ImageView
                 android:id="@+id/user_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
                 android:maxWidth="430dp"
                 android:maxHeight="500dp"
                 app:layout_constraintBottom_toBottomOf="parent"
