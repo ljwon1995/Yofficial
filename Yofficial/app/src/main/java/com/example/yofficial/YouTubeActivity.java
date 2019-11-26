@@ -570,19 +570,43 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
         if(videoState != LOADING){
             if(t != null){
                 if(t.isAlive()){
+                    Log.d(TAG, "t is alive");
                     t.flag = 1;
                     try {
+                        Log.d(TAG, "wait for t");
                         t.join();
+                        finish();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }
 
-            finish();
+
         }
 
     }
+
+    @Override
+    public void onBackPressed() {
+        if(videoState != LOADING){
+            if(t != null){
+                if(t.isAlive()){
+                    Log.d(TAG, "t is alive");
+                    t.flag = 1;
+                    try {
+                        Log.d(TAG, "wait for t");
+                        t.join();
+                        super.onBackPressed();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+    }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
