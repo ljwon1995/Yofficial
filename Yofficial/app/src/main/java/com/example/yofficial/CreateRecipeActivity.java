@@ -513,6 +513,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 boolean stageDescrFlag = false;
                 boolean stageStartHourFlag = false, stageStartMinuteFlag = false, stageStartSecondFlag = false;
                 boolean stageEndHourFlag = false, stageEndMinuteFlag = false, stageEndSecondFlag = false;
+                boolean startOverEndFlag = true;
 
                 String temp;
 
@@ -732,6 +733,23 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     stageEndSecond1Flag = true;
                 }
 
+                boolean tp;
+                tp = stageStartHour1Flag && stageStartMinute1Flag && stageStartSecond1Flag && stageEndHour1Flag && stageEndMinute1Flag && stageEndSecond1Flag;
+                if (tp) {
+                    int integer1, integer2;
+
+                    integer1 = (Integer.parseInt(s_hour1.getText().toString()) * 3600) + (Integer.parseInt(s_minute1.getText().toString()) * 60)
+                            + Integer.parseInt(s_second1.getText().toString());
+
+                    integer2 = (Integer.parseInt(e_hour1.getText().toString()) * 3600) + (Integer.parseInt(e_minute1.getText().toString()) * 60)
+                            + Integer.parseInt(e_second1.getText().toString());
+
+                    if (integer2 <= integer1) {
+                        showToast(getApplicationContext(), "1단계 종료 시간이 1단계 시작시간 보다 크거나 같습니다.");
+                        stageStartHour1Flag = false;
+                    }
+                }
+
                 for (int i = 0; i < stageIdCount; i++) {
 
                     boolean descrFlag = true;
@@ -818,9 +836,26 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     if (i == stageIdCount - 1 && eSecondFlag == true) {
                         stageEndSecondFlag = true;
                     }
+
+                    tp = sHourFlag && sMinuteFlag && sSecondFlag && eHourFlag && eMinuteFlag && eSecondFlag;
+                    if (tp) {
+                        int integer1, integer2;
+
+                        integer1 = (Integer.parseInt(stageEdit[i][0].getText().toString()) * 3600) + (Integer.parseInt(stageEdit[i][1].getText().toString()) * 60)
+                                + Integer.parseInt(stageEdit[i][2].getText().toString());
+
+                        integer2 = (Integer.parseInt(stageEdit[i][3].getText().toString()) * 3600) + (Integer.parseInt(stageEdit[i][4].getText().toString()) * 60)
+                                + Integer.parseInt(stageEdit[i][5].getText().toString());
+
+                        if (integer2 <= integer1) {
+                            showToast(getApplicationContext(), (i + 2) + "단계 종료 시간이 " + (i + 2) + "단계 시작시간 보다 크거나 같습니다.");
+                            startOverEndFlag = false;
+                        }
+                    }
                 }
 
-                boolean tp = titleFlag && subTitleFlag && introFlag && mainIngFlag && typeFlag && featureFlag && servingFlag && difficultyFlag && durationFlag
+
+                tp = titleFlag && subTitleFlag && introFlag && mainIngFlag && typeFlag && featureFlag && servingFlag && difficultyFlag && durationFlag
                         && ingName1Flag && ingFigure1Flag && ssnName1Flag && ssnFigure1Flag
                         && urlFlag && stageDescr1Flag && stageStartHour1Flag && stageStartMinute1Flag && stageStartSecond1Flag && stageEndHour1Flag
                         && stageEndMinute1Flag && stageEndSecond1Flag;
@@ -835,7 +870,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
                   if (stageIdCount > 0) {
                       tp = tp  && stageDescrFlag && stageStartHourFlag && stageStartMinuteFlag && stageStartSecondFlag
-                              && stageEndHourFlag && stageEndMinuteFlag && stageEndSecondFlag;
+                              && stageEndHourFlag && stageEndMinuteFlag && stageEndSecondFlag && startOverEndFlag;
                   }
 
                 System.out.println("titleFlag : " + titleFlag);
@@ -870,6 +905,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 System.out.println("stEdH : " + stageEndHourFlag);
                 System.out.println("stEdM : " + stageEndMinuteFlag);
                 System.out.println("stEdS : " + stageEndSecondFlag);
+
                 if (tp) {
                     recipeInfo.setRecipeTitle(titleEdit.getText().toString());
                     recipeInfo.setRecipeSubTitle(subTitleEdit.getText().toString()); // 부제목 전달

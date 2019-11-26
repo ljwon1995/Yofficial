@@ -212,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
-
+                    android:paddingBottom="20dp"
                     android:src="@drawable/video"
                     android:scaleType="center"
                     android:id="@+id/youtubeUrl"
@@ -223,10 +223,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@id/youtubeUrl"
                     android:layout_alignBottom="@id/youtubeUrl"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="32dp"
+                    android:paddingRight="20dp"
                     android:text="시작하려면 여기를 클릭하세요."
                     android:textColor="	#FFFFFF"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     />
             </RelativeLayout>
 
