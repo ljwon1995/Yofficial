@@ -1059,6 +1059,14 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
 
 
+
+                    Log.d(TAG, recipeInfo.getYoutubeUrl());
+                    Log.d(TAG, recipeInfo.getYoutubeUrl().split("v=")[1]);
+
+                    String url = recipeInfo.getYoutubeUrl().split("v=")[1];
+                    recipeInfo.setYoutubeUrl(url);
+
+
                     database = FirebaseDatabase.getInstance();
                     myRef = database.getReference();
 
