@@ -56,28 +56,31 @@ public class JoonHongActivity extends AppCompatActivity {
 
 
                 Log.d(TAG, "Enter into on data change");
-                Log.d(TAG, mAuth.getCurrentUser().getEmail());
+                //Log.d(TAG, mAuth.getCurrentUser().getEmail());
+
+                if (mAuth.getCurrentUser() != null) {
+                    String userEmail = mAuth.getCurrentUser().getEmail();
+                    String userId = userEmail.split("@")[0];
+                    Log.d(TAG, userId);
 
 
-                String userEmail = mAuth.getCurrentUser().getEmail();
-                String userId = userEmail.split("@")[0];
-                Log.d(TAG, userId);
+                    if(!dataSnapshot.child("users").child(userId).exists()){
+                        Log.d(TAG, "not exists");
+                        UserInfo u = new UserInfo();
+                        u.setId(userId);
+                        u.setChefExp(0);
+                        u.setChefLevel(0);
+                        u.setCookExp(0);
+                        u.setCookLevel(0);
 
-
-                if(!dataSnapshot.child("users").child(userId).exists()){
-                    Log.d(TAG, "not exists");
-                    UserInfo u = new UserInfo();
-                    u.setId(userId);
-                    u.setChefExp(0);
-                    u.setChefLevel(0);
-                    u.setCookExp(0);
-                    u.setCookLevel(0);
-
-                    myRef.child("users").child(u.getId()).setValue(u);
+                        myRef.child("users").child(u.getId()).setValue(u);
+                    }
+                    else{
+                        Log.d(TAG, "Exists");
+                    }
                 }
-                else{
-                    Log.d(TAG, "Exists");
-                }
+
+
 
             }
 

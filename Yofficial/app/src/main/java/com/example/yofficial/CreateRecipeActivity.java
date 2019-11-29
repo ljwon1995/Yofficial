@@ -84,6 +84,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private int ssnSendNumber = 2112;
     private int curChefExp;
     private int curChefLevel;
+    boolean tp, sp;
+    Activity activity = this;
 
     //재료 테이블 받아오기
     TableRow tr[] = new TableRow[100];
@@ -524,6 +526,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+
                 boolean titleFlag = false, subTitleFlag = false, introFlag = false;
                 boolean imgFlag = false;
                 boolean mainIngFlag = false, typeFlag = false, featureFlag = false;
@@ -536,9 +540,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 boolean stageDescr1Flag = false;
                 boolean stageStartHour1Flag = false, stageStartMinute1Flag = false, stageStartSecond1Flag = false;
                 boolean stageEndHour1Flag = false, stageEndMinute1Flag = false, stageEndSecond1Flag = false;
-                boolean stageDescrFlag = false;
-                boolean stageStartHourFlag = false, stageStartMinuteFlag = false, stageStartSecondFlag = false;
-                boolean stageEndHourFlag = false, stageEndMinuteFlag = false, stageEndSecondFlag = false;
+                boolean stageDescrFlag = true;
+                boolean stageStartHourFlag = true, stageStartMinuteFlag = true, stageStartSecondFlag = true;
+                boolean stageEndHourFlag = true, stageEndMinuteFlag = true, stageEndSecondFlag = true;
                 boolean startOverEndFlag = true;
 
                 String temp;
@@ -715,6 +719,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 temp = temp.trim();
                 if (temp.getBytes().length <= 0) {
                     showToast(getApplicationContext(), "1단계 시작 시간을 입력하세요");
+                } else if (Integer.parseInt(temp) >= 60) {
+                    showToast(getApplicationContext(), "1단계 : 시간 값은 59를 넘을 수 없습니다");
                 } else {
                     stageStartHour1Flag = true;
                 }
@@ -723,7 +729,10 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 temp = temp.trim();
                 if (temp.getBytes().length <= 0) {
                     showToast(getApplicationContext(), "1단계 시작 시간을 입력하세요");
-                } else {
+                } else if (Integer.parseInt(temp) >= 60) {
+                    showToast(getApplicationContext(), "1단계 : 시간 값은 59를 넘을 수 없습니다");
+                }
+                else {
                     stageStartMinute1Flag = true;
                 }
 
@@ -731,7 +740,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 temp = temp.trim();
                 if (temp.getBytes().length <= 0) {
                     showToast(getApplicationContext(), "1단계 시작 시간을 입력하세요");
-                } else {
+                } else if (Integer.parseInt(temp) >= 60) {
+                    showToast(getApplicationContext(), "1단계 : 시간 값은 59를 넘을 수 없습니다");
+                }  else {
                     stageStartSecond1Flag = true;
                 }
 
@@ -739,7 +750,10 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 temp = temp.trim();
                 if (temp.getBytes().length <= 0) {
                     showToast(getApplicationContext(), "1단계 종료 시간을 입력하세요");
-                } else {
+                } else if (Integer.parseInt(temp) >= 60) {
+                    showToast(getApplicationContext(), "1단계 : 시간 값은 59를 넘을 수 없습니다");
+                }
+                else {
                     stageEndHour1Flag = true;
                 }
 
@@ -747,7 +761,10 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 temp = temp.trim();
                 if (temp.getBytes().length <= 0) {
                     showToast(getApplicationContext(), "1단계 종료 시간을 입력하세요");
-                } else {
+                } else if (Integer.parseInt(temp) >= 60) {
+                    showToast(getApplicationContext(), "1단계 : 시간 값은 59를 넘을 수 없습니다");
+                }
+                else {
                     stageEndMinute1Flag = true;
                 }
 
@@ -755,11 +772,14 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 temp = temp.trim();
                 if (temp.getBytes().length <= 0) {
                     showToast(getApplicationContext(), "1단계 종료 시간을 입력하세요");
-                } else {
+                } else if (Integer.parseInt(temp) >= 60) {
+                    showToast(getApplicationContext(), "1단계 : 시간 값은 59를 넘을 수 없습니다");
+                }
+                else {
                     stageEndSecond1Flag = true;
                 }
 
-                boolean tp;
+
                 tp = stageStartHour1Flag && stageStartMinute1Flag && stageStartSecond1Flag && stageEndHour1Flag && stageEndMinute1Flag && stageEndSecond1Flag;
                 if (tp) {
                     int integer1, integer2;
@@ -789,78 +809,103 @@ public class CreateRecipeActivity extends AppCompatActivity {
                     temp = stageDescr[i].getText().toString();
                     if (temp.getBytes().length <= 0) {
                         showToast(getApplicationContext(), (i+2) + "단계 영상 설명을 입력하세요");
-                        stageDescrFlag = false;
                         descrFlag = false;
                     }
 
-                    if (i == stageIdCount - 1 && descrFlag == true) {
+                    if (descrFlag && stageDescrFlag) {
                         stageDescrFlag = true;
+                    } else {
+                        stageDescrFlag = false;
                     }
 
                     temp = stageEdit[i][0].getText().toString();
                     if (temp.getBytes().length <= 0) {
                         showToast(getApplicationContext(), (i+2) + "단계 시작 시간을 입력하세요");
-                        stageStartHourFlag = false;
+                        sHourFlag= false;
+                    } else if (Integer.parseInt(temp) >= 60) {
+                        showToast(getApplicationContext(), (i + 2) + "단계 : 시간 값은 59를 넘을 수 없습니다");
                         sHourFlag= false;
                     }
 
-                    if (i == stageIdCount - 1 && sHourFlag == true) {
+                    if (stageStartHourFlag && sHourFlag) {
                         stageStartHourFlag = true;
+                    } else {
+                        stageStartHourFlag = false;
                     }
 
                     temp = stageEdit[i][1].getText().toString();
                     if (temp.getBytes().length <= 0) {
                         showToast(getApplicationContext(), (i+2) + "단계 시작 시간을 입력하세요");
-                        stageStartMinuteFlag = false;
+                        sMinuteFlag= false;
+                    } else if (Integer.parseInt(temp) >= 60) {
+                        showToast(getApplicationContext(), (i + 2) + "단계 : 시간 값은 59를 넘을 수 없습니다");
                         sMinuteFlag= false;
                     }
 
-                    if (i == stageIdCount - 1 && sMinuteFlag == true) {
+                    if (stageStartMinuteFlag && sMinuteFlag) {
                         stageStartMinuteFlag = true;
+                    } else {
+                        stageStartMinuteFlag = false;
                     }
 
                     temp = stageEdit[i][2].getText().toString();
                     if (temp.getBytes().length <= 0) {
                         showToast(getApplicationContext(), (i+2) + "단계 시작 시간을 입력하세요");
-                        stageStartSecondFlag = false;
+                        sSecondFlag= false;
+                    } else if (Integer.parseInt(temp) >= 60) {
+                        showToast(getApplicationContext(), (i + 2) + "단계 : 시간 값은 59를 넘을 수 없습니다");
                         sSecondFlag= false;
                     }
 
-                    if (i == stageIdCount - 1 && sSecondFlag == true) {
+                    if (stageStartSecondFlag && sSecondFlag) {
                         stageStartSecondFlag = true;
+                    } else {
+                        stageStartSecondFlag = false;
                     }
 
                     temp = stageEdit[i][3].getText().toString();
                     if (temp.getBytes().length <= 0) {
                         showToast(getApplicationContext(), (i+2) + "단계 종료 시간을 입력하세요");
-                        stageEndHourFlag = false;
+                        eHourFlag= false;
+                    } else if (Integer.parseInt(temp) >= 60) {
+                        showToast(getApplicationContext(), (i + 2) + "단계 : 시간 값은 59를 넘을 수 없습니다");
                         eHourFlag= false;
                     }
 
-                    if (i == stageIdCount - 1 && eHourFlag == true) {
+                    if (stageEndHourFlag && eHourFlag == true) {
                         stageEndHourFlag = true;
+                    } else {
+                        stageEndHourFlag = false;
                     }
 
                     temp = stageEdit[i][4].getText().toString();
                     if (temp.getBytes().length <= 0) {
                         showToast(getApplicationContext(), (i+2) + "단계 종료 시간을 입력하세요");
-                        stageEndMinuteFlag = false;
+                        eMinuteFlag= false;
+                    } else if (Integer.parseInt(temp) >= 60) {
+                        showToast(getApplicationContext(), (i + 2) + "단계 : 시간 값은 59를 넘을 수 없습니다");
                         eMinuteFlag= false;
                     }
 
-                    if (i == stageIdCount - 1 && eMinuteFlag == true) {
+                    if (stageEndMinuteFlag && eMinuteFlag == true) {
                         stageEndMinuteFlag = true;
+                    } else {
+                        stageEndMinuteFlag = false;
                     }
 
                     temp = stageEdit[i][5].getText().toString();
                     if (temp.getBytes().length <= 0) {
                         showToast(getApplicationContext(), (i+2) + "단계 종료 시간을 입력하세요");
-                        stageEndSecondFlag = false;
+                        eSecondFlag= false;
+                    } else if (Integer.parseInt(temp) >= 60) {
+                        showToast(getApplicationContext(), (i + 2) + "단계 : 시간 값은 59를 넘을 수 없습니다");
                         eSecondFlag= false;
                     }
 
-                    if (i == stageIdCount - 1 && eSecondFlag == true) {
+                    if (stageEndSecondFlag && eSecondFlag == true) {
                         stageEndSecondFlag = true;
+                    } else {
+                        stageEndSecondFlag = false;
                     }
 
                     tp = sHourFlag && sMinuteFlag && sSecondFlag && eHourFlag && eMinuteFlag && eSecondFlag;
@@ -932,337 +977,377 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 System.out.println("stEdM : " + stageEndMinuteFlag);
                 System.out.println("stEdS : " + stageEndSecondFlag);
 
-                if (tp) {
-                    recipeInfo.setRecipeTitle(titleEdit.getText().toString());
-                    recipeInfo.setRecipeSubTitle(subTitleEdit.getText().toString()); // 부제목 전달
-                    recipeInfo.setIntroRecipe(introEdit.getText().toString()); //요리 설명 전달
-                    recipeInfo.setMainIngredient(mainIngSpinner.getSelectedItem().toString()); // 카테고리 중 주재료 부분 전달
-                    recipeInfo.setType(typeSpinner.getSelectedItem().toString()); // 카테고리 중 타입 부분 전달
-                    recipeInfo.setFeature(featureSpinner.getSelectedItem().toString()); // 카테고리 중 특징 부분 전달
-                    recipeInfo.setServings(servingSelB.getText().toString()); // 인분 수 전달
-                    recipeInfo.setDifficulty(diffiSelB.getText().toString()); // 난이도 전달
-                    recipeInfo.setDuraTime(duraSelB.getText().toString()); // 소요시간 전달
 
+                android.app.AlertDialog.Builder alertdialog = new android.app.AlertDialog.Builder(activity);
+                // 다이얼로그 메세지
+                alertdialog.setMessage("\n  레시피를 등록하시겠습니까?");
 
-                    // 재료 입력 전달 부분
-                    ingredientName.add(ing1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료 이름 부분
-                    ingredientAmount.add(volume1.getText().toString()); // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료의 양 부분
 
+                // 확인버튼
+                alertdialog.setNegativeButton("확인", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sp = true;
 
-                    // 추가 버튼으로 만들어진 동적 테이블 행에 들어간 값 arraylist에 입력
-                    for (int i = 0; i < timeIdCount; i++) {
-                        EditText tempName = (EditText)tr[i].getChildAt(0);
-                        ingredientName.add(tempName.getText().toString());
+                        if (tp && sp) {
 
-                        EditText tempAmount = (EditText)tr[i].getChildAt(1);
-                        ingredientAmount.add(tempAmount.getText().toString());
-                    }
 
-                    recipeInfo.setIngredientName(ingredientName); // 들어가는 재료 이름 전달
-                    recipeInfo.setIngredientAmount(ingredientAmount); // 들어가는 재료의 양 전달
+                            recipeInfo.setRecipeTitle(titleEdit.getText().toString());
+                            recipeInfo.setRecipeSubTitle(subTitleEdit.getText().toString()); // 부제목 전달
+                            recipeInfo.setIntroRecipe(introEdit.getText().toString()); //요리 설명 전달
+                            recipeInfo.setMainIngredient(mainIngSpinner.getSelectedItem().toString()); // 카테고리 중 주재료 부분 전달
+                            recipeInfo.setType(typeSpinner.getSelectedItem().toString()); // 카테고리 중 타입 부분 전달
+                            recipeInfo.setFeature(featureSpinner.getSelectedItem().toString()); // 카테고리 중 특징 부분 전달
+                            recipeInfo.setServings(servingSelB.getText().toString()); // 인분 수 전달
+                            recipeInfo.setDifficulty(diffiSelB.getText().toString()); // 난이도 전달
+                            recipeInfo.setDuraTime(duraSelB.getText().toString()); // 소요시간 전달
 
-                    // 양념 입력 전달 부분
-                    seasoningName.add(ssn1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 양념 이름 부분
-                    seasoningAmount.add(vol1.getText().toString()); // xml의 view를 통해 입력 받은 값 arraylist에 입력, 양념의 양 부분
 
-                    // 추가 버튼으로 만들어진 동적 테이블 행에 들어간 값 arraylist에 입력
-                    for (int i = 0; i < ssnIdCount; i++) {
-                        EditText tempName = (EditText)tr1[i].getChildAt(0);
-                        seasoningName.add(tempName.getText().toString());
+                            // 재료 입력 전달 부분
+                            ingredientName.add(ing1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료 이름 부분
+                            ingredientAmount.add(volume1.getText().toString()); // xml의 view를 통해 입력 받은 값 arraylist에 입력, 재료의 양 부분
 
-                        EditText tempAmount = (EditText)tr1[i].getChildAt(1);
-                        seasoningAmount.add(tempAmount.getText().toString());
-                    }
 
+                            // 추가 버튼으로 만들어진 동적 테이블 행에 들어간 값 arraylist에 입력
+                            for (int i = 0; i < timeIdCount; i++) {
+                                EditText tempName = (EditText)tr[i].getChildAt(0);
+                                ingredientName.add(tempName.getText().toString());
 
-                    recipeInfo.setSeasoningName(seasoningName); // 들어가는 양념 이름 전달
-                    recipeInfo.setSeasoningAmount(seasoningAmount); // 들어가는 양념의 양 전달
+                                EditText tempAmount = (EditText)tr[i].getChildAt(1);
+                                ingredientAmount.add(tempAmount.getText().toString());
+                            }
 
-                    recipeInfo.setYoutubeUrl(youtubeUrl.getText().toString()); // 실행할 영상 url 전달
+                            recipeInfo.setIngredientName(ingredientName); // 들어가는 재료 이름 전달
+                            recipeInfo.setIngredientAmount(ingredientAmount); // 들어가는 재료의 양 전달
 
-                    // 단계별 설명 및 시간 태깅 전달 부분
-                    stepDescrib.add(stepDescrib1.getText().toString());
+                            // 양념 입력 전달 부분
+                            seasoningName.add(ssn1.getText().toString());  // xml의 view를 통해 입력 받은 값 arraylist에 입력, 양념 이름 부분
+                            seasoningAmount.add(vol1.getText().toString()); // xml의 view를 통해 입력 받은 값 arraylist에 입력, 양념의 양 부분
 
+                            // 추가 버튼으로 만들어진 동적 테이블 행에 들어간 값 arraylist에 입력
+                            for (int i = 0; i < ssnIdCount; i++) {
+                                EditText tempName = (EditText)tr1[i].getChildAt(0);
+                                seasoningName.add(tempName.getText().toString());
 
-                    int stTime;
-                    int edTime;
+                                EditText tempAmount = (EditText)tr1[i].getChildAt(1);
+                                seasoningAmount.add(tempAmount.getText().toString());
+                            }
 
-                    int h, m, s;
 
-                    if(s_hour1.getText().toString().compareTo("") == 0){
-                        h = 0;
-                    }
-                    else{
-                        h = Integer.parseInt(s_hour1.getText().toString());
-                    }
+                            recipeInfo.setSeasoningName(seasoningName); // 들어가는 양념 이름 전달
+                            recipeInfo.setSeasoningAmount(seasoningAmount); // 들어가는 양념의 양 전달
 
-                    if(s_minute1.getText().toString().compareTo("") == 0){
-                        m = 0;
-                    }
-                    else{
-                        m = Integer.parseInt(s_minute1.getText().toString());
-                    }
+                            recipeInfo.setYoutubeUrl(youtubeUrl.getText().toString()); // 실행할 영상 url 전달
 
-                    if(s_second1.getText().toString().compareTo("") == 0){
-                        s = 0;
-                    }
-                    else{
-                        s = Integer.parseInt(s_second1.getText().toString());
-                    }
+                            // 단계별 설명 및 시간 태깅 전달 부분
+                            stepDescrib.add(stepDescrib1.getText().toString());
 
-                    stTime = 3600 * h + 60 * m + s;
 
-                    if(e_hour1.getText().toString().compareTo("") == 0){
-                        h = 0;
-                    }
-                    else{
-                        h = Integer.parseInt(e_hour1.getText().toString());
-                    }
+                            int stTime;
+                            int edTime;
 
-                    if(e_minute1.getText().toString().compareTo("") == 0){
-                        m = 0;
-                    }
-                    else{
-                        m = Integer.parseInt(e_minute1.getText().toString());
-                    }
+                            int h, m, s;
 
-                    if(e_second1.getText().toString().compareTo("") == 0){
-                        s = 0;
-                    }
-                    else{
-                        s = Integer.parseInt(e_second1.getText().toString());
-                    }
+                            if(s_hour1.getText().toString().compareTo("") == 0){
+                                h = 0;
+                            }
+                            else{
+                                h = Integer.parseInt(s_hour1.getText().toString());
+                            }
 
-                    edTime = 3600 * h + 60 * m + s;
+                            if(s_minute1.getText().toString().compareTo("") == 0){
+                                m = 0;
+                            }
+                            else{
+                                m = Integer.parseInt(s_minute1.getText().toString());
+                            }
 
-                    Log.d(TAG, ""+stTime+" " + edTime);
+                            if(s_second1.getText().toString().compareTo("") == 0){
+                                s = 0;
+                            }
+                            else{
+                                s = Integer.parseInt(s_second1.getText().toString());
+                            }
 
-                    startTimeList.add(Integer.toString(stTime));
-                    endTimeList.add(Integer.toString(edTime));
+                            stTime = 3600 * h + 60 * m + s;
 
+                            if(e_hour1.getText().toString().compareTo("") == 0){
+                                h = 0;
+                            }
+                            else{
+                                h = Integer.parseInt(e_hour1.getText().toString());
+                            }
 
+                            if(e_minute1.getText().toString().compareTo("") == 0){
+                                m = 0;
+                            }
+                            else{
+                                m = Integer.parseInt(e_minute1.getText().toString());
+                            }
 
-                    for (int i = 0; i < stageIdCount; i++) {
-                        EditText tempStepDescrib = (EditText) stageTable.getChildAt(3 * (i + 1));
-                        stepDescrib.add(tempStepDescrib.getText().toString());
+                            if(e_second1.getText().toString().compareTo("") == 0){
+                                s = 0;
+                            }
+                            else{
+                                s = Integer.parseInt(e_second1.getText().toString());
+                            }
 
+                            edTime = 3600 * h + 60 * m + s;
 
+                            Log.d(TAG, ""+stTime+" " + edTime);
 
-                        EditText tempStartHour = (EditText) tr2[i][0].getChildAt(1);
-                        EditText tempStartMinute = (EditText) tr2[i][0].getChildAt(3);
-                        EditText tempStartSecond = (EditText) tr2[i][0].getChildAt(5);
+                            startTimeList.add(Integer.toString(stTime));
+                            endTimeList.add(Integer.toString(edTime));
 
 
-                        if(tempStartHour.getText().toString().compareTo("") == 0){
-                            h = 0;
-                        }
-                        else{
-                            h = Integer.parseInt(tempStartHour.getText().toString());
-                        }
 
-                        if(tempStartMinute.getText().toString().compareTo("") == 0){
-                            m = 0;
-                        }
-                        else{
-                            m = Integer.parseInt(tempStartMinute.getText().toString());
-                        }
+                            for (int i = 0; i < stageIdCount; i++) {
+                                EditText tempStepDescrib = (EditText) stageTable.getChildAt(3 * (i + 1));
+                                stepDescrib.add(tempStepDescrib.getText().toString());
 
-                        if(tempStartSecond.getText().toString().compareTo("") == 0){
-                            s = 0;
-                        }
-                        else{
-                            s = Integer.parseInt(tempStartSecond.getText().toString());
-                        }
 
-                        stTime = 3600 * h + 60 * m + s;
 
-                        startTimeList.add(Integer.toString(stTime));
+                                EditText tempStartHour = (EditText) tr2[i][0].getChildAt(1);
+                                EditText tempStartMinute = (EditText) tr2[i][0].getChildAt(3);
+                                EditText tempStartSecond = (EditText) tr2[i][0].getChildAt(5);
 
 
-                        EditText tempEndHour = (EditText) tr2[i][1].getChildAt(1);
-                        EditText tempEndMinute = (EditText) tr2[i][1].getChildAt(3);
-                        EditText tempEndSecond = (EditText) tr2[i][1].getChildAt(5);
-
-                        if(tempEndHour.getText().toString().compareTo("") == 0){
-                            h = 0;
-                        }
-                        else{
-                            h = Integer.parseInt(tempEndHour.getText().toString());
-                        }
-
-                        if(tempEndMinute.getText().toString().compareTo("") == 0){
-                            m = 0;
-                        }
-                        else{
-                            m = Integer.parseInt(tempEndMinute.getText().toString());
-                        }
-
-                        if(tempEndSecond.getText().toString().compareTo("") == 0){
-                            s = 0;
-                        }
-                        else{
-                            s = Integer.parseInt(tempEndSecond.getText().toString());
-                        }
-
-                        edTime = 3600 * h + 60 * m + s;
-
-                        endTimeList.add(Integer.toString(edTime));
-
-                    }
-
-                    for (int i = 0; i < stepDescrib.size(); i++) {
-                        System.out.println(stepDescrib.get(i));
-                        System.out.println(startTimeList.get(i));
-                        System.out.println(endTimeList.get(i));
-                    }
-
-                    recipeInfo.setStepDescrib(stepDescrib); //단계별 설명 전달
-                    recipeInfo.setStartTime(startTimeList); // 단계별 시작 시간 전달
-                    recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
-
-
-
-                    Log.d(TAG, recipeInfo.getYoutubeUrl());
-
-                    if(recipeInfo.getYoutubeUrl().contains("v=")){
-                        String[] url = recipeInfo.getYoutubeUrl().split("v=");
-                        if(url.length >= 2){
-                            recipeInfo.setYoutubeUrl(url[1]);
-                        }
-
-                    }
-
-
-
-
-                    database = FirebaseDatabase.getInstance();
-                    myRef = database.getReference();
-
-                    String recipeId = myRef.child("recipes").push().getKey();
-
-                    Log.d(TAG, recipeId);
-                    recipeInfo.setRecipeId(recipeId);
-                    myRef.child("recipes").child(recipeId).setValue(recipeInfo);
-                    Log.d(TAG, "Recipe Create Succeeded");
-
-
-                    PostInfo postInfo = new PostInfo();
-                    postInfo.setRecipeId(recipeId);
-                    Log.d(TAG, "set recipe id");
-                    postInfo.setTitle(recipeInfo.getRecipeTitle());
-                    Log.d(TAG, "set recipe title");
-                    Log.d(TAG, postInfo.getTitle());
-
-                    Log.d(TAG, "Before get auth");
-                    mAuth = FirebaseAuth.getInstance();
-                    Log.d(TAG, "after get auth");
-                    String userId = mAuth.getCurrentUser().getEmail().split("@")[0];
-                    Log.d(TAG, userId);
-
-                    postInfo.setUserId(userId);
-                    postInfo.setViews(0);
-
-
-                    myRef.child("posts").child(recipeId).setValue(postInfo).addOnSuccessListener(ac, new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, "post uploaded");
-                            //get user info from db and update it
-                            myRef.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    UserInfo u = dataSnapshot.getValue(UserInfo.class);
-                                    curChefLevel = u.getChefLevel();
-                                    curChefExp = u.getChefExp();
-
-                                    curChefExp += 20;
-                                    if(curChefExp >= 100){
-                                        curChefLevel++;
-                                        curChefExp -= 100;
-                                    }
-
-                                    u.setChefLevel(curChefLevel);
-                                    u.setChefExp(curChefExp);
-
-                                    Log.d(TAG, u.getId());
-                                    Log.d(TAG, u.toString());
-                                    myRef.child("users").child(u.getId()).setValue(u);
-                                    Log.d(TAG, "updated");
+                                if(tempStartHour.getText().toString().compareTo("") == 0){
+                                    h = 0;
+                                }
+                                else{
+                                    h = Integer.parseInt(tempStartHour.getText().toString());
                                 }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                if(tempStartMinute.getText().toString().compareTo("") == 0){
+                                    m = 0;
+                                }
+                                else{
+                                    m = Integer.parseInt(tempStartMinute.getText().toString());
+                                }
 
+                                if(tempStartSecond.getText().toString().compareTo("") == 0){
+                                    s = 0;
+                                }
+                                else{
+                                    s = Integer.parseInt(tempStartSecond.getText().toString());
+                                }
+
+                                stTime = 3600 * h + 60 * m + s;
+
+                                startTimeList.add(Integer.toString(stTime));
+
+
+                                EditText tempEndHour = (EditText) tr2[i][1].getChildAt(1);
+                                EditText tempEndMinute = (EditText) tr2[i][1].getChildAt(3);
+                                EditText tempEndSecond = (EditText) tr2[i][1].getChildAt(5);
+
+                                if(tempEndHour.getText().toString().compareTo("") == 0){
+                                    h = 0;
+                                }
+                                else{
+                                    h = Integer.parseInt(tempEndHour.getText().toString());
+                                }
+
+                                if(tempEndMinute.getText().toString().compareTo("") == 0){
+                                    m = 0;
+                                }
+                                else{
+                                    m = Integer.parseInt(tempEndMinute.getText().toString());
+                                }
+
+                                if(tempEndSecond.getText().toString().compareTo("") == 0){
+                                    s = 0;
+                                }
+                                else{
+                                    s = Integer.parseInt(tempEndSecond.getText().toString());
+                                }
+
+                                edTime = 3600 * h + 60 * m + s;
+
+                                endTimeList.add(Integer.toString(edTime));
+
+                            }
+
+                            for (int i = 0; i < stepDescrib.size(); i++) {
+                                System.out.println(stepDescrib.get(i));
+                                System.out.println(startTimeList.get(i));
+                                System.out.println(endTimeList.get(i));
+                            }
+
+                            recipeInfo.setStepDescrib(stepDescrib); //단계별 설명 전달
+                            recipeInfo.setStartTime(startTimeList); // 단계별 시작 시간 전달
+                            recipeInfo.setEndTime(endTimeList); // 단계별 죵료 시간 전달
+
+
+
+                            Log.d(TAG, recipeInfo.getYoutubeUrl());
+
+                            if(recipeInfo.getYoutubeUrl().contains("v=")){
+                                String[] url = recipeInfo.getYoutubeUrl().split("v=");
+                                if(url.length >= 2){
+                                    recipeInfo.setYoutubeUrl(url[1]);
+                                }
+
+                            }
+
+
+
+
+                            database = FirebaseDatabase.getInstance();
+                            myRef = database.getReference();
+
+                            String recipeId = myRef.child("recipes").push().getKey();
+
+                            Log.d(TAG, recipeId);
+                            recipeInfo.setRecipeId(recipeId);
+                            myRef.child("recipes").child(recipeId).setValue(recipeInfo);
+                            Log.d(TAG, "Recipe Create Succeeded");
+
+
+                            PostInfo postInfo = new PostInfo();
+                            postInfo.setRecipeId(recipeId);
+                            Log.d(TAG, "set recipe id");
+                            postInfo.setTitle(recipeInfo.getRecipeTitle());
+                            Log.d(TAG, "set recipe title");
+                            Log.d(TAG, postInfo.getTitle());
+
+                            Log.d(TAG, "Before get auth");
+                            mAuth = FirebaseAuth.getInstance();
+                            Log.d(TAG, "after get auth");
+                            String userId = mAuth.getCurrentUser().getEmail().split("@")[0];
+                            Log.d(TAG, userId);
+
+                            postInfo.setUserId(userId);
+                            postInfo.setViews(0);
+
+
+                            myRef.child("posts").child(recipeId).setValue(postInfo).addOnSuccessListener(ac, new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(ac.getApplicationContext(), "Succeeded", Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, "post uploaded");
+                                    //get user info from db and update it
+                                    myRef.child("users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            UserInfo u = dataSnapshot.getValue(UserInfo.class);
+                                            curChefLevel = u.getChefLevel();
+                                            curChefExp = u.getChefExp();
+
+                                            curChefExp += 20;
+                                            if(curChefExp >= 100){
+                                                curChefLevel++;
+                                                curChefExp -= 100;
+                                            }
+
+                                            u.setChefLevel(curChefLevel);
+                                            u.setChefExp(curChefExp);
+
+                                            Log.d(TAG, u.getId());
+                                            Log.d(TAG, u.toString());
+                                            myRef.child("users").child(u.getId()).setValue(u);
+                                            Log.d(TAG, "updated");
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+
+                                }
+                            }).addOnFailureListener(ac, new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(ac.getApplicationContext(), "post Failed", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
+                            storage = FirebaseStorage.getInstance();
+                            storageRef = storage.getReference().child("images/"+ recipeId +".jpg");
+                            Log.d(TAG, "get storage");
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            img = resize(c, imgUri, 500);
+                            Bitmap rotatedBitmap = null;
+                            try {
+                                ExifInterface exif = new ExifInterface(imagePath);
 
+                                int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+                                switch(exifOrientation) {
+
+                                    case ExifInterface.ORIENTATION_ROTATE_90:
+                                        rotatedBitmap = rotateImage(img, 90);
+                                        break;
+
+                                    case ExifInterface.ORIENTATION_ROTATE_180:
+                                        rotatedBitmap = rotateImage(img, 180);
+                                        break;
+
+                                    case ExifInterface.ORIENTATION_ROTATE_270:
+                                        rotatedBitmap = rotateImage(img, 270);
+                                        break;
+
+                                    case ExifInterface.ORIENTATION_NORMAL:
+                                    default:
+                                        rotatedBitmap = img;
+                                }
+                            } catch (Exception e) {
+                                Log.d(TAG, "Enter catch");
+                                Log.d(TAG, e.getMessage());
+                                Log.d(TAG, e.getStackTrace().toString());
+                            }
+
+                            rotatedBitmap = Bitmap.createScaledBitmap(rotatedBitmap, 200, 200, true);
+                            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+
+                            byte[] data = baos.toByteArray();
+
+                            Log.d(TAG, data.toString());
+
+                            UploadTask uploadTask = storageRef.putBytes(data);
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, "Failed");
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    Log.d(TAG, "Succeeded");
+                                    ac.finish();
+                                }
+                            });
                         }
-                    }).addOnFailureListener(ac, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ac.getApplicationContext(), "post Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    storage = FirebaseStorage.getInstance();
-                    storageRef = storage.getReference().child("images/"+ recipeId +".jpg");
-                    Log.d(TAG, "get storage");
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    img = resize(c, imgUri, 500);
-                    Bitmap rotatedBitmap = null;
-                    try {
-                        ExifInterface exif = new ExifInterface(imagePath);
-
-                        int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-                        switch(exifOrientation) {
-
-                            case ExifInterface.ORIENTATION_ROTATE_90:
-                                rotatedBitmap = rotateImage(img, 90);
-                                break;
-
-                            case ExifInterface.ORIENTATION_ROTATE_180:
-                                rotatedBitmap = rotateImage(img, 180);
-                                break;
-
-                            case ExifInterface.ORIENTATION_ROTATE_270:
-                                rotatedBitmap = rotateImage(img, 270);
-                                break;
-
-                            case ExifInterface.ORIENTATION_NORMAL:
-                            default:
-                                rotatedBitmap = img;
-                        }
-                    } catch (Exception e) {
-                        Log.d(TAG, "Enter catch");
-                        Log.d(TAG, e.getMessage());
-                        Log.d(TAG, e.getStackTrace().toString());
                     }
+                });
 
-                    rotatedBitmap = Bitmap.createScaledBitmap(rotatedBitmap, 200, 200, true);
-                    rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                // 취소버튼
+                alertdialog.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sp = false;
+                    }
+                });
 
 
-                    byte[] data = baos.toByteArray();
+                if (tp) {
+                    // 메인 다이얼로그 생성
+                    android.app.AlertDialog alert = alertdialog.create();
+                    // 아이콘 설정
+                    alert.setIcon(R.drawable.yofficial);
+                    // 타이틀
+                    alert.setTitle("알림!");
+                    // 다이얼로그 보기
+                    alert.show();
 
-                    Log.d(TAG, data.toString());
-
-                    UploadTask uploadTask = storageRef.putBytes(data);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "Failed");
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Log.d(TAG, "Succeeded");
-                            ac.finish();
-                        }
-                    });
                 }
+
+
 
             }
         });
