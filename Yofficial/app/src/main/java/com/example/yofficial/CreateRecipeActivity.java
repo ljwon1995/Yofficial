@@ -1300,7 +1300,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                                 Log.d(TAG, e.getStackTrace().toString());
                             }
 
-                            rotatedBitmap = Bitmap.createScaledBitmap(rotatedBitmap, 200, 200, true);
+                            rotatedBitmap = Bitmap.createScaledBitmap(rotatedBitmap, 300, 300, true);
                             rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
 

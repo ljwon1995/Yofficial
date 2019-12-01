@@ -129,7 +129,17 @@ public class BoardActivity extends AppCompatActivity {
     }
 
     public void playBtn(){
+        mAuth = FirebaseAuth.getInstance();
+        String userID = mAuth.getCurrentUser().getEmail().split("@")[0];
 
+        if (item.board_uploader.compareTo(userID) == 0) {
+            Intent intent = new Intent(getApplicationContext(), BoardEditActivity.class);
+            intent.putExtra("id", item.board_id);
+            startActivity(intent);
+
+        } else {
+            Toast.makeText(BoardActivity.this ,"본인 게시글만 수정 가능합니다!",Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
