@@ -46,7 +46,7 @@ public class RefregActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refreg);
-
+        getSupportActionBar().setElevation(0);
         editSearch = (EditText) findViewById(R.id.refreg_editSearch);
         listview = (ListView) findViewById(R.id.refreg_listView);
 

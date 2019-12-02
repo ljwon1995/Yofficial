@@ -1,6 +1,8 @@
 package com.example.yofficial;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,7 +50,7 @@ public class CommentActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private FirebaseAuth mAuth;
-
+    private Activity activity;
 
 
 
@@ -57,7 +60,7 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.c_list);
-
+        activity = this;
 
         Intent intent = getIntent();
         board_id = intent.getExtras().getString("id");
@@ -137,29 +140,63 @@ public class CommentActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mAuth = FirebaseAuth.getInstance();
-                String userID = mAuth.getCurrentUser().getEmail().split("@")[0];
-                if(list.get(position).user_id.compareTo(userID) == 0){
 
-                    String c_id = list.get(position).comment_id;
-                    myRef.child("comments").child(board_id).child(c_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            list.remove(position);
-                            adapter.setCommentList(list);
-                            adapter.notifyDataSetChanged();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(CommentActivity.this ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
-                        }
-                    });
 
-                }
-                else{
-                    Toast.makeText(CommentActivity.this ,"본인 댓글만 삭제 가능합니다!",Toast.LENGTH_SHORT).show();
-                }
+
+                AlertDialog.Builder alertdialog = new AlertDialog.Builder(activity);
+                // 다이얼로그 메세지
+                alertdialog.setMessage("댓글을 삭제하시겠습니까?");
+
+
+                // 확인버튼
+                alertdialog.setNegativeButton("확인", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mAuth = FirebaseAuth.getInstance();
+                        String userID = mAuth.getCurrentUser().getEmail().split("@")[0];
+                        if(list.get(position).user_id.compareTo(userID) == 0){
+
+                            String c_id = list.get(position).comment_id;
+                            myRef.child("comments").child(board_id).child(c_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    list.remove(position);
+                                    adapter.setCommentList(list);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(CommentActivity.this ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+                        else{
+                            Toast.makeText(CommentActivity.this ,"본인 댓글만 삭제 가능합니다!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                // 취소버튼
+                alertdialog.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                // 메인 다이얼로그 생성
+                AlertDialog alert = alertdialog.create();
+                // 아이콘 설정
+                alert.setIcon(R.drawable.yofficial);
+                // 타이틀
+                alert.setTitle("알림!");
+                // 다이얼로그 보기
+                alert.show();
+
+
 
             }
         });

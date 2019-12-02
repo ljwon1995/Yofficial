@@ -305,6 +305,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
                 player.play();
                 videoState = PLAYING;
                 Log.d(TAG, "VideoStateChanged = " + videoState + " must be " + PLAYING);
+                tv.setPadding(5,0,0,0);
                 tv.setText(desc.get(step));
 
 

@@ -1,6 +1,7 @@
 package com.example.yofficial;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class Refreg_SearchAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             viewHolder.label = (TextView) convertView.findViewById(R.id.label);
-
+            viewHolder.label.setGravity(Gravity.CENTER);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder)convertView.getTag();

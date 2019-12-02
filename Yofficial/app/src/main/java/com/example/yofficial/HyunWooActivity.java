@@ -1,7 +1,10 @@
 package com.example.yofficial;
 
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,19 +14,25 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +48,8 @@ public class HyunWooActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private FirebaseStorage storage;
     private StorageReference storageRef;
+    private FirebaseAuth mAuth;
+    private Activity activity;
     private Context c = this;
 
     private static final String TAG = "HyunWoo!";
@@ -151,9 +162,55 @@ public class HyunWooActivity extends AppCompatActivity {
 
 
                         yiconView.setImageResource(R.drawable.yicon);
-                        servings.setImageResource(R.drawable.servings);
-                        level.setImageResource(R.drawable.level);
-                        duration.setImageResource(R.drawable.duration);
+
+                        if (refo.getServings().equals("1인분")) {
+                            servings.setImageResource(R.drawable.filled_star);
+                        } else {
+                            servings.setImageResource(R.drawable.empty_star);
+                        }
+
+                        switch (refo.getDifficulty()) {
+                            case "브론즈":
+                                level.setImageResource(R.drawable.empty_star);
+                                break;
+                            case "실버":
+                                level.setImageResource(R.drawable.filled_star);
+                                break;
+                            case "골드":
+                                level.setImageResource(R.drawable.empty_star);
+                                break;
+                            case "다이아":
+                                level.setImageResource(R.drawable.filled_star);
+                                break;
+                            case "마스터":
+                                level.setImageResource(R.drawable.empty_star);
+                            default:
+                                level.setImageResource(R.drawable.level);
+                                break;
+                        }
+
+                        switch (refo.getDuraTime()) {
+                            case "5분":
+                                duration.setImageResource(R.drawable.empty_star);
+                                break;
+                            case "10분":
+                                duration.setImageResource(R.drawable.filled_star);
+                                break;
+                            case "15분":
+                                duration.setImageResource(R.drawable.empty_star);
+                                break;
+                            case "30분":
+                                duration.setImageResource(R.drawable.filled_star);
+                                break;
+                            case "1시간":
+                                duration.setImageResource(R.drawable.empty_star);
+                                break;
+                            case "2시간 이상":
+                                duration.setImageResource(R.drawable.filled_star);
+                            default:
+                                duration.setImageResource(R.drawable.duration);
+                                break;
+                        }
 
 
                         Log.d(TAG, "URL : " + refo.getYoutubeUrl());
@@ -199,10 +256,19 @@ public class HyunWooActivity extends AppCompatActivity {
 
                         StringBuilder ingreds = new StringBuilder();
                         for(int i = 0; i < refo.getIngredientName().size(); i++){
-                            ingreds.append(refo.getIngredientName().get(i));
-                            ingreds.append(refo.getIngredientAmount().get(i));
-                            ingreds.append(",");
-                            Log.d(TAG, "cur SB = " + ingreds.toString());
+                            if (i == refo.getIngredientName().size() - 1) {
+                                ingreds.append(refo.getIngredientName().get(i));
+                                ingreds.append(" ");
+                                ingreds.append(refo.getIngredientAmount().get(i));
+                                Log.d(TAG, "cur SB = " + ingreds.toString());
+                            } else {
+                                ingreds.append(refo.getIngredientName().get(i));
+                                ingreds.append(" ");
+                                ingreds.append(refo.getIngredientAmount().get(i));
+                                ingreds.append(", ");
+                                Log.d(TAG, "cur SB = " + ingreds.toString());
+                            }
+
                         }
 
                         ingredientList.setText(ingreds.toString());
@@ -212,10 +278,19 @@ public class HyunWooActivity extends AppCompatActivity {
 
                         StringBuilder seasons = new StringBuilder();
                         for(int i = 0; i < refo.getSeasoningName().size(); i++){
-                            seasons.append(refo.getSeasoningName().get(i));
-                            seasons.append(refo.getSeasoningAmount().get(i));
-                            seasons.append(",");
-                            Log.d(TAG, "cur SB = " + ingreds.toString());
+                            if (i == refo.getSeasoningName().size() - 1) {
+                                seasons.append(refo.getSeasoningName().get(i));
+                                seasons.append(" ");
+                                seasons.append(refo.getSeasoningAmount().get(i));
+                                Log.d(TAG, "cur SB = " + ingreds.toString());
+                            } else {
+                                seasons.append(refo.getSeasoningName().get(i));
+                                seasons.append(" ");
+                                seasons.append(refo.getSeasoningAmount().get(i));
+                                seasons.append(", ");
+                                Log.d(TAG, "cur SB = " + ingreds.toString());
+                            }
+
                         }
 
                         seasoningList.setText(seasons.toString());
@@ -231,9 +306,56 @@ public class HyunWooActivity extends AppCompatActivity {
 
 
                         yiconView.setImageResource(R.drawable.yicon);
-                        servings.setImageResource(R.drawable.servings);
-                        level.setImageResource(R.drawable.level);
-                        duration.setImageResource(R.drawable.duration);
+
+                        if (refo.getServings().equals("1인분")) {
+                            servings.setImageResource(R.drawable.filled_star);
+                        } else {
+                            servings.setImageResource(R.drawable.empty_star);
+                        }
+
+                        switch (refo.getDifficulty()) {
+                            case "브론즈":
+                                level.setImageResource(R.drawable.empty_star);
+                                break;
+                            case "실버":
+                                level.setImageResource(R.drawable.filled_star);
+                                break;
+                            case "골드":
+                                level.setImageResource(R.drawable.empty_star);
+                                break;
+                            case "다이아":
+                                level.setImageResource(R.drawable.filled_star);
+                                break;
+                            case "마스터":
+                                level.setImageResource(R.drawable.empty_star);
+                            default:
+                                level.setImageResource(R.drawable.level);
+                                break;
+                        }
+
+                        switch (refo.getDuraTime()) {
+                            case "5분":
+                                duration.setImageResource(R.drawable.empty_star);
+                                break;
+                            case "10분":
+                                duration.setImageResource(R.drawable.filled_star);
+                                break;
+                            case "15분":
+                                duration.setImageResource(R.drawable.empty_star);
+                                break;
+                            case "30분":
+                                duration.setImageResource(R.drawable.filled_star);
+                                break;
+                            case "1시간":
+                                duration.setImageResource(R.drawable.empty_star);
+                                break;
+                            case "2시간 이상":
+                                duration.setImageResource(R.drawable.filled_star);
+                            default:
+                                duration.setImageResource(R.drawable.duration);
+                                break;
+                        }
+
 
 
                         youtubeUrl.setOnClickListener(new View.OnClickListener() {
@@ -270,6 +392,7 @@ public class HyunWooActivity extends AppCompatActivity {
 
 
 
+
         /*
         //db에서 쏴 준 정보 임시 문자열 테이블에 저장, 나중에 db연동 시 수정
         ingredients = new String[dbIng.length];
@@ -290,5 +413,78 @@ public class HyunWooActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.recipe_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        activity = this;
+
+        switch (item.getItemId()) {
+            case R.id.recipe_delete_btn:
+
+               // 레시피 정보를 디비에서 지우기
+
+                AlertDialog.Builder alertdialog = new AlertDialog.Builder(activity);
+                // 다이얼로그 메세지
+                alertdialog.setMessage("\n레시피를 삭제하시겠습니까?");
+
+
+                // 확인버튼
+                alertdialog.setNegativeButton("확인", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mAuth = FirebaseAuth.getInstance();
+                        String userID = mAuth.getCurrentUser().getEmail().split("@")[0];
+                        if(false){
+
+//                            String c_id = list.get(position).comment_id;
+//                            myRef.child("comments").child(board_id).child(c_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//
+//                                }
+//                            }).addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Toast.makeText(c ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+
+                        }
+                        else{
+                            Toast.makeText(c ,"본인 댓글만 삭제 가능합니다!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                // 취소버튼
+                alertdialog.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                // 메인 다이얼로그 생성
+                AlertDialog alert = alertdialog.create();
+                // 아이콘 설정
+                alert.setIcon(R.drawable.yofficial);
+                // 타이틀
+                alert.setTitle("알림!");
+                // 다이얼로그 보기
+                alert.show();
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
