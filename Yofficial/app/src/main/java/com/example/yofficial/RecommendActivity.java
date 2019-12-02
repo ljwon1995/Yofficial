@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 
 public class RecommendActivity extends AppCompatActivity {
@@ -106,33 +107,46 @@ public class RecommendActivity extends AppCompatActivity {
     public void onButtonClicked(View view){
 
         ArrayList<Double> arr = new ArrayList<>();
-        ArrayList<String> arr_s = new ArrayList<>();
+        ArrayList<Integer> arr_n = new ArrayList<>();
         int first = 0, twice = 0, third = 0;
         ArrayList<String> result_title = new ArrayList<>();
        // test = (TextView)findViewById(R.id.textView5);
 
         for(int i = 0; i < list.size(); i++){
-             arr.add(list.get(i).cos_similarity(user_savory, user_sweet, user_sour, user_spicy, user_salty));
-        }
-        Collections.sort(arr);
-        Collections.reverse(arr);
-
-        for(int i = 0; i < list.size(); i++){
-
-            if(arr.get(0) == list.get(i).cos_similarity(user_savory, user_sweet, user_sour, user_spicy, user_salty)){
-                first = i;
-            }
-            else if(arr.get(1) == list.get(i).cos_similarity(user_savory, user_sweet, user_sour, user_spicy, user_salty)){
-                twice = i;
-            }
-            else if(arr.get(2) == list.get(i).cos_similarity(user_savory, user_sweet, user_sour, user_spicy, user_salty)){
-                third = i;
-            }
+             arr.add(list.get(i).cos_similarity(user_savory, user_sweet, user_spicy, user_sour, user_salty));
+             arr_n.add(i);
         }
 
-        result_title.add(list.get(first).food_name);
-        result_title.add(list.get(twice).food_name);
-        result_title.add(list.get(third).food_name);
+        for(int i = 0 ; i < arr.size() ; i ++) {
+            for(int j = 0 ; j < arr.size() -i -1 ; j ++) {
+                if(arr.get(j)<arr.get(j+1)) {
+                    double b;
+
+                    b = arr.get(j);
+                    arr.set(j, arr.get(j+1));
+                    arr.set(j+1, b);
+
+                    int idx = arr_n.get(j);
+                    arr_n.set(j, arr_n.get(j+1));
+                    arr_n.set(j+1, idx);
+                }
+            }
+        }
+
+        Iterator iterator = arr.iterator();
+        while (iterator.hasNext()) {
+            double element = (double) iterator.next();
+            System.out.println(element);
+        }
+
+        Iterator iterator1 = arr_n.iterator();
+        while (iterator1.hasNext()) {
+            Integer element = (Integer) iterator1.next();
+            System.out.println(element);
+        }
+        result_title.add(list.get(arr_n.get(0)).food_name);
+        result_title.add(list.get(arr_n.get(1)).food_name);
+        result_title.add(list.get(arr_n.get(2)).food_name);
         Intent intent = new Intent(this, Recommend_PopupActivity.class);
         intent.putStringArrayListExtra("ArrayList", result_title);
         startActivityForResult(intent, 1);
