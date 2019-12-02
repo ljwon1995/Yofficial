@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/edittext_teduri"
+    android:layout_height="fill_parent"
     >
 
     <ImageView
@@ -18,46 +17,45 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txt_v_t"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:paddingLeft="10dp"
-            android:paddingTop="20dp"
-            android:textSize="25dp"
+            android:text="TextView"
             android:textColor="#000000"
-            android:text="TextView" />
+            android:textSize="20dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="      --------------------------------------------------   " />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:background="#40DCDCDC"
             android:orientation="horizontal">
+
 
             <TextView
                 android:id="@+id/txt_v_u"
                 android:layout_width="78dp"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:paddingLeft="10dp"
                 android:paddingBottom="10dp"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="8dp" />
 
             <TextView
                 android:id="@+id/txt_v_n"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="right"
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp"
-                android:gravity="right"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="8dp" />
         </LinearLayout>
     </LinearLayout>
 
