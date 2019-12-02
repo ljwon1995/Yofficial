@@ -206,16 +206,10 @@ public class eval_popup extends Activity {
         myRef.child("users").child(userId).child("cookExp").setValue(curCookExp);
         myRef.child("users").child(userId).child("cookLevel").setValue(curCookLv);
 
-
-        Intent intent = new Intent();
-        intent.putExtra("result", "Close Popup");
-        setResult(RESULT_OK, intent);
-
-
-
-
-        //액티비티(팝업) 닫기
-        finish();
+        Intent intent = new Intent(getApplicationContext(), JoonHongActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override
