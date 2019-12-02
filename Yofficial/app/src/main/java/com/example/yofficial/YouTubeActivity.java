@@ -554,13 +554,18 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
         if(videoState == PAUSED || videoState == PLAYING) {
             if (step < totalStep - 1) {
                 step += 1;
-            }
-            if(t != null){
-                if(t.isAlive()){
-                    t.flag = 1;
+                if(t != null){
+                    if(t.isAlive()){
+                        t.flag = 1;
+                    }
                 }
+                player.seekToMillis(start_time.get(step) * 1000);
             }
-            player.seekToMillis(start_time.get(step) * 1000);
+            else{
+                Toast.makeText(getApplicationContext(),"마지막 단계 입니다.", Toast.LENGTH_LONG).show();
+            }
+            
+
         }
     }
     //junhong end
