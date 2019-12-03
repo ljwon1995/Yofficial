@@ -13,14 +13,14 @@ public class RecommendData {
     int bitter;
     int salty;
 
-    public RecommendData(String title, int a, int b, int c, int d, int e, int f){
+    public RecommendData(String title, int _savory, int _sweet, int _sour, int _spicy, int _bitter, int _salty){
         this.food_name = title;
-        this.savory= a;
-        this.sweet= b;
-        this.sour= c;
-        this.spicy= d;
-        this.bitter= e;
-        this.salty= f;
+        this.savory= _savory;
+        this.sweet= _sweet;
+        this.sour= _sour;
+        this.spicy= _spicy;
+        this.bitter= _bitter;
+        this.salty= _salty;
     }
 
     public String getFood_name() {

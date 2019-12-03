@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="140dp"
         android:background="@drawable/main_top"
-        android:text="\n    Hi JunHong!!\n    Welcome to Yofficial"
+        android:text=""
         android:textStyle="bold|italic"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
