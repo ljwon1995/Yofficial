@@ -38,17 +38,21 @@ public class BoardEditActivity extends AppCompatActivity {
     Button post;
     String board_id;
 
+    Intent intent;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.make_board_activity);
 
+        intent = getIntent();
+
         edit_title = findViewById(R.id.board_t_input);
         edit_body = findViewById(R.id.board_b_input);
         post = findViewById(R.id.board_upload);
 
-        edit_title.setHint("수정할 제목을 입력하세요.");
-        post.setText("레시피 수정하기");
+        edit_title.setText(intent.getStringExtra("title"));
+        edit_body.setText(intent.getStringExtra("body"));
+        post.setText("게시글 수정하기");
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +83,7 @@ public class BoardEditActivity extends AppCompatActivity {
         String strDate = dateFormat.format(date);
 
 
-        Intent intent = getIntent();
+        //intent = getIntent();
         board_id =intent.getExtras().getString("id");
 
         database = FirebaseDatabase.getInstance();

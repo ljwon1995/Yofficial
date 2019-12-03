@@ -338,6 +338,8 @@ public class VideoListActivity extends AppCompatActivity {
             //검색버튼을 눌렀을 경우
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+
                 //   TextView text = (TextView)findViewById(R.id.txtresult);
                 //   text.setText(query + "를 검색합니다.");
                 Log.d("search", query);
@@ -346,10 +348,6 @@ public class VideoListActivity extends AppCompatActivity {
                         spinner_mainIng.getSelectedItem().toString(),
                         spinner_type.getSelectedItem().toString(),
                         spinner_feature.getSelectedItem().toString());
-
-
-
-
 
 
                 return true;
@@ -374,7 +372,9 @@ public class VideoListActivity extends AppCompatActivity {
 //        switch(curId) {
 //            case R.id.menu_refresh:
 //                Toast.makeText(this, "새로고침 메뉴가 선택되었습니다.", Toast.LENGTH_SHORT).show();
-//                break;
+//                break;if(newText.equals("")){
+//                this.onQueryTextSubmit("");
+//            }
 //            case R.id.menu_search:
 //                Toast.makeText(this, "검색 메뉴가 선택되었습니다.", Toast.LENGTH_SHORT).show();
 //                break;

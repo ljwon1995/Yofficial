@@ -135,6 +135,8 @@ public class BoardActivity extends AppCompatActivity {
         if (item.board_uploader.compareTo(userID) == 0) {
             Intent intent = new Intent(getApplicationContext(), BoardEditActivity.class);
             intent.putExtra("id", item.board_id);
+            intent.putExtra("title" ,title.getText());
+            intent.putExtra("body", body.getText());
             startActivity(intent);
 
         } else {

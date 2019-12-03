@@ -1,6 +1,8 @@
 package com.example.yofficial;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,6 +36,7 @@ public class MyCommentActivity extends AppCompatActivity{
     MenuItem mSearch;
     Context c = this;
     String text;
+    Activity activity;
 
     private final static String TAG = "MyComment!";
     private FirebaseDatabase database;
@@ -49,6 +53,7 @@ public class MyCommentActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_mycomments);
+        activity = this;
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -118,69 +123,101 @@ public class MyCommentActivity extends AppCompatActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if(list.get(position).user_id.compareTo(userId) == 0){
-                    String c_id = list.get(position).comment_id;
-
-                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            if(dataSnapshot.child("comments").exists()){
-                                Iterator<DataSnapshot> itr = dataSnapshot.child("comments").getChildren().iterator();
+                AlertDialog.Builder alertdialog = new AlertDialog.Builder(activity);
+                // 다이얼로그 메세지
+                alertdialog.setMessage("댓글을 삭제하시겠습니까?");
 
 
-                                while(itr.hasNext()){
+                // 확인버튼
+                alertdialog.setNegativeButton("확인", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(list.get(position).user_id.compareTo(userId) == 0){
+                            String c_id = list.get(position).comment_id;
 
-                                    DataSnapshot d = itr.next();
+                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                    Log.d(TAG, d.getKey());
-                                    Log.d(TAG, ""+dataSnapshot.child("comments").child(d.getKey()).getChildrenCount());
 
-                                    Iterator<DataSnapshot> inneritr = dataSnapshot.child("comments").child(d.getKey()).getChildren().iterator();
-                                    while(inneritr.hasNext()){
-                                        DataSnapshot targ = inneritr.next();
-                                        if(targ.getValue(CommentItem.class).comment_id.compareTo(c_id) == 0){
-                                            targ.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    list.remove(position);
-                                                    adapter.setCommentList(list);
-                                                    adapter.notifyDataSetChanged();
+                                    if(dataSnapshot.child("comments").exists()){
+                                        Iterator<DataSnapshot> itr = dataSnapshot.child("comments").getChildren().iterator();
+
+
+                                        while(itr.hasNext()){
+
+                                            DataSnapshot d = itr.next();
+
+                                            Log.d(TAG, d.getKey());
+                                            Log.d(TAG, ""+dataSnapshot.child("comments").child(d.getKey()).getChildrenCount());
+
+                                            Iterator<DataSnapshot> inneritr = dataSnapshot.child("comments").child(d.getKey()).getChildren().iterator();
+                                            while(inneritr.hasNext()){
+                                                DataSnapshot targ = inneritr.next();
+                                                if(targ.getValue(CommentItem.class).comment_id.compareTo(c_id) == 0){
+                                                    targ.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            list.remove(position);
+                                                            adapter.setCommentList(list);
+                                                            adapter.notifyDataSetChanged();
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Toast.makeText(MyCommentActivity.this ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
                                                 }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Toast.makeText(MyCommentActivity.this ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
+
+
+                                            }
+
                                         }
-
 
                                     }
 
+                                    else{
+                                        Log.d(TAG, "No comments");
+                                        //need to insert error handle for no comments
+                                    }
                                 }
 
-                            }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            else{
-                                Log.d(TAG, "No comments");
-                                //need to insert error handle for no comments
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                }
+                            });
 
                         }
-                    });
+                        else{
+                            Toast.makeText(MyCommentActivity.this ,"본인 댓글만 삭제 가능합니다!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
-                }
-                else{
-                    Toast.makeText(MyCommentActivity.this ,"본인 댓글만 삭제 가능합니다!",Toast.LENGTH_SHORT).show();
-                }
+                // 취소버튼
+                alertdialog.setPositiveButton("취소", new DialogInterface.OnClickListener() {
 
-            }
-        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                // 메인 다이얼로그 생성
+                AlertDialog alert = alertdialog.create();
+                // 아이콘 설정
+                alert.setIcon(R.drawable.yofficial);
+                // 타이틀
+                alert.setTitle("알림!");
+                // 다이얼로그 보기
+                alert.show();
+
+
+
+    }
+});
     }
 }
 
