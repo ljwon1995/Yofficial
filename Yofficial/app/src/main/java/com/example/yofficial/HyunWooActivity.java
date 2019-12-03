@@ -170,7 +170,7 @@ public class HyunWooActivity extends AppCompatActivity {
                         if (refo.getServings().equals("1인분")) {
                             servings.setImageResource(R.drawable.one_person);
                         } else {
-                            servings.setImageResource(R.drawable.empty_star);
+                            servings.setImageResource(R.drawable.many_people);
                         }
 
                         switch (refo.getDifficulty()) {
@@ -178,13 +178,13 @@ public class HyunWooActivity extends AppCompatActivity {
                                 level.setImageResource(R.drawable.bronze);
                                 break;
                             case "실버":
-                                level.setImageResource(R.drawable.filled_star);
+                                level.setImageResource(R.drawable.silver);
                                 break;
                             case "골드":
-                                level.setImageResource(R.drawable.empty_star);
+                                level.setImageResource(R.drawable.gold);
                                 break;
                             case "다이아":
-                                level.setImageResource(R.drawable.filled_star);
+                                level.setImageResource(R.drawable.diamond);
                                 break;
                             case "마스터":
                                 level.setImageResource(R.drawable.master);
@@ -193,29 +193,8 @@ public class HyunWooActivity extends AppCompatActivity {
                                 level.setImageResource(R.drawable.level);
                                 break;
                         }
+                        duration.setImageResource(R.drawable.time);
 
-                        switch (refo.getDuraTime()) {
-                            case "5분":
-                                duration.setImageResource(R.drawable.time);
-                                break;
-                            case "10분":
-                                duration.setImageResource(R.drawable.filled_star);
-                                break;
-                            case "15분":
-                                duration.setImageResource(R.drawable.empty_star);
-                                break;
-                            case "30분":
-                                duration.setImageResource(R.drawable.filled_star);
-                                break;
-                            case "1시간":
-                                duration.setImageResource(R.drawable.empty_star);
-                                break;
-                            case "2시간 이상":
-                                duration.setImageResource(R.drawable.filled_star);
-                            default:
-                                duration.setImageResource(R.drawable.duration);
-                                break;
-                        }
 
 
                         Log.d(TAG, "URL : " + refo.getYoutubeUrl());
