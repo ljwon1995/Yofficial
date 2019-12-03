@@ -68,6 +68,7 @@ public class VideoAdapter extends BaseAdapter {
         }
 
         holder.tv1.setText(potion.v_title);
+        holder.tv1.setSingleLine(true);
         holder.tv2.setText(potion.v_uploader);
         holder.tv3.setText(potion.view_num);
         holder.iv_icon.setImageDrawable(potion.getIcon());
