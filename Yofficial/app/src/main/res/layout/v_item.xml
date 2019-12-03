@@ -9,8 +9,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/spinner_teduri"
         android:adjustViewBounds="true"
+        android:background="@drawable/spinner_teduri"
         android:scaleType="centerCrop" />
 
     <LinearLayout
@@ -33,7 +33,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="50dp"
             android:background="#40DCDCDC"
             android:orientation="horizontal">
 
@@ -41,7 +41,7 @@
             <TextView
                 android:id="@+id/txt_v_u"
                 android:layout_width="78dp"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingBottom="10dp"
                 android:text="TextView"
@@ -50,10 +50,9 @@
             <TextView
                 android:id="@+id/txt_v_n"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="22dp"
                 android:gravity="right"
                 android:paddingRight="10dp"
-                android:paddingBottom="10dp"
                 android:text="TextView"
                 android:textSize="8dp" />
         </LinearLayout>

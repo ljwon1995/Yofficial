@@ -308,6 +308,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
         insertIngBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean flag;
                 tr[timeIdCount].addView(ingName[timeIdCount]);
                 tr[timeIdCount].addView(ingFigures[timeIdCount]);
                 ingTable.addView(tr[timeIdCount]);
@@ -1300,7 +1301,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                                 Log.d(TAG, e.getStackTrace().toString());
                             }
 
-                            rotatedBitmap = Bitmap.createScaledBitmap(rotatedBitmap, 300, 300, true);
+                            rotatedBitmap = Bitmap.createScaledBitmap(rotatedBitmap, 200, 200, true);
                             rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
 

@@ -36,6 +36,7 @@
         <item>비빔</item>
         <item>찜</item>
         <item>회</item>
+        <item>샐러드</item>
     </string-array>
 
     <string-array name="data_feature">

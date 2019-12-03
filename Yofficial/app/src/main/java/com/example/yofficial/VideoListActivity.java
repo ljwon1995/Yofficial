@@ -156,7 +156,7 @@ public class VideoListActivity extends AppCompatActivity {
                         myRef.child("posts").child(recipeId).child("views").setValue(views).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                list.get(position).setView_num(Integer.toString(views) + " views");
+                                list.get(position).setView_num("\n" + Integer.toString(views) + " views");
 
                                 userId = list.get(position).getV_uploader();
                                 userId = userId.substring(1);
