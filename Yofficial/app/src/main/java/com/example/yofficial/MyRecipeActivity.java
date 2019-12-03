@@ -125,8 +125,11 @@ public class MyRecipeActivity extends AppCompatActivity {
                 Toast.makeText(MyRecipeActivity.this ,list.get(position). getV_title(),Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(getApplicationContext(), HyunWooActivity.class);
+
                 String recipeId = list.get(position).getRecipe_id();
                 intent.putExtra("id", recipeId);
+                intent.putExtra("userid", list.get(position).getV_uploader().substring(1));
+
                 myRef.child("posts").child(recipeId).child("views").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
