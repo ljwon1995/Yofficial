@@ -55,6 +55,7 @@ public class HyunWooActivity extends AppCompatActivity {
     private String id;
 
     private static final String TAG = "HyunWoo!";
+    private static final int DELETE_OK = 12;
 
 
     @Override
@@ -441,6 +442,7 @@ public class HyunWooActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Toast.makeText(c ,"Deleted",Toast.LENGTH_SHORT).show();
+                                            setResult(DELETE_OK);
                                             finish();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
