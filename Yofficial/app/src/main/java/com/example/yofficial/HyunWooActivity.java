@@ -168,14 +168,14 @@ public class HyunWooActivity extends AppCompatActivity {
                         yiconView.setImageResource(R.drawable.yicon);
 
                         if (refo.getServings().equals("1인분")) {
-                            servings.setImageResource(R.drawable.filled_star);
+                            servings.setImageResource(R.drawable.one_person);
                         } else {
                             servings.setImageResource(R.drawable.empty_star);
                         }
 
                         switch (refo.getDifficulty()) {
                             case "브론즈":
-                                level.setImageResource(R.drawable.empty_star);
+                                level.setImageResource(R.drawable.bronze);
                                 break;
                             case "실버":
                                 level.setImageResource(R.drawable.filled_star);
@@ -187,7 +187,8 @@ public class HyunWooActivity extends AppCompatActivity {
                                 level.setImageResource(R.drawable.filled_star);
                                 break;
                             case "마스터":
-                                level.setImageResource(R.drawable.empty_star);
+                                level.setImageResource(R.drawable.master);
+                                break;
                             default:
                                 level.setImageResource(R.drawable.level);
                                 break;
@@ -195,7 +196,7 @@ public class HyunWooActivity extends AppCompatActivity {
 
                         switch (refo.getDuraTime()) {
                             case "5분":
-                                duration.setImageResource(R.drawable.empty_star);
+                                duration.setImageResource(R.drawable.time);
                                 break;
                             case "10분":
                                 duration.setImageResource(R.drawable.filled_star);
