@@ -155,6 +155,4 @@ public class MyRecipeActivity extends AppCompatActivity {
 
     }
 
-
-
 }

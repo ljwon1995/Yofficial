@@ -74,7 +74,7 @@ public class HyunWooActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
-        myRef.child("recipes").child(id).addValueEventListener(new ValueEventListener() {
+        myRef.child("recipes").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -447,15 +447,21 @@ public class HyunWooActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         mAuth = FirebaseAuth.getInstance();
                         String userID = mAuth.getCurrentUser().getEmail().split("@")[0];
+
+
+
                         if(u_id.compareTo(userID) == 0){
-                            myRef.child("recipes").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+
+
+                            myRef.child("posts").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
 
-                                    myRef.child("posts").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    myRef.child("recipes").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Toast.makeText(c ,"Deleted",Toast.LENGTH_SHORT).show();
+                                            finish();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -463,11 +469,6 @@ public class HyunWooActivity extends AppCompatActivity {
                                             Toast.makeText(c ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
                                         }
                                     });
-
-
-
-
-
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -475,6 +476,7 @@ public class HyunWooActivity extends AppCompatActivity {
                                     Toast.makeText(c ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
                                 }
                             });
+
 
 
 
