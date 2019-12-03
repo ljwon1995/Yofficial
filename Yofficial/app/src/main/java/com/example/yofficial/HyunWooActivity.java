@@ -451,7 +451,23 @@ public class HyunWooActivity extends AppCompatActivity {
                             myRef.child("recipes").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(c ,"Deleted",Toast.LENGTH_SHORT).show();
+
+                                    myRef.child("posts").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(c ,"Deleted",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(c ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+
+
+
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
