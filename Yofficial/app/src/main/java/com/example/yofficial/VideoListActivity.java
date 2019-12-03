@@ -59,6 +59,10 @@ public class VideoListActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private String userId;
+    private ChildEventListener ce;
+    private static final int REQUEST_CODE = 10;
+    private static final int DELETE_OK = 12;
+    private int pos;
 
 
     @Override
@@ -78,13 +82,16 @@ public class VideoListActivity extends AppCompatActivity {
         pList = new ArrayList<>();
 
 
-        myRef.child("posts").addChildEventListener(new ChildEventListener() {
+        list.clear();
+        pList.clear();
+        ce = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d("jun", "ChildAdded");
                 PostInfo p = dataSnapshot.getValue(PostInfo.class);
                 Log.d("jun", p.getTitle());
                 pList.add(p);
+
 
 
                 storage = FirebaseStorage.getInstance();
@@ -137,7 +144,9 @@ public class VideoListActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        myRef.child("posts").addChildEventListener(ce);
 
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 아이템 버튼 작동
@@ -197,7 +206,9 @@ public class VideoListActivity extends AppCompatActivity {
 
                                 adapter = new VideoAdapter(c, list);
                                 listview.setAdapter(adapter);
-                                startActivity(intent); // 다음 화면으로 넘어간다
+                                pos = position;
+                                startActivityForResult(intent, REQUEST_CODE);
+
                             }
                         });
 
@@ -251,6 +262,20 @@ public class VideoListActivity extends AppCompatActivity {
         }) ; */
 
     }
+
+
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == DELETE_OK){
+            list.remove(pos);
+            adapter = new VideoAdapter(c, list);
+            listview.setAdapter(adapter);
+        }
+    }
+
 
 
 
@@ -358,6 +383,11 @@ public class VideoListActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 //TextView text = (TextView)findViewById(R.id.txtsearch);
                 //text.setText("검색식 : "+newText);
+
+
+                if(newText.equals("")){
+                    this.onQueryTextSubmit("");
+                }
                 return true;
             }
         });

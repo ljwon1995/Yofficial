@@ -53,7 +53,9 @@ public class Refreg_PopupActivity extends Activity {
     Context c = this;
     ArrayList<RecipeInfo> data;
     String userId;
-
+    int pos;
+    private static final int REQUEST_CODE = 10;
+    private static final int DELETE_OK = 12;
 
 
 
@@ -219,6 +221,8 @@ public class Refreg_PopupActivity extends Activity {
                 Intent intent = new Intent(getApplicationContext(), HyunWooActivity.class);
                 String recipeId = list.get(position).getRecipe_id();
                 intent.putExtra("id", recipeId);
+                intent.putExtra("userid", list.get(position).getV_uploader().substring(1));
+
                 myRef.child("posts").child(recipeId).child("views").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -265,19 +269,10 @@ public class Refreg_PopupActivity extends Activity {
 
 
 
-
-
-
-
-
-
-
-
-
-
                         adapter = new VideoAdapter(c, list);
                         listview.setAdapter(adapter);
-                        startActivity(intent); // 다음 화면으로 넘어간다
+                        pos = position;
+                        startActivityForResult(intent, REQUEST_CODE);
                     }
 
                     @Override
@@ -289,6 +284,16 @@ public class Refreg_PopupActivity extends Activity {
                 });
             }
         });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == DELETE_OK){
+            list.remove(pos);
+            adapter = new VideoAdapter(c, list);
+            listview.setAdapter(adapter);
+        }
     }
 
 

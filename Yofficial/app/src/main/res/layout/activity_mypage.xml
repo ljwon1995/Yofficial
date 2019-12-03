@@ -30,7 +30,7 @@
             android:layout_alignTop="@id/profile"
             android:layout_toRightOf="@id/profile"
             android:background="#F7F8F7"
-            android:text="이재원"
+            android:text=""
             android:textColor="#050505" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_alignLeft="@id/name"
             android:layout_marginTop="7dp"
             android:background="#F7F8F7"
-            android:text="ijwon1995@gmail.com"
+            android:text=""
             android:textColor="#050505" />
 
         <LinearLayout
