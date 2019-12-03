@@ -36,6 +36,7 @@ public class BoardEditActivity extends AppCompatActivity {
     String body;
 
     Button post;
+    String board_id;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +79,14 @@ public class BoardEditActivity extends AppCompatActivity {
         String strDate = dateFormat.format(date);
 
 
+        Intent intent = getIntent();
+        board_id =intent.getExtras().getString("id");
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         mAuth = FirebaseAuth.getInstance();
         b_uploader = mAuth.getCurrentUser().getEmail().split("@")[0];
-        b_id = myRef.child("boards").push().getKey();
+        b_id = board_id;
         item = new BoardItem(b_id, title, b_uploader, strDate, body);
         Log.d(TAG, "StartUploading");
         myRef.child("boards").child(b_id).setValue(item).addOnSuccessListener(new OnSuccessListener<Void>() {

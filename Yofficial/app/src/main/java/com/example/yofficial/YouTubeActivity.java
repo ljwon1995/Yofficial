@@ -564,7 +564,7 @@ public class YouTubeActivity extends YouTubeBaseActivity implements SensorEventL
             else{
                 Toast.makeText(getApplicationContext(),"마지막 단계 입니다.", Toast.LENGTH_LONG).show();
             }
-            
+
 
         }
     }
