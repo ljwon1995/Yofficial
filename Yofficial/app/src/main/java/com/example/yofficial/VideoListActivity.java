@@ -260,7 +260,7 @@ public class VideoListActivity extends AppCompatActivity {
         // 메뉴 버튼 클릭 시 조건별 검색 스피너들 출력을 위한 동적 레이아웃
 
         TableLayout table = findViewById(R.id.category_tableLayout);
-        TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
+        TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 150);
         params.weight = 1;
 
         TableRow tr1 = new TableRow(this);
