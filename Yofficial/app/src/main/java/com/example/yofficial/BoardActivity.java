@@ -142,4 +142,30 @@ public class BoardActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
+        myRef.child("boards").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                item = dataSnapshot.getValue(BoardItem.class);
+                title = (TextView)findViewById(R.id.board_title);
+                info = (TextView)findViewById(R.id.board_info);
+                body = (TextView)findViewById(R.id.board_data);
+                title.setText(item.board_title);
+                info.setText(item.board_uploader + " | " + item.board_date);
+                body.setText(item.board_data);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

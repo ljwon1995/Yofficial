@@ -435,6 +435,7 @@ public class HyunWooActivity extends AppCompatActivity {
 
                // 레시피 정보를 디비에서 지우기
 
+                Log.d(TAG, "get recipe delete btn");
                 AlertDialog.Builder alertdialog = new AlertDialog.Builder(activity);
                 // 다이얼로그 메세지
                 alertdialog.setMessage("\n레시피를 삭제하시겠습니까?");
