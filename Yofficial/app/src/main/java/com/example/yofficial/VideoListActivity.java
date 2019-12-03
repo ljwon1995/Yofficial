@@ -385,6 +385,11 @@ public class VideoListActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 //TextView text = (TextView)findViewById(R.id.txtsearch);
                 //text.setText("검색식 : "+newText);
+
+
+                if(newText.equals("")){
+                    this.onQueryTextSubmit("");
+                }
                 return true;
             }
         });
