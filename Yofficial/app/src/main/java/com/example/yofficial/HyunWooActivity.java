@@ -51,6 +51,8 @@ public class HyunWooActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Activity activity;
     private Context c = this;
+    private String u_id;
+    private String id;
 
     private static final String TAG = "HyunWoo!";
 
@@ -63,8 +65,10 @@ public class HyunWooActivity extends AppCompatActivity {
 
 
         Bundle extras = getIntent().getExtras();
-        String id = extras.getString("id");
+        id = extras.getString("id");
+        u_id = extras.getString("userid");
         Log.d("HyunWoo!", id);
+        Log.d("Hyunwoo!", u_id);
 
 
         database = FirebaseDatabase.getInstance();
@@ -442,24 +446,24 @@ public class HyunWooActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         mAuth = FirebaseAuth.getInstance();
                         String userID = mAuth.getCurrentUser().getEmail().split("@")[0];
-                        if(false){
+                        if(u_id.compareTo(userID) == 0){
+                            myRef.child("recipes").child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(c ,"Deleted",Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(c ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
-//                            String c_id = list.get(position).comment_id;
-//                            myRef.child("comments").child(board_id).child(c_id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                @Override
-//                                public void onSuccess(Void aVoid) {
-//
-//                                }
-//                            }).addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    Toast.makeText(c ,"다시 시도해주세요!",Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
+
 
                         }
                         else{
-                            Toast.makeText(c ,"본인 댓글만 삭제 가능합니다!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(c ,"본인 레시피만 삭제 가능합니다!",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

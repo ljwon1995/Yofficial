@@ -148,6 +148,8 @@ public class VideoListActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), HyunWooActivity.class);
                 String recipeId = list.get(position).getRecipe_id();
                 intent.putExtra("id", recipeId);
+                intent.putExtra("userid", list.get(position).getV_uploader().substring(1));
+
                 myRef.child("posts").child(recipeId).child("views").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
