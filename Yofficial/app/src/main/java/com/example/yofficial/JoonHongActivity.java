@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ public class JoonHongActivity extends AppCompatActivity {
     private final static String TAG = "Joon!";
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private TextView tv;
 
 
     @Override
@@ -42,6 +44,8 @@ public class JoonHongActivity extends AppCompatActivity {
 
         Log.d(TAG, mAuth.getCurrentUser().getUid());
         Log.d(TAG, mAuth.getCurrentUser().getEmail());
+        tv = findViewById(R.id.textView);
+        tv.setText("\n    Hi "+ mAuth.getCurrentUser().getDisplayName()+"!!\n    Welcome to Yofficial");
 
 
         //if user is not in users make new userInfo instance and save it into db
